@@ -33,8 +33,6 @@
 		$_SESSION['userId'] = $user->id;
 		$_SESSION['userToken'] = $hlp->createUserToken($_SESSION['userId']);
 		
-		// TODO LOG THIS
-		
 		echo json_encode(array('success' => true, 'error' => null));
 		exit;		
 	}
@@ -78,8 +76,6 @@
 			echo json_encode(array('success' => false, 'error' => 'Cannot registed user at this time.'));
 			exit;
 		}
-		
-		// TODO LOG THIS
 		
 		// create 'confirm email' token
 		// send this token to the new user to confirm email		

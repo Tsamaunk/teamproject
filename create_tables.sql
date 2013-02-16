@@ -64,8 +64,9 @@ CREATE TABLE if not exists `log` (
 `event` INT NOT NULL,
 `description` VARCHAR(255),
 `created` BIGINT,
-`userId1` BIGINT not null ,
-`userId2` BIGINT not null ,
-FOREIGN KEY(userId1) REFERENCES users(userId),
-FOREIGN KEY(userId2) REFERENCES users(userId)
+`userId1` BIGINT,
+`userId2` BIGINT
 );
+
+# TOKEN TABLE
+

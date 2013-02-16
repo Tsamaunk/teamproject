@@ -100,9 +100,9 @@ class Controller {
 	 * function deletes user by id
 	 */
 	public function deleteUser($userId) {
+		$this->mod->log(11, 'User deleted', $userId);
 		$sql = "UPDATE `users` SET `isDeleted` = TRUE WHERE `id` = '$userId' ;";
 		return $this->mod->query($sql);
-		// TODO LOG THIS
 	}
 	
 	/**
@@ -126,8 +126,8 @@ class Controller {
 		$sql = "SELECT `id` FROM `users` WHERE `email` = '$email' AND `password` = '$password';";
 		$result = $this->mod->query($sql);
 		$result = mysql_fetch_row($result);
+		$this->mod->log(10, 'User created', $result[0]);
 		return $result[0];
-		// TODO LOG THIS	
 	}		
 	
 	/**
@@ -175,8 +175,8 @@ class Controller {
 				`firstName`='".$user->firstName."',
 				`lastName`='".$user->lastName."'";
 		$sql .= " WHERE id = $id;";
+		$this->mod->log(12, 'User info updated', $id);
 		return $this->mod->query($sql);
-		//TODO LOG THIS
 	}
 
 	/**
@@ -188,6 +188,7 @@ class Controller {
 		$sql = "UPDATE `users` SET " .
 				"`password`='" . $password . "' ";
 		$sql .= " WHERE id = $id;";
+		$this->mod->log(13, 'User password updated', $id);
 		return $this->mod->query($sql);
 	}
 	
@@ -199,7 +200,7 @@ class Controller {
 			$this->deleteUser($id);
 			return -1; // whatever
 		} else {
-			// TODO LOG THIS
+			$this->mod->log(20, 'Approved user', $id);
 			$sql = "UPDATE `users` SET " .
 					"`approvedBy`='" . $adminId . "' ";
 			$sql .= " WHERE id = $id;";
@@ -219,6 +220,39 @@ class Controller {
 			return $this->orm($result);
         else return false;
 	}
+	
+	/**
+	 * Function returns setting value by name
+	 */
+	public function getSetting($name) {
+		$sql = "SELECT * FROM `setting` WHERE `setting` = '$name';";
+		$result = $this->mod->query($sql);
+		if ($result)
+			return $this->orm($result);
+        else return false;		
+	}
+	
+	/**
+	 * Function creates OR updates the setting
+	 * type = 1 - INTEGER, 2 - STRING
+	 */
+	public function setSetting($name, $value, $type = 1) {
+		$sql = "SELECT COUNT(id) as c FROM `setting` WHERE `setting` = '$name';";
+		$result = $this->mod->query($sql);
+		$result = mysql_fetch_row($result);
+		$exists = $result[0] > 0;
+		if ($exists) {
+			$sql = "UPDATE `setting` SET `setting` = '$name', `".($type == 1 ? 'intVal' : 'charVal')."` = '$value'
+				WHERE id = ".$result[0].";";
+			return $this->mod->query($sql);			 
+		} else {
+			$sql = "INSERT INTO `setting` (`setting`, `".($type == 1 ? 'intVal' : 'charVal')."`) VALUES
+					('$name', '$value');";
+			return $this->mod->query($sql);
+		}
+	}
+	
+	
 	
 	
 }

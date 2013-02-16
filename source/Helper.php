@@ -3,11 +3,11 @@
 class Helper {
 	
 	public function validToken($uid, $utoken) {
-		return true;
+		return ($utoken == $this->hasher($uid));
 	}
 	
 	public function createUserToken($uid) {
-		return 'token';
+		return $this->hasher($uid);
 	}
 	
 	public function execToken($token) {
@@ -32,6 +32,10 @@ class Helper {
 		$str = md5($userId . microtime());
 		$str .= md5($string . microtime());
 		return $str;
+	}
+	
+	private function hasher($id) {
+		return md5('hash' . $id . 'code');
 	}
 	
 }
