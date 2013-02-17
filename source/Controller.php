@@ -32,9 +32,9 @@ class Controller {
 	 * Convert Array to Object
 	 */
 	private function atoo($array) {
-		$obj = null;
+		$obj = new stdClass();
 		foreach ($array as $key => $value)
-			if (!is_numeric($key))
+			if (!is_numeric($key))		
 				$obj->$key = $value;
 		return $obj;
 	}
@@ -55,11 +55,14 @@ class Controller {
 	 */
 	public function orm($resource) {
 		$array = $this->convert($resource);
-		$obj = $this->atoo($array);
-		if (count($obj) == 1)
-			return $obj[0];
-		else
-			return $obj; 
+		if (count($array) == 1) {
+			return $this->atoo($array[0]);
+		} else {
+			$obj = array();
+			foreach ($array as $a)
+				$obj[] = $this->atoo($a);
+			return $obj;
+		}
 	}	
 	
 	/**
@@ -101,7 +104,7 @@ class Controller {
 	 */
 	public function deleteUser($userId) {
 		$this->mod->log(11, 'User deleted', $userId);
-		$sql = "UPDATE `users` SET `isDeleted` = TRUE WHERE `id` = '$userId' ;";
+		$sql = "UPDATE `users` SET `isDeleted` = TRUE WHERE `userId` = '$userId' ;";
 		return $this->mod->query($sql);
 	}
 	
@@ -123,7 +126,7 @@ class Controller {
 		$result = $this->mod->query($sql);
 		if (!$result) return false; // something went wrong
 		// lets return user id
-		$sql = "SELECT `id` FROM `users` WHERE `email` = '$email' AND `password` = '$password';";
+		$sql = "SELECT `userId` FROM `users` WHERE `email` = '".$user->email."' AND `password` = '".$user->password."';";
 		$result = $this->mod->query($sql);
 		$result = mysql_fetch_row($result);
 		$this->mod->log(10, 'User created', $result[0]);
@@ -146,7 +149,7 @@ class Controller {
 	 * Function checks if user with this id is registered
 	 */
 	public function checkUserById($id) {
-		$sql = "SELECT COUNT(id) FROM `users` WHERE `id` = '$id' AND `isDeleted` = FALSE AND `approvedBy` > 0;";
+		$sql = "SELECT COUNT(userId) FROM `users` WHERE `userId` = '$id' AND `isDeleted` = FALSE AND `approvedBy` > 0;";
 		$result = $this->mod->query($sql);
 		$result = mysql_fetch_row($result);
 		$result = $result[0] > 0;
@@ -157,7 +160,7 @@ class Controller {
 	 * function returns user Object by id, or false
 	 */
 	public function getUserById($id) {
-		$sql = "SELECT * FROM `users` WHERE `id` = $id AND `isDeleted` = FALSE AND `approvedBy` > 0;";
+		$sql = "SELECT * FROM `users` WHERE `userId` = $id AND `isDeleted` = FALSE AND `approvedBy` > 0;";
 		$result = $this->mod->query($sql);
 		if ($result)
 			return $this->orm($result);
@@ -174,7 +177,7 @@ class Controller {
 		$sql = "UPDATE `users` SET `email`='".$user->email."',
 				`firstName`='".$user->firstName."',
 				`lastName`='".$user->lastName."'";
-		$sql .= " WHERE id = $id;";
+		$sql .= " WHERE userId = $id;";
 		$this->mod->log(12, 'User info updated', $id);
 		return $this->mod->query($sql);
 	}
@@ -187,7 +190,7 @@ class Controller {
 		$password = md5($password);
 		$sql = "UPDATE `users` SET " .
 				"`password`='" . $password . "' ";
-		$sql .= " WHERE id = $id;";
+		$sql .= " WHERE userId = $id;";
 		$this->mod->log(13, 'User password updated', $id);
 		return $this->mod->query($sql);
 	}
@@ -203,7 +206,7 @@ class Controller {
 			$this->mod->log(20, 'Approved user', $id);
 			$sql = "UPDATE `users` SET " .
 					"`approvedBy`='" . $adminId . "' ";
-			$sql .= " WHERE id = $id;";
+			$sql .= " WHERE userId = $id;";
 			return $this->mod->query($sql);
 		}		
 	}
@@ -228,8 +231,10 @@ class Controller {
 		$sql = "SELECT * FROM `setting` WHERE `setting` = '$name';";
 		$result = $this->mod->query($sql);
 		if ($result)
-			return $this->orm($result);
-        else return false;		
+			$z = $this->orm($result);
+        else return false;
+        if (!$z -> charVal) return $z -> intVal;
+        else return $z -> charVal;		
 	}
 	
 	/**

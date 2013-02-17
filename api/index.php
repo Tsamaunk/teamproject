@@ -22,9 +22,15 @@
 		$email = $_POST['email'];
 		$password = $_POST['password'];
 		$con->connect();
-		$user = $sign->checkCredentials($email, $password);
+		
+		$userExist = $con->checkUser($email);
+		
+		$user = $con->checkCredentials($email, $password);
 		$con->close();
-		if (!$user) {
+		if (!$user && $userExist) {
+			echo json_encode(array('success' => false, 'error' => 'User is not approved yet!'));
+			exit;
+		} elseif (!$user) {
 			echo json_encode(array('success' => false, 'error' => 'Incorrect email address / password!'));
 			exit;
 		}
@@ -35,6 +41,13 @@
 		
 		echo json_encode(array('success' => true, 'error' => null));
 		exit;		
+	}
+	
+	if (isset($_GET['logout'])) {
+		unset($_SESSION['userId']);
+		unset($_SESSION['userToken']);
+		echo json_encode(array('success' => true, 'error' => null));
+		exit;
 	}
 		
 	
@@ -78,12 +91,18 @@
 		}
 		
 		// create 'confirm email' token
-		// send this token to the new user to confirm email		
+		// send this token to the new user to confirm email
+
+		// after user email is confirmed - in token.php - send email to RD to confirm the user
 		
 		echo json_encode(array('success' => true, 'error' => null, 'userId' => $result));
 		exit;		
 	}
-		
+
+	
+	
+	
+	
 	// CHECK THE ACCESS
 	
 	if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validToken($_SESSION['userId'], $_SESSION['userToken'])) {
