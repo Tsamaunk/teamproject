@@ -158,9 +158,10 @@ class Controller {
 	
 	/**
 	 * function returns user Object by id, or false
+	 * can return deleted and unapproved user
 	 */
 	public function getUserById($id) {
-		$sql = "SELECT * FROM `users` WHERE `userId` = $id AND `isDeleted` = FALSE AND `approvedBy` > 0;";
+		$sql = "SELECT * FROM `users` WHERE `userId` = $id;";
 		$result = $this->mod->query($sql);
 		if ($result)
 			return $this->orm($result);
@@ -225,16 +226,14 @@ class Controller {
 	}
 	
 	/**
-	 * Function returns setting value by name
+	 * Function returns setting object by name
 	 */
 	public function getSetting($name) {
 		$sql = "SELECT * FROM `setting` WHERE `setting` = '$name';";
 		$result = $this->mod->query($sql);
 		if ($result)
-			$z = $this->orm($result);
+			return $this->orm($result);
         else return false;
-        if (!$z -> charVal) return $z -> intVal;
-        else return $z -> charVal;		
 	}
 	
 	/**

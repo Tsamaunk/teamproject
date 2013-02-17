@@ -89,9 +89,17 @@
 			echo json_encode(array('success' => false, 'error' => 'Cannot registed user at this time.'));
 			exit;
 		}
-		
+				
 		// create 'confirm email' token
+		$token = new stdClass();
+		$token -> type = 1;
+		$token -> raId1 = $result;
+		$token = $hlp -> makeToken($token, $result, 'confirmMailToken');
 		// send this token to the new user to confirm email
+		
+		$mailer = new Mailer();
+		$mailer -> compose (1, $token);
+		$mailer -> mail();
 
 		// after user email is confirmed - in token.php - send email to RD to confirm the user
 		

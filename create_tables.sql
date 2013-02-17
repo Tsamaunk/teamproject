@@ -68,5 +68,17 @@ CREATE TABLE if not exists `log` (
 `userId2` BIGINT
 );
 
-# TOKEN TABLE
+CREATE TABLE IF NOT EXISTS `token` (
+id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+created BIGINT,
+expired BIGINT,
+type INT,
+token VARCHAR(70),
+raId1 BIGINT,
+raId2 BIGINT,
+rdId BIGINT,
+switchId BIGINT
+);
+
+
 

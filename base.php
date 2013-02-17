@@ -10,6 +10,7 @@
 	include_once 'source/Model.php';
 	include_once 'source/Controller.php';
 	include_once 'source/Helper.php';
+	include_once 'source/Mailer.php';
 	
 	function fixObject (&$object)
 	{
