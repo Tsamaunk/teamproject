@@ -12,7 +12,6 @@ body {
 #top-part {
 	height: 100px;
 	margin-left:250px;
-	border-bottom:1px #ddd solid;
 	padding:20px;
 }
 
@@ -64,4 +63,42 @@ body {
 
 #top-part a:hover {
 	color: #fff;
+}
+
+.la-form {
+	display:block;
+	margin: 50px auto;
+	background-color: #3e0047;
+	border-radius: 20px;
+	width:500px;
+	padding: 20px;
+	color: #fff;
+}
+
+.la-form h2 {
+	margin-top:20px;
+	margin-bottom: 55px;
+}
+
+.la-form label {
+	margin-left:50px;
+	width: 100px;
+	display: inline-block;
+}
+
+.la-form input[type='text'],
+.la-form input[type='password']
+ {
+	border: 1px #666 solid;
+	padding:10px;
+	margin-bottom:20px;
+	min-width: 300px;
+}
+
+.la-form button {
+	padding: 10px 20px;
+}
+
+.la-form button:hover {
+	background-color: #fff;
 }
