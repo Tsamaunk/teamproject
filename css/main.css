@@ -48,3 +48,20 @@ body {
 .nofloat {
 	clear:both;
 }
+
+
+#top-part a {
+	display:inline-block;
+	float:right;
+	width: 180px;
+	padding: 7px 10px;
+	background-color: #3e0047;
+	color: #aaa;
+	margin-left:2px;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+#top-part a:hover {
+	color: #fff;
+}

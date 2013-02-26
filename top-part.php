@@ -1,3 +1,7 @@
 <div id="top-part">
-		 All kinds of crap goes here
+
+
+	<a href="">Login</a>
+	<a href="">Sign up</a>
+	
 </div>
