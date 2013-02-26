@@ -1,0 +1,50 @@
+@CHARSET "UTF-8";
+
+body {
+	font-family:"Segoe UI", Arial,Verdana,Helvetica,sans-serif;
+	margin: 0px;
+}
+
+#wrap {
+	border-bottom:1px #ddd solid;
+}
+
+#top-part {
+	height: 100px;
+	margin-left:250px;
+	border-bottom:1px #ddd solid;
+	padding:20px;
+}
+
+#content {
+	margin-left:250px;
+	padding:10px;
+}
+
+
+#sidebar {
+	min-height:700px;
+	background: url(/img/palette.png);
+	width:250px;
+	border-right:1px #ddd solid;
+	float:left;
+}
+
+#sidebar a {
+	display:block;
+	width: 230px;
+	padding: 7px 10px;
+	background-color: #3e0047;
+	color: #aaa;
+	margin-bottom:2px;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+#sidebar a:hover {
+	color: #fff;
+}
+
+.nofloat {
+	clear:both;
+}
