@@ -5,7 +5,7 @@
 
 class Model {
 
-	private $db 	= 'some db name goes here';
+	private $db 	= 'ProjectSwitch';
 	private $host 	= 'localhost';
 	private $user	= 'root';
 	private $pasw 	= 'root';
@@ -76,6 +76,15 @@ class Model {
 			$this->close();
 		}
 	}
+	/*
+	 * Description of LOG events:
+	 * 10 - user created
+	 * 11 - delete user
+	 * 12 - user info update
+	 * 13 - user password updated
+	 * 20 - approved user
+	 * 
+	 */
 	
 }
 
