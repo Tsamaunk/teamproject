@@ -20,6 +20,7 @@
 		 * type = 6 - switch initiated by $token->raId1 confirmed by user $token->raId2 - send mail to RD id $token->rdId
 		 * type = 7 - switch approved by RD, send email to $token->raId1 -- this shall be called twice for each RA
 		 * type = 8 - switch declined by RD, send email to $token->raId1 -- this shall be called twice for each RA
+		 * type = 9 - lost password email. user who lost password is in $token->raId1
 		 * @param token object $token
 		 */
 		public function compose($type, $token1, $token2 = null, $text = '') {

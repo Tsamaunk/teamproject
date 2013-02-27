@@ -27,7 +27,7 @@
 	}
 	
 	/* token->type = 1 - confirm email, 2 - approve user, 3 - decline user, 4 - confirm switch, 5 - decline switch,
-	 * 6 - approve switch, 7 - disapprove switch  
+	 * 6 - approve switch, 7 - disapprove switch, 8 - lost password
 	 */
 	if ($token->type == 1) { // confirm email
 		$hlp -> destroy($token); // we dont want to notify RA several times
@@ -103,5 +103,25 @@
 		echo "<a href='index.php'>main page</a>";
 		exit;
 	}
+	
+	if ($token->type == 8) { // lost password
+		if (isset($_POST['password']) && strlen($_POST['password']) > 5) {
+			$con = new Controller();
+			$con -> connect();
+			$con -> updateUserPassword($token->raId1, $_POST['password']);
+			$con -> close();
+			$hlp -> destroy($token);
+			echo "<pre>You can log in with your new password now.\n";
+			echo "<a href='index.php'>main page</a>";
+			exit;
+		} else {
+			if (isset($_POST['password'])) {echo "Password must be 6 letters or more!<br>";}
+			echo "<form method='post' action='token.php?token=".$token->token."'>";
+			echo "New Password: <input type='password' name='password'/>";			
+			echo "<button type='submit'>Submit</button>";
+			echo "</form>";					
+		}
+	}
+	
 	
 ?>

@@ -40,8 +40,8 @@
 	?>
 	
 	<script>
-		$(documents).ready(function(){
-	        $.post("api/?logout", {'email' : 'himor.cre@gmail.com', 'password' : 'password'},
+		$(document).ready(function(){
+	        $.post("api/?lost_password", {'email' : 'himor.cre@gmail.com'},
 	                function(data){
 	                        if(!data.success){
 	                                alert('error: ' + data.error);                                                        

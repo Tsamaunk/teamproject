@@ -49,6 +49,27 @@
 		echo json_encode(array('success' => true, 'error' => null));
 		exit;
 	}
+	
+	if (isset($_GET['lost_password'])) {
+		if(!$_POST['email']) {
+			echo json_encode(array('success' => false, 'error' => 'Please provide the Email address.'));
+			exit;
+		}
+		$con->connect();
+		$user = $con->getUserByEmail($_POST['email']);
+		$con->close();
+		// create 'lost password email' token
+		$token = new stdClass();
+		$token -> type = 8;
+		$token -> raId1 = $user->userId;
+		$token = $hlp -> makeToken($token, $user->userId, 'lostPasswordToken');
+		// send this token to the new user to set the new password
+		$mailer = new Mailer();
+		$mailer -> compose (9, $token);
+		$mailer -> mail();
+		echo json_encode(array('success' => true, 'error' => null, 'userId' => $result));
+		exit;
+	}
 		
 	
 	if (isset($_GET['signup'])) {

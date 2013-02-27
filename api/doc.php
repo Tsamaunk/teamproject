@@ -8,7 +8,8 @@
 ?><div style="padding:0px 15px 10px;background-color:#ddd;width:200px;float:right;position:fixed;top:5px;right:5px;">
 <h3 style="margin:0px;">Content</h3>
 <a href="#login">login</a>
-<a href="#signup">signup</a></div>
+<a href="#signup">signup</a>
+<a href="#lost_password">lost_password</a></div>
 <h3>How do we check the session? (PHP CODE)</h3>
 include_once 'base.php';	// THIS THE THE BACKEND CONNECTOR
 $hlp = new Helper();		// CREATE THE HELPER
@@ -41,6 +42,16 @@ RESPONSE:
 	{"success": true / false,
 	"error": error message,
 	"userId": id of new user in case of success}
+	
+<a name="lost_password"></a>	
+<span style="background-color:#000;color:#fff;"><b>/api/?lost_password</b></span>
+this function must be executed in case user want to reset the password
+POST Parameters:
+	email - open text
+RESPONSE:
+	{"success": true / false,
+	"error": error message}
+	
 	
 </pre>
 </body>
