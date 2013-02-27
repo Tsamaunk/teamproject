@@ -12,6 +12,8 @@ isDeleted BOOL DEFAULT 0,
 approvedBy INT DEFAULT 0 
 );
 
+INSERT INTO `users` (`firstName`, `lastName`, `password`, `email`, `role`, `created`) VALUES ('Default', 'Admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@albany.edu', 2, 123456789); #default admin with password admin
+
 CREATE TABLE IF NOT EXISTS `days` (
 id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 userId BIGINT,
@@ -58,6 +60,9 @@ create table if not exists `setting`(
 `intVal` INT,
 `charVal` varchar(255)
 );
+
+INSERT INTO `setting` (`setting`, `intVal`, `charVal`) VALUES ('numberOfRd', 1, ''); # admin settings
+INSERT INTO `setting` (`setting`, `intVal`, `charVal`) VALUES ('rd_1', 1, '');	# very important!
 
 CREATE TABLE if not exists `log` (
 `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

@@ -33,6 +33,7 @@
 		if ($token) echo "TOKEN FOUND\n\n";
 		var_dump($token);
 		
+		var_dump(md5("admin"));
 		
 		
 	 	

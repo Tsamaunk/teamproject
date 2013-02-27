@@ -32,7 +32,7 @@
 	if ($token->type == 1) { // confirm email
 		$hlp -> destroy($token); // we dont want to notify RA several times
 		// TODO we must generate tokens for each RD - there can be more than one
-		// number of RD - setting 'numberOfRd'
+		// number of RDs - setting 'numberOfRd'
 		// each RD address starts with 'rd_' + number starting with 1;
 		$mailer = new Mailer();
 		$rdSet = readRd();

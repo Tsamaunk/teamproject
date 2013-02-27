@@ -43,12 +43,16 @@
 		exit;		
 	}
 	
+	
+	
 	if (isset($_GET['logout'])) {
 		unset($_SESSION['userId']);
 		unset($_SESSION['userToken']);
 		echo json_encode(array('success' => true, 'error' => null));
 		exit;
 	}
+	
+	
 	
 	if (isset($_GET['lost_password'])) {
 		if(!$_POST['email']) {
@@ -71,6 +75,8 @@
 		exit;
 	}
 		
+	
+	
 	
 	if (isset($_GET['signup'])) {
 		if(!$_POST['email'] || !$_POST['password']) {
