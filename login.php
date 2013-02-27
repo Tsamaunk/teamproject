@@ -30,7 +30,7 @@
 		
 		<form method="post" action="login.php" class="la-form">
 		
-			<h2>Please input your username and password:</h2>
+			<h2>Please enter your username and password:</h2>
 			<input type="hidden" name="trigger" value="1" />
 			<label>Username:</label>
 			<input type="text" name="username" />
