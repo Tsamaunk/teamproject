@@ -1,17 +1,24 @@
 <html>
 <body>
 <pre>
-<h3>API INTERFACE</h3>
-<?php 
+<h3>API INTERFACE</h3><?php 
 	// ================================================
 	// 			USER OPERATIONS
 	// ================================================
-?>
-<div style="padding:0px 15px 10px;background-color:#ddd;width:200px;float:right;position:fixed;top:5px;right:5px;">
+?><div style="padding:0px 15px 10px;background-color:#ddd;width:200px;float:right;position:fixed;top:5px;right:5px;">
 <h3 style="margin:0px;">Content</h3>
-<a href="#login">asignin</a>
-<a href="#signup">signup</a>
-</div>	
+<a href="#login">login</a>
+<a href="#signup">signup</a></div>
+<h3>How do we check the session? (PHP CODE)</h3>
+include_once 'base.php';	// THIS THE THE BACKEND CONNECTOR
+$hlp = new Helper();		// CREATE THE HELPER
+
+if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validToken($_SESSION['userId'], $_SESSION['userToken'])) {
+		CONGRATS! WE HAVE A SESSION WITH USER ID = $_SESSION['userId'];
+	} else {
+		NO SESSION FOUND
+	}
+
 <a name="login"></a>	
 <span style="background-color:#000;color:#fff;"><b>/api/?login</b></span>
 this function sets up the Session variable
