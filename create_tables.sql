@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS `days` (
 id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 userId BIGINT,
 assignedDate DATE,
+month INT,
 fromTime INT, # - in seconds from the midnight  
 toTime INT,
 created BIGINT NOT NULL,

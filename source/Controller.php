@@ -257,7 +257,19 @@ class Controller {
 	}
 	
 	
+	// =============================================================================================
 	
+	
+	/**
+	 * Function returns the schedule for the month for all users
+	 */
+	public function getSchedule($month) {
+		$sql = "SELECT * FROM `days` WHERE `month` = '$month';";
+		$result = $this->mod->query($sql);
+		if ($result)
+			return $this->orm($result);
+		else return false;
+	}
 	
 }
 
