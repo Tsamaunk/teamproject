@@ -4,7 +4,7 @@
 		
 		private $subject;
 		private $address;
-		private $from;
+		private $from = "Project Switch <noreply@none.com>";
 		private $content;
 		
 		/**
@@ -25,7 +25,17 @@
 		 */
 		public function compose($type, $token1, $token2 = null, $text = '') {
 			// populate private variables
-			
+			$con = new Controller();
+			if ($type == 1) {
+				$con->connect();
+				$user = $con->getUserById($token1->raId1);
+				$con->close();
+				$this->address = $user->email;
+				$this->subject = "Confirmation email";
+				$this->content = "Dear " . $user->firstName . "!<br>";
+				$this->content .= "Please confirm your email by clicking this link: <a href='" . SITE_URL . "token.php?token=" . $token1->token . "'> Confirm </a> <br>";
+			}
+
 		}
 		
 		public function mail() {

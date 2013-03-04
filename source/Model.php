@@ -3,6 +3,8 @@
  * This class contains set of functions for database interactions.
  */
 
+define ("SITE_URL", "http://76.78.63.97/");
+
 class Model {
 
 	private $db 	= 'ProjectSwitch';
