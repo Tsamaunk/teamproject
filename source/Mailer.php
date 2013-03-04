@@ -24,18 +24,59 @@
 		 * @param token object $token
 		 */
 		public function compose($type, $token1, $token2 = null, $text = '') {
-			// populate private variables
+			// Open connection to database
 			$con = new Controller();
-			if ($type == 1) {
-				$con->connect();
-				$user = $con->getUserById($token1->raId1);
-				$con->close();
-				$this->address = $user->email;
-				$this->subject = "Confirmation email";
-				$this->content = "Dear " . $user->firstName . "!<br>";
-				$this->content .= "Please confirm your email by clicking this link: <a href='" . SITE_URL . "token.php?token=" . $token1->token . "'> Confirm </a> <br>";
-			}
+			$con->connect();
 
+			switch ($type) {
+				case 1:
+					$ra1 = $con->getUserById($token1->raId1);
+					$this->address = $ra1->email;
+					$this->subject = "Confirmation Notification";
+					$this->content = "Dear " . $ra1->firstName . ",<br><br>";
+					$this->content .= "Please confirm your email by clicking <a href='" . SITE_URL . "token.php?token=" . $token1->token . "'> here</a>.<br><br>";
+					$this->content .= "Thanks,<br>The ProjectSwitch Team";
+					break;
+				case 2:
+					$rd = $con->getUserById($token1->rdId);
+					$ra1 = $con->getUserById($token1->raId1);
+					$this->address = $rd->email;
+					$this->subject = "User Confirmation Notification";
+					$this->content = "Dear " . $rd->firstName . ",<br><br>";
+					$this->content .= "User " . $ra1->firstName . " " . $ra1->lastName . " needs confirmation: <a href='" . SITE_URL . "token.php?token=" . $token1->token . "'>CONFIRM</a>  <a href='" . SITE_URL . "token.php?token=" . $token2->token . ">DENY</a><br><br>";
+					$this->content .= "Thanks,<br>The ProjectSwitch Team";
+					break;
+				case 3:
+					$ra1 = $con->getUserById($token1->raId1);
+					$this->address = $ra1->email;
+					$this->subject = "Confirmation Approved";
+					$this->content = "Dear " . $ra1->firstName . ",<br><br>";
+					$this->content .= "Congratulations, your email has been approved! Please login <a href='" . SITE_URL . "login.php" . "'>here</a>.<br><br>";
+					$this->content .= "Thanks,<br>The ProjectSwitch Team";
+					break;
+				case 4:
+					$ra1 = $con->getUserById($token1->raId1);
+					$ra2 = $con->getUserById($token1->raId2);
+					$this->address = $ra2->email;
+					$this->subject = "Switch Request Notification";
+					$this->content = "Dear " . $ra2->firstName . ",<br><br>";
+					$this->content = $ra1->firstName . " wants to switch a duty day with you. Please <a href='" . SITE_URL . "login.php" . "'>login</a> to respond to this request.<br><br>";
+					$this->content .= "Thanks,<br>The ProjectSwitch Team";
+					break;
+				case 5:
+					$ra1 = $con->getUserById($token1->raId1);
+					$ra2 = $con->getUserById($token1->raId2);
+					$this->address = $ra1->email;
+					$this->subject = "Switch Request Notification";
+					$this->content = "Dear " . $ra1->firstName . ",<br><br>";
+					$this->content = $ra2->firstName . " has declind your requested duty switch. <a href='" . SITE_URL . "login.php" . "'>Login</a> to view any accompanying messages.<br><br>";
+					$this->content .= "Thanks,<br>The ProjectSwitch Team";
+					break;
+				default:
+					// Fatal error.  Shoot yourself in the foot and try again, dumbass.
+			}		
+
+			$con->close();
 		}
 		
 		public function mail() {
