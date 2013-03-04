@@ -258,7 +258,7 @@ class Controller {
 	
 	
 	// =============================================================================================
-	
+	//	Days
 	
 	/**
 	 * Function returns the schedule for the month for all users
@@ -270,6 +270,66 @@ class Controller {
 			return $this->orm($result);
 		else return false;
 	}
+	
+	/**
+	 * Function returns day-person link
+	 */
+	public function getDay($day) {
+	
+	}
+	
+	/**
+	 * Function adds new day-person link
+	 */
+	public function addDay($day) {
+		
+	}
+	
+	/**
+	 * Function removes the day-person link
+	 */
+	public function removeDay($id) {
+	
+	}
+	
+	
+	// =============================================================================================
+	//	Switches
+	
+	
+	
+	
+	// =============================================================================================
+	//	Messages
+	
+	
+	
+	
+	// =============================================================================================
+	// 	Additional Admin Functions
+	 
+	/**
+	 * Function clears the month
+	 */
+	public function clearMonth($month) {
+	
+	}	
+	
+	/**
+	 * Function clears the messages
+	 */
+	public function clearMessages() {
+	
+	}
+	
+	/**
+	 * Function clears switch history for month
+	 */
+	public function clearSwitches($month) {
+	
+	}
+	
+	
 	
 }
 
