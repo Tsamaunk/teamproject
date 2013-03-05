@@ -62,8 +62,8 @@ create table if not exists `setting`(
 `charVal` varchar(255)
 );
 
-INSERT INTO `setting` (`setting`, `intVal`, `charVal`) VALUES ('numberOfRd', 1, ''); # admin settings
-INSERT INTO `setting` (`setting`, `intVal`, `charVal`) VALUES ('rd_1', 1, '');	# very important!
+INSERT INTO `setting` (`setting`, `intVal`, `charVal`) VALUES ('numberOfRd', 1, ''); 	# admin settings
+INSERT INTO `setting` (`setting`, `intVal`, `charVal`) VALUES ('rd_1', 1, '');			# very important!
 
 CREATE TABLE if not exists `log` (
 `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
