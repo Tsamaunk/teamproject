@@ -79,11 +79,21 @@
 			$con->close();
 		}
 		
-		public function mail() {
+		public function mail($test = false) {
 			// create a message
 			// insert private variables
 			// send mail
 			// return error code
+			
+			// for testing purposes - just print the content on the screen
+			if ($test) {
+				echo "<pre>";
+				echo "Address: " . $this->address;
+				echo "From: " . $this->from;
+				echo "Subject: " . $this->subject;
+				echo "Content: " . $this->content;
+				die();
+			}
 			
 		}
 		
