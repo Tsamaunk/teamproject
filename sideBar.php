@@ -1,6 +1,6 @@
 <?php 
 
-	if (!isset($_SESSION['userId'])) {
+	if (!isset($_SESSION['userId']) && !isset($_SESSION['userToken']) && !$hlp->validToken($_SESSION['userId'], $_SESSION['userToken'])) {
 		echo "<div id=\"sideBar\"></div>";
 		return;
 	}
@@ -16,16 +16,7 @@
     <td width="104">Notifications</td>
   </tr>
   <tr>
-    <td>Stuff</td>
-  </tr>
-  <tr>
-    <td>Stuff</td>
-  </tr>
-  <tr>
-    <td>Stuff</td>
-  </tr>
-  <tr>
-    <td>Stuff</td>
+    <td>Calender</td>
   </tr>
 </table>
 

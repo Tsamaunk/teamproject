@@ -2,7 +2,7 @@
 	<span style="float:left;">&nbsp;<a href="index.php">Homepage</a></span>
 
 	<?php 
-	if (!isset($_SESSION['userId'])) {
+	if (!isset($_SESSION['userToken'])) {
 		
 			echo "<span style=\"float:right;\"><a href=\"login.php\">Login</a> &nbsp;";
 			echo " <a href=\"signup.php\">Sign Up?</a>&nbsp; </span>";

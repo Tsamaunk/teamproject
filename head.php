@@ -4,6 +4,10 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Team 6 Project</title>
+<?php 
+include_once 'base.php';	// THIS THE THE BACKEND CONNECTOR
+$hlp = new Helper();		// CREATE THE HELPER
+?>
 </head>
 
 <body>
