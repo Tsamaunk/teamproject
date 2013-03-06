@@ -1,23 +1,14 @@
-
-<?php 
-	include_once 'header.php';
-	include_once 'sidebar.php';
-	
-	include_once 'top-part.php';
-	
+<?php
+	session_start();
+        
+        error_reporting(E_ALL);
 ?>
 
-
-		
-		<div id="content">
-		
-		Content goes here
-		
-		</div>
-		
-		
-<?php 
-	
-	include_once 'footer.php';
-
+<?php
+	include_once 'head.php';
+	include_once 'topBar.php';
+	include_once 'sideBar.php';
 ?>
+<div id="content">
+
+</div>

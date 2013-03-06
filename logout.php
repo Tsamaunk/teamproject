@@ -1,13 +1,6 @@
 <?php
-
-	session_start();
-	
-	unset($_SESSION['userId']);
-	unset($_SESSION['userToken']);
-	
+session_start();
+$_SESSION['userId']="";
 	session_destroy();
-	
-	header("Location: index.php");
-	
-	exit;
-	?>
+	header( 'Location: index.php' ) ;
+?>
