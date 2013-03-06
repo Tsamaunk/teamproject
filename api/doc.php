@@ -45,8 +45,7 @@ RESPONSE:
 			}
 		}); 	
 	}
-&lt;/script&gt;
-</div>
+&lt;/script&gt;</div>
 	
 <a name="signup"></a>
 <span style="background-color:#000;color:#fff;"><b>/api/?signup</b></span>
@@ -69,6 +68,8 @@ POST Parameters:
 RESPONSE:
 	{"success": true / false,
 	"error": error message}
+	
+
 	
 	
 </pre>

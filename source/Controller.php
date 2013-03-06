@@ -197,6 +197,17 @@ class Controller {
 	}
 	
 	/**
+	 * function updates user role
+	 */
+	public function updateUserRole($id, $role = 1) {
+		$sql = "UPDATE `users` SET " .
+				"`role`='" . $role . "' ";
+		$sql .= " WHERE userId = $id;";
+		$this->mod->log(14, 'User role updated', $id);
+		return $this->mod->query($sql);
+	}
+	
+	/**
 	 * function approves user 
 	 */
 	public function approveUser($id, $adminId, $approved = true) {
@@ -256,7 +267,6 @@ class Controller {
 		}
 	}
 	
-	
 	// =============================================================================================
 	//	Days
 	
@@ -269,6 +279,13 @@ class Controller {
 		if ($result)
 			return $this->orm($result);
 		else return false;
+	}
+	
+	/**
+	 * Function returns the schedule for the month for the particular user
+	 */
+	public function getUserSchedule($userId, $month) {
+		
 	}
 	
 	/**
@@ -292,18 +309,95 @@ class Controller {
 	
 	}
 	
+	/**
+	 * function returns the last 500 lines of log
+	 */
+	public function getLog() {
+		
+	}
 	
 	// =============================================================================================
 	//	Switches
 	
+	/**
+	 * Function returns set of switches for user or for all users
+	 */
+	public function getListOfSwitches($userId = null) {
+		
+	}
 	
+	/**
+	 * returns number of new switches 
+	 */
+	public function getNumberOfNewSwitches($userId) {
+		
+	}
 	
+	/**
+	 * function creates the new switch
+	 */
+	public function addSwitch($switch) {
+		
+	}
+	
+	/**
+	 * function returns the particular switch
+	 */
+	public function getSwitch($id) {
+		
+	}
+	
+	/**
+	 * Function confirms/declines/approves/disapproves the switch
+	 */
+	public function confirmSwitch($id, $confirm) {
+		
+	}
 	
 	// =============================================================================================
 	//	Messages
 	
+	/**
+	 * Function returns the list of dialogs for the user
+	 */
+	public function getMyDialogs($userId) {
+		
+	}
 	
+	/**
+	 * Function returns one dialog between two users
+	 */
+	public function getDialog($userId1, $userId2) {
+		
+	}
 	
+	/**
+	 * Function creates the new message
+	 */
+	public function addMessage($message) {
+		
+	}
+	
+	/**
+	 * Function marks deleted all messages between two users
+	 */
+	public function deleteDialog($userId1, $userId2) {
+		
+	}
+	
+	/**
+	 * Function marks read all messages between two users 
+	 */
+	public function markDialogRead($userId1, $userId2) {
+		
+	}
+	
+	/**
+	 * Function returns number of new messages sent TO the user 
+	 */
+	public function getNumNewMessages($userId) {
+		
+	}
 	
 	// =============================================================================================
 	// 	Additional Admin Functions
@@ -328,7 +422,6 @@ class Controller {
 	public function clearSwitches($month) {
 	
 	}
-	
 	
 	
 }

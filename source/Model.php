@@ -84,6 +84,7 @@ class Model {
 	 * 11 - delete user
 	 * 12 - user info update
 	 * 13 - user password updated
+	 * 14 - user role updated
 	 * 20 - approved user
 	 * 
 	 */
