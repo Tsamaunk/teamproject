@@ -1,14 +1,11 @@
-
-		
-		<div class="nofloat"></div>
-	</div> <!-- closing the container -->
-
-	<script type="text/javascript">
-		$(window).load(function (){
-			var h = $(this).height();
-			if (h > $("#sideBar").height()) $("#sideBar").height(h - 1.2*$("#topBar").height());
-			});
-	</script>
+<div id="footer">
+	<address>
 	
-</body>
-</html>
+		<span>University at Albany, State University of New York</span>
+	
+		<span>1400 Washington Avenue, Albany, NY 12222  Phone (518) 442-3300</span>
+	
+	</address>
+	<p>&copy; 2011 University at Albany</p>
+
+</div><!--close div footer-->

@@ -1,3 +1,4 @@
+<html>
 <?php
 include_once 'head.php';
 include_once 'topBar.php';
@@ -6,51 +7,91 @@ include_once 'sideBar.php';
 
 
 <div id="content">
-        <h2 style="text-align: center; margin-top: 100px;">Registration</h2>
+    <center>
+        <h2>REGISTRATION</h2>
 
-        <form id="signup-form" action="" method="post">
-	    <div id="error"></div>
-		<label>First name:</label>
-		<input type="text" name="firstName" id="firstName" /></br />
-		
-        <label>Last Name: </label>
-        <input type="text" name="lastName" id="lastName" /><br />
+        <form id="signup" action="" method="post">
 
-        <label>E-mail: </label>
-		<input type="email" name="email" id="email" /><br />
-
-		<label>Password: </label>
-        <input type="password" name="password" id="password" /><br />
-        
-        <label>Confirm Password: </label>
-        <input type="password" name="cpass" id="cpass" /><br />
-		
-		<label></label><button name="submit" id="submit">Submit</button>
-
-		</form>
+            <table border="0">
+                <tr>
+                    <td width="141">First Name:</td>
+                    <td width="154"><input type="text" name="firstName" id="firstName" /></td>
+                </tr>
+                <tr>
+                    <td>Last Name: </td>
+                    <td><input type="text" name="lastName" id="lastName" /></td>
+                </tr>
+                <tr>
+                    <td>E-mail: </td>
+                    <td><input type="text" name="email" id="email" /></td>
+                </tr>
+                <tr>
+                    <td>Password: </td>
+                    <td><input type="password" name="password" id="password" /></td>
+                </tr>
+                <tr>
+                    <td>Confirm Password: </td>
+                    <td><input type="password" name="cpass" id="cpass" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><input type="button" name="submit" id="submit" value="Submit" /></td>
+                </tr>
+            </table>
+        </form>
+    <div id="result"></div>
+    </center>
 </div>
-
 
 <script>
     $("#submit").click(function() {
-		$(this).attr('disabled','disabled');
+        $("#signup").validate({
+            rules: {
+                password: {
+                    required: true, minlength: 6
+                },
+                cpass: {
+                    required: true, 
+                    equalTo: password, 
+                    minlength: 6
+                },
+                email: {
+                    required: true, 
+                    email: true
+                },
+                firstName: {
+                    required: true
+                },
+                lastName: {
+                    required: true
+                }
+
+            }
+        });
+
         $.post("api/?signup", 
         {'email' : $("#email").val(), 'password' : $("#password").val(), 'firstName' : $("#firstName").val(), 'lastName' : $("#lastName").val()},
         function(data) {
+            
             if(data.success){
-            	$("#error").attr('id', 'success');
-                $("#success").html("You Are succesfully Registered and waiting for approval.");
+                $("#result").html("You Are succesfully Registered and waiting for approval.");
+				document.getElementById('signup').reset();
             }else{
-            	$("#error").html(data.error);
-            	$("#submit").removeAttr('disabled');
+                alert('Error: ' + data.error);                                                        
             }
             
-        },
+        })
+        .done(function() {  })
+        .fail(function() {  })
+        .always(function() {  },
         "json");
 
     });                                              
 </script>
 
-<?php 
-	include_once 'footer.php';
+<?php
+include_once 'footer.php';
 ?>
+</div>
+
+</body>
+</html>
