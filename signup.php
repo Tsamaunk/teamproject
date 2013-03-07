@@ -6,44 +6,28 @@ include_once 'sideBar.php';
 
 
 <div id="content">
-    <center>
-        <br />
-        <br />
+        <h2 style="text-align: center; margin-top: 100px;">REGISTRATION</h2>
 
+        <form id="signup-form" action="" method="post">
+	    <div id="error"></div>
+		<label>First name:</label>
+		<input type="text" name="firstName" id="firstName" /></br />
+		
+        <label>Last Name: </label>
+        <input type="text" name="lastName" id="lastName" /><br />
 
-        <h2>REGISTRATION</h2>
+        <label>E-mail: </label>
+		<input type="email" name="email" id="email" /><br />
 
-        <form id="signup" action="" method="post">
+		<label>Password: </label>
+        <input type="password" name="password" id="password" /><br />
+        
+        <label>Confirm Password: </label>
+        <input type="password" name="cpass" id="cpass" /><br />
+		
+		<label></label><button name="submit" id="submit">Submit</button>
 
-            <table border="0">
-                <tr>
-                    <td width="141">First Name:</td>
-                    <td width="154"><input type="text" name="firstName" id="firstName" /></td>
-                </tr>
-                <tr>
-                    <td>Last Name: </td>
-                    <td><input type="text" name="lastName" id="lastName" /></td>
-                </tr>
-                <tr>
-                    <td>E-mail: </td>
-                    <td><input type="text" name="email" id="email" /></td>
-                </tr>
-                <tr>
-                    <td>Password: </td>
-                    <td><input type="password" name="password" id="password" /></td>
-                </tr>
-                <tr>
-                    <td>Confirm Password: </td>
-                    <td><input type="password" name="cpass" id="cpass" /></td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center"><input type="button" name="submit" id="submit" value="Submit" /></td>
-                </tr>
-            </table>
-        </form>
-    <div id="result"></div>
-    </center>
-</div>
+		</form>
 </div>
 
 
@@ -93,7 +77,6 @@ include_once 'sideBar.php';
     });                                              
 </script>
 
-
-
-</body>
-</html>
+<?php 
+	include_once 'footer.php';
+?>

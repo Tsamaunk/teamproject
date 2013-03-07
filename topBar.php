@@ -1,5 +1,5 @@
 <div id="topBar">
-	<span style="float:left;">&nbsp;<a href="index.php">Homepage</a></span>
+	<a href="index.php">Homepage</a>
 
 	<?php 
 	if (!isset($_SESSION['userToken'])) {
