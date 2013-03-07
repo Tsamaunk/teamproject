@@ -6,7 +6,7 @@ include_once 'sideBar.php';
 
 
 <div id="content">
-        <h2 style="text-align: center; margin-top: 100px;">REGISTRATION</h2>
+        <h2 style="text-align: center; margin-top: 100px;">Registration</h2>
 
         <form id="signup-form" action="" method="post">
 	    <div id="error"></div>
@@ -33,45 +33,19 @@ include_once 'sideBar.php';
 
 <script>
     $("#submit").click(function() {
-        $("#signup").validate({
-            rules: {
-                password: {
-                    required: true, minlength: 6
-                },
-                cpass: {
-                    required: true, 
-                    equalTo: password, 
-                    minlength: 6
-                },
-                email: {
-                    required: true, 
-                    email: true
-                },
-                firstName: {
-                    required: true
-                },
-                lastName: {
-                    required: true
-                }
-
-            }
-        });
-
+		$(this).attr('disabled','disabled');
         $.post("api/?signup", 
         {'email' : $("#email").val(), 'password' : $("#password").val(), 'firstName' : $("#firstName").val(), 'lastName' : $("#lastName").val()},
         function(data) {
-            
             if(data.success){
-                $("#result").html("You Are succesfully Registered and waiting for approval.");
-				document.getElementById('signup').reset();
+            	$("#error").attr('id', 'success');
+                $("#success").html("You Are succesfully Registered and waiting for approval.");
             }else{
-                alert('Error: ' + data.error);                                                        
+            	$("#error").html(data.error);
+            	$("#submit").removeAttr('disabled');
             }
             
-        })
-        .done(function() {  })
-        .fail(function() {  })
-        .always(function() {  },
+        },
         "json");
 
     });                                              

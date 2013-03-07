@@ -24,14 +24,15 @@
 
 <script>
     $("#submit").click(function() {
-
+    	$(this).attr('disabled','disabled');
         $.post("api/?login", 
         {'email' : $("#email").val(), 'password' : $("#password").val()},
         function(data) {
             if(data.success){
                 window.location.replace("index.php");
             } else {
-                $("#error").html(data.error);                                                        
+                $("#error").html(data.error);
+                $("#submit").removeAttr('disabled');
             }
         },
         "json");

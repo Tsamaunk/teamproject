@@ -18,14 +18,14 @@ body {
 #topBar {
     padding: 10px;
     height: 40px;
-    background-color:#FFD700;
+    background-color:#d5b711;
 }
 #sideBar {
-    padding: 0px;
+    padding: 20px 0px;
     height: 900px;
 	float: left;
 	width: 200px;
-    background-color:#800080;
+    background-color:#4b204a;
 	color:#FFFFFF;
 	height: 90%;
 }
@@ -77,4 +77,35 @@ button {
 	font-size: .8em;
 	font-weight: bold;
 	padding: 10px 0px;
+}
+
+#success {
+	color:#080;
+	font-size: .8em;
+	font-weight: bold;
+	padding: 10px 0px;
+}
+
+#sideBar a {
+	text-transform: uppercase;
+	text-decoration: none;
+	font-weight: bold;
+	margin:10px;
+	padding:5px;
+	display:block;
+	color:#fff;
+}
+#sideBar a:hover,
+#topBar a:hover {
+	background-color: #fff;
+	color:#4b204a;
+}
+
+#topBar a {
+	text-transform: uppercase;
+	text-decoration: none;
+	font-weight: bold;
+	padding:5px;
+	display:inline-block;
+	color:#fff;
 }

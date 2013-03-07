@@ -36,7 +36,8 @@
 		}
 		
 		// correct user, set up the session
-		$_SESSION['userId'] = $user->id;
+		$_SESSION['userId'] = $user->userId;
+		$_SESSION['userRole'] = $user->role;
 		$_SESSION['userToken'] = $hlp->createUserToken($_SESSION['userId']);
 		
 		echo json_encode(array('success' => true, 'error' => null));
@@ -48,6 +49,7 @@
 	if (isset($_GET['logout'])) {
 		unset($_SESSION['userId']);
 		unset($_SESSION['userToken']);
+		unset($_SESSION['userRole']);
 		echo json_encode(array('success' => true, 'error' => null));
 		exit;
 	}
