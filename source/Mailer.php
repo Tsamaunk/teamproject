@@ -1,5 +1,7 @@
 <?php 
 
+// include swiftmail bullshit
+
 	class Mailer {
 		
 		private $subject;
@@ -57,7 +59,7 @@
 					$this->address = $ra2->email;
 					$this->subject = "Switch Request Notification";
 					$this->content = "Dear " . $ra2->firstName . ",<br><br>";
-					$this->content .= $ra1->firstName . " wants to switch a duty day with you: <a href='" . SITE_URL . "token.php?token=" . $token1->token . "'>ACCEPT</a>  <a href='" . SITE_URL . "token.php?token=" . $token2->token . ">DECLINE</a><br><br>"
+					$this->content .= $ra1->firstName . " wants to switch a duty day with you: <a href='" . SITE_URL . "token.php?token=" . $token1->token . "'>ACCEPT</a>  <a href='" . SITE_URL . "token.php?token=" . $token2->token . ">DECLINE</a><br><br>";
 					$thic->content .= "<a href='" . SITE_URL . "login.php" . "'>Login</a> to view specifics.<br><br>";
 					break;
 				case 5:
@@ -98,13 +100,13 @@
 					$ra1 = $con->getUserById($token->raId1);
 					$this->address = $ra1->email;
 					$this->subject = "Project Switch Password Recovery";
-					$this->content = "Dear " . $ra1->firstName . ",<br><br>"
+					$this->content = "Dear " . $ra1->firstName . ",<br><br>";
 					$this->content .= "A password recovery request has been intitiated for you.  Please click <a href='" . SITE_URL . "toekn.php?token=" . $ra1->token1 . "'>here</a> to complete the recovery process.<br><br>";
 					break;
 				default:
-					$this->address = "mgrunert0322@gmail.com"
-					$this->subject = "SOMETHING'S WRONG IN THE MAILER"
-					$this->content = "You fucked up somewhere.  Go find it, dumbass.<br><br>"
+					$this->address = "mgrunert0322@gmail.com";
+					$this->subject = "SOMETHING'S WRONG IN THE MAILER";
+					$this->content = "You fucked up somewhere.  Go find it, dumbass.<br><br>";
 			}		
 
 			$this->content .= "Thanks,<br>The Project Switch Team";
@@ -116,7 +118,17 @@
 			// insert private variables
 			// send mail
 			// return error code
-			
+
+//			$mailer = new Mailer();			
+//			$this->email = $token->email;
+//			$this->content = token->content;
+//			send $mailer
+//			return $error
+
+
+
+
+
 			// for testing purposes - just print the content on the screen
 			if ($test) {
 				echo "<pre>";
