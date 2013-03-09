@@ -6,7 +6,8 @@
 	if(session_id() == '') {
 		session_start();
 	}
-	
+	error_reporting(0);
+
 	include_once 'source/Model.php';
 	include_once 'source/Controller.php';
 	include_once 'source/Helper.php';
