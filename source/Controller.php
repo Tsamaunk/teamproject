@@ -5,7 +5,7 @@ include_once 'Model.php';
 class Controller {
 
 	private $mod;
-	
+
 	/**
 	 * This constructor created an instance of Model
 	 * We can use this instance only inside this controller 
@@ -13,32 +13,32 @@ class Controller {
 	function __construct() {
 		$this->mod = new Model();
 	}
-	
+
 	/**
 	 * Function opens database connection
 	 */
 	public function connect() {
 		return $this->mod->connect();
 	}
-	
+
 	/**
 	 * Function closes the database connection
 	 */
 	public function close() {
 		$this->mod->close();
 	}
-	
+
 	/**
 	 * Convert Array to Object
 	 */
 	private function atoo($array) {
 		$obj = new stdClass();
 		foreach ($array as $key => $value)
-			if (!is_numeric($key))		
+			if (!is_numeric($key))
 				$obj->$key = $value;
 		return $obj;
 	}
-	
+
 	/**
 	 * Function converts MYSQL resource into array of comments
 	 */
@@ -49,13 +49,13 @@ class Controller {
 		}
 		return $array;
 	}
-	
+
 	/**
 	 * ORM 
 	 */
-	public function orm($resource) {
+	public function orm($resource, $forceMulti = false) {
 		$array = $this->convert($resource);
-		if (count($array) == 1) {
+		if (count($array) == 1 && !$forceMulti) {
 			return $this->atoo($array[0]);
 		} else {
 			$obj = array();
@@ -63,19 +63,19 @@ class Controller {
 				$obj[] = $this->atoo($a);
 			return $obj;
 		}
-	}	
-	
+	}
+
 	/**
 	 *  Handy function to validate email
 	 */
 	public function validate($email) {
 	  $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-	  if(filter_var($email, FILTER_VALIDATE_EMAIL))
-	    return TRUE;
+	  if (filter_var($email, FILTER_VALIDATE_EMAIL))
+		return TRUE;
 	  else
 	  	return FALSE;
 	}
-	
+
 	/**
 	 * generate random string
 	 */
@@ -86,7 +86,7 @@ class Controller {
 			$str .= $chars[ rand( 0, $size - 1 ) ];
 		return $str;
 	}
-	
+
 	/**
 	 * function returns user Object by email, or FALSE if does not exists
 	 */
@@ -98,7 +98,7 @@ class Controller {
 			return $this->orm($result);
         else return false;
 	}
-	
+
 	/**
 	 * function deletes user by id
 	 */
@@ -107,7 +107,7 @@ class Controller {
 		$sql = "UPDATE `users` SET `isDeleted` = TRUE WHERE `userId` = '$userId' ;";
 		return $this->mod->query($sql);
 	}
-	
+
 	/**
 	 * Create a new user
 	 */
@@ -117,7 +117,7 @@ class Controller {
 		$user->firstName = $this->mod->clear($user->firstName);
 		$user->lastName = $this->mod->clear($user->lastName);
 		$user->email = $this->mod->clear($user->email);
-		$user->password = $this->mod->clear($user->password);		
+		$user->password = $this->mod->clear($user->password);
 		$user->created = time();
 		$user->password = md5($user->password);
 		$sql = "INSERT INTO `users` (`firstName`, `lastName`, `password`, `email`, `role`, `created`, `approvedBy`) VALUES (
@@ -131,8 +131,8 @@ class Controller {
 		$result = mysql_fetch_row($result);
 		$this->mod->log(10, 'User created', $result[0]);
 		return $result[0];
-	}		
-	
+	}
+
 	/**
 	 * Function checks if user with this email is already registered
 	 */
@@ -144,7 +144,7 @@ class Controller {
 		$result = $result[0] > 0;
 		return $result;
 	}
-	
+
 	/**
 	 * Function checks if user with this id is registered
 	 */
@@ -167,7 +167,7 @@ class Controller {
 			return $this->orm($result);
         else return false;
 	}
-		
+
 	/**
 	 * function updates the user object by ID
 	 */
@@ -195,7 +195,7 @@ class Controller {
 		$this->mod->log(13, 'User password updated', $id);
 		return $this->mod->query($sql);
 	}
-	
+
 	/**
 	 * function updates user role
 	 */
@@ -206,7 +206,7 @@ class Controller {
 		$this->mod->log(14, 'User role updated', $id);
 		return $this->mod->query($sql);
 	}
-	
+
 	/**
 	 * function approves user 
 	 */
@@ -220,9 +220,9 @@ class Controller {
 					"`approvedBy`='" . $adminId . "' ";
 			$sql .= " WHERE userId = $id;";
 			return $this->mod->query($sql);
-		}		
+		}
 	}
-	
+
 	/**
 	 * function checks if email + password are correct and return the User Object or FALSE
 	 */
@@ -233,9 +233,9 @@ class Controller {
 		$result = $this->mod->query($sql);
 		if ($result)
 			return $this->orm($result);
-        else return false;
+		else return false;
 	}
-	
+
 	/**
 	 * Function returns setting object by name
 	 */
@@ -246,7 +246,7 @@ class Controller {
 			return $this->orm($result);
         else return false;
 	}
-	
+
 	/**
 	 * Function creates OR updates the setting
 	 * type = 1 - INTEGER, 2 - STRING
@@ -259,17 +259,17 @@ class Controller {
 		if ($exists) {
 			$sql = "UPDATE `setting` SET `setting` = '$name', `".($type == 1 ? 'intVal' : 'charVal')."` = '$value'
 				WHERE id = ".$result[0].";";
-			return $this->mod->query($sql);			 
+			return $this->mod->query($sql);
 		} else {
 			$sql = "INSERT INTO `setting` (`setting`, `".($type == 1 ? 'intVal' : 'charVal')."`) VALUES
 					('$name', '$value');";
 			return $this->mod->query($sql);
 		}
 	}
-	
+
 	// =============================================================================================
 	//	Days
-	
+
 	/**
 	 * Function returns the schedule for the month for all users
 	 */
@@ -277,153 +277,161 @@ class Controller {
 		$sql = "SELECT * FROM `days` WHERE `month` = '$month';";
 		$result = $this->mod->query($sql);
 		if ($result)
-			return $this->orm($result);
+			return $this->orm($result, true);
 		else return false;
 	}
-	
+
 	/**
 	 * Function returns the schedule for the month for the particular user
 	 */
 	public function getUserSchedule($userId, $month) {
-		
+		$sql = "SELECT * FROM `days` WHERE `month` = '$month' AND `userId` = '$userId';";
+		$result = $this->mod->query($sql);
+		if ($result)
+			return $this->orm($result, true);
+		else return false;
 	}
-	
+
 	/**
 	 * Function returns day-person link
 	 */
-	public function getDay($day) {
-	
+	public function getDay($id) {
+		$sql = "SELECT * FROM `days` WHERE `id` = '$id';";
+		$result = $this->mod->query($sql);
+		if ($result)
+			return $this->orm($result);
+		else return false;
 	}
-	
+
 	/**
 	 * Function adds new day-person link
 	 */
 	public function addDay($day) {
-		
+
 	}
-	
+
 	/**
 	 * Function removes the day-person link
 	 */
 	public function removeDay($id) {
-	
+
 	}
-	
+
 	/**
 	 * function returns the last 500 lines of log
 	 */
 	public function getLog() {
-		
+
 	}
-	
+
 	// =============================================================================================
 	//	Switches
-	
+
 	/**
 	 * Function returns set of switches for user or for all users
 	 */
 	public function getListOfSwitches($userId = null) {
-		
+
 	}
-	
+
 	/**
 	 * returns number of new switches 
 	 */
 	public function getNumberOfNewSwitches($userId) {
-		
+
 	}
-	
+
 	/**
 	 * function creates the new switch
 	 */
 	public function addSwitch($switch) {
-		
+
 	}
-	
+
 	/**
 	 * function returns the particular switch
 	 */
 	public function getSwitch($id) {
-		
+
 	}
-	
+
 	/**
 	 * Function confirms/declines/approves/disapproves the switch
 	 */
 	public function confirmSwitch($id, $confirm) {
-		
+
 	}
-	
+
 	// =============================================================================================
 	//	Messages
-	
+
 	/**
 	 * Function returns the list of dialogs for the user
 	 */
 	public function getMyDialogs($userId) {
-		
+
 	}
-	
+
 	/**
 	 * Function returns one dialog between two users
 	 */
 	public function getDialog($userId1, $userId2) {
-		
+
 	}
-	
+
 	/**
 	 * Function creates the new message
 	 */
 	public function addMessage($message) {
-		
+
 	}
-	
+
 	/**
 	 * Function marks deleted all messages between two users
 	 */
 	public function deleteDialog($userId1, $userId2) {
-		
+
 	}
-	
+
 	/**
 	 * Function marks read all messages between two users 
 	 */
 	public function markDialogRead($userId1, $userId2) {
-		
+
 	}
-	
+
 	/**
 	 * Function returns number of new messages sent TO the user 
 	 */
 	public function getNumNewMessages($userId) {
-		
+
 	}
-	
+
 	// =============================================================================================
 	// 	Additional Admin Functions
-	 
+
 	/**
 	 * Function clears the month
 	 */
 	public function clearMonth($month) {
-	
-	}	
-	
+
+	}
+
 	/**
 	 * Function clears the messages
 	 */
 	public function clearMessages() {
-	
+
 	}
-	
+
 	/**
 	 * Function clears switch history for month
 	 */
 	public function clearSwitches($month) {
-	
+
 	}
-	
-	
+
+
 }
 
 ?>
