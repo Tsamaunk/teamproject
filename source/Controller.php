@@ -314,14 +314,18 @@ class Controller {
 	 * Function removes the day-person link
 	 */
 	public function removeDay($id) {
-
+		$sql = "DELETE FROM `days` WHERE `id` = '$id';";
+		$result = $this->mod->query($sql);
+		return $result;	
 	}
 
 	/**
-	 * function returns the last 500 lines of log
+	 * function returns the last 500 lines of log as an ARRAY
 	 */
-	public function getLog() {
-
+	public function getLog($limit = 500) {
+		$sql = "SELECT * FROM `log` ORDER BY `created` DESC LIMIT $limit;";
+		$result = $this->mod->query($sql);
+		return $this->convert($result);
 	}
 
 	// =============================================================================================
@@ -369,14 +373,24 @@ class Controller {
 	 * Function returns the list of dialogs for the user
 	 */
 	public function getMyDialogs($userId) {
-
+		$sql = "SELECT * FROM `message` WHERE `fromId` = '$userId' OR `toId` = '$userId' ORDER BY `created` DESC;";
+		$result = $this->mod->query($sql);
+		if ($result)
+			return $this->orm($result, true);
+		else return false;
 	}
 
 	/**
 	 * Function returns one dialog between two users
 	 */
 	public function getDialog($userId1, $userId2) {
-
+		$sql = "SELECT * FROM `message` WHERE 
+			(`fromId` = '$userId1' AND `toId` = '$userId2') OR
+			(`fromId` = '$userId2' AND `toId` = '$userId1') ORDER BY `created` DESC;";
+		$result = $this->mod->query($sql);
+		if ($result)
+			return $this->orm($result, true);
+		else return false;
 	}
 
 	/**
@@ -390,21 +404,33 @@ class Controller {
 	 * Function marks deleted all messages between two users
 	 */
 	public function deleteDialog($userId1, $userId2) {
-
+		$sql = "UPDATE `message` SET `isDeleted` = TRUE WHERE 
+			(`fromId` = '$userId1' AND `toId` = '$userId2') OR
+			(`fromId` = '$userId2' AND `toId` = '$userId1');";
+		$result = $this->mod->query($sql);
+		return $result;
 	}
 
 	/**
-	 * Function marks read all messages between two users 
+	 * Function marks read all messages between two users
+	 * I AM - userId2!!!
+	 * So messages sent TO ME must be read
 	 */
 	public function markDialogRead($userId1, $userId2) {
-
+		$sql = "UPDATE `message` SET `read` = TRUE WHERE 
+			`fromId` = '$userId1' AND `toId` = '$userId2';";
+		$result = $this->mod->query($sql);
+		return $result;
 	}
 
 	/**
 	 * Function returns number of new messages sent TO the user 
 	 */
 	public function getNumNewMessages($userId) {
-
+		$sql = "SELECT COUNT(*) as c FROM `message` WHERE `toId` = '$userId' AND `isDeleted` = FALSE;";
+		$result = $this->mod->query($sql);
+		$result = mysql_fetch_row($result);
+		return $result[0];
 	}
 
 	// =============================================================================================
