@@ -306,8 +306,16 @@ class Controller {
 	/**
 	 * Function adds new day-person link
 	 */
-	public function addDay($day) {
-
+	public function addDay($day) { // TODO NOT TESTED
+		if (!isset($day->fromTime)) $day->fromTime = 0;
+		if (!isset($day->toTime)) $day->toTime = 0;
+		if (!isset($day->month)) $day->month = $day->assignedDate->format('M');
+		$day->created = time();		
+		$sql = "INSERT INTO `days` (`userId`, `assignedDate`, `month`, `fromTime`, `toTime`, `created`) VALUES (
+			'".$day->userId."','".$day->assignedDate->format("Y-M-D")."','".$day->month."','".$day->fromTime."','".$day->toTime."',
+			'".$day->created."');";
+		$result = $this->mod->query($sql);
+		return $result;
 	}
 
 	/**
@@ -335,35 +343,68 @@ class Controller {
 	 * Function returns set of switches for user or for all users
 	 */
 	public function getListOfSwitches($userId = null) {
-
+		if ($userId == null)
+			$sql = "SELECT * FROM `switch` ORDER BY `date1` DESC;";
+		else
+			$sql = "SELECT * FROM `switch` WHERE `userId1` = '$userId' OR `userId2` = '$userId' ORDER BY `date1` DESC;";
+		$result = $this->mod->query($sql);
+		if ($result)
+			return $this->orm($result);
+		else return false;
 	}
 
 	/**
 	 * returns number of new switches 
+	 * $userId can be a user ID or NULL - returns all new switches
 	 */
-	public function getNumberOfNewSwitches($userId) {
-
+	public function getNumberOfNewSwitches($userId = null) {
+		if ($userId == null)
+			$sql = "SELECT COUNT(*) as c FROM `switch` WHERE `status` = 0;";
+		else
+			$sql = "SELECT COUNT(*) as c FROM `switch` WHERE `userId1` = '$userId' OR `userId2` = '$userId' AND `status` = 0;";
+		$result = $this->mod->query($sql);
+		$result = mysql_fetch_row($result);
+		return $result[0];
 	}
 
 	/**
 	 * function creates the new switch
 	 */
 	public function addSwitch($switch) {
-
+		if (!isset($switch->fromTime1)) $day->fromTime1 = 0;
+		if (!isset($switch->toTime1)) $day->toTime1 = 0;
+		if (!isset($switch->fromTime2)) $day->fromTime2 = 0;
+		if (!isset($switch->toTime2)) $day->toTime2 = 0;
+		if (!isset($switch->status)) $day->status = 0;
+		$switch->reason = $this->mod->clear($switch->reason);
+		$switch->created = time();
+		$sql = "INSERT INTO `switch` (`userId1`, `userId2`, `date1`, `date2`, `fromTime1`, `fromTime2`, `created`,
+			`toTime1`,`toTime2`,`status`,`reason` ) VALUES (
+			'".$switch->userId1."','".$switch->userId2."','".$switch->date1->format("Y-M-D")."','".$switch->date2->format("Y-M-D")."','".$switch->fromTime1."',
+			'".$switch->fromTime2."','".$switch->created."','".$switch->toTime1."','".$switch->toTime2."','".$switch->status."','".$switch->reason."');";
+		$result = $this->mod->query($sql);
+		return $result;
 	}
 
 	/**
 	 * function returns the particular switch
 	 */
 	public function getSwitch($id) {
-
+		$sql = "SELECT * FROM `switch` WHERE `id` = '$id';";
+		$result = $this->mod->query($sql);
+		if ($result)
+			return $this->orm($result);
+		else return false;
 	}
 
 	/**
 	 * Function confirms/declines/approves/disapproves the switch
 	 */
-	public function confirmSwitch($id, $confirm) {
-
+	public function confirmSwitch($id, $confirm, $reason = '') {
+		$sql = "UPDATE `switch` SET `status` = '$confirm' ".($reason==''?'':" `reason` = '".$reason."' ")." 
+		WHERE `id` = '$id';";
+		$result = $this->mod->query($sql);
+		return $result;
 	}
 
 	// =============================================================================================
@@ -396,8 +437,14 @@ class Controller {
 	/**
 	 * Function creates the new message
 	 */
-	public function addMessage($message) {
-
+	public function addMessage($message) { // TODO NOT TESTED
+		$message->subject = $this->mod->clear($message->subject);
+		$message->text = $this->mod->clear($message->text);
+		$message->created = time();
+		$sql = "INSERT INTO `message` (`fromId`, `toId`, `subject`, `text`, `created`) VALUES (
+			'".$message->fromId."','".$message->toId."','".$message->subject."','".$message->text."','".$message->created."');";
+		$result = $this->mod->query($sql);
+		return $result;
 	}
 
 	/**
