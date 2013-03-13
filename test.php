@@ -22,7 +22,7 @@
 	?>
 	
 	<script>
-		$(document).ready(function(){
+		$(documentdd).ready(function(){
 	        $.post("api/?lost_password", {'email' : 'himor.cre@gmail.com'},
 	                function(data){
 	                        if(!data.success){
