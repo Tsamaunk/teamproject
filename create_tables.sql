@@ -85,6 +85,3 @@ raId2 BIGINT,
 rdId BIGINT,
 switchId BIGINT
 );
-
-
-
