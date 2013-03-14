@@ -8,15 +8,38 @@
 	</head>
 	
 	<body>
-	
+	<pre>
 	<?php
-		include 'base.php'; 
-		$cnt = new Controller();
-		$cnt->connect();
-		$res = $cnt->getMyDialogs(1);
-		$cnt->close();
+	include 'base.php';
+	
+	
+	$message = new stdClass();
+	/*$message -> fromId = 3;
+	$message -> toId = 1;
+	$message -> subject = "Hey";
+	$message -> text = "Great, how's yours???";
+	*/
+	$cnt = new Controller();
+	$cnt->connect();
+	$res = $cnt->getMyDialogs(1);
+	//$cnt->addMessage($message);
+	$cnt->close();
+
+	$myId = 1;
+	$ids = array();
+	$dialogs = array();
+	foreach ($res as $r) {
+		if($r->fromId == $myId && !in_array($r->toId, $ids)) {
+			$dialogs[] = $r;
+			$ids[] = $r->toId;
+		}
+		if($r->toId == $myId && !in_array($r->fromId, $ids)) {
+			$dialogs[] = $r;
+			$ids[] = $r->fromId;
+		}
+	}
 		
-		var_dump($res);
+	var_dump($dialogs);
 	 	
 		
 	?>

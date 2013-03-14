@@ -416,7 +416,7 @@ class Controller {
 	public function getMyDialogs($userId) {
 		$sql = "SELECT * FROM `message` WHERE `fromId` = '$userId' OR `toId` = '$userId' ORDER BY `created` DESC;";
 		$result = $this->mod->query($sql);
-		if ($result)
+		if ($result) 
 			return $this->orm($result, true);
 		else return false;
 	}
@@ -437,7 +437,7 @@ class Controller {
 	/**
 	 * Function creates the new message
 	 */
-	public function addMessage($message) { // TODO NOT TESTED
+	public function addMessage($message) {
 		$message->subject = $this->mod->clear($message->subject);
 		$message->text = $this->mod->clear($message->text);
 		$message->created = time();
