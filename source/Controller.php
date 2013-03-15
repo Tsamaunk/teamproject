@@ -414,7 +414,7 @@ class Controller {
 	 * Function returns the list of dialogs for the user
 	 */
 	public function getMyDialogs($userId) {
-		$sql = "SELECT * FROM `message` WHERE `fromId` = '$userId' OR `toId` = '$userId' ORDER BY `created` DESC;";
+		$sql = "SELECT * FROM `message` WHERE isDeleted = FALSE AND `fromId` = '$userId' OR `toId` = '$userId' ORDER BY `created` DESC;";
 		$result = $this->mod->query($sql);
 		if ($result) 
 			return $this->orm($result, true);
@@ -424,10 +424,10 @@ class Controller {
 	/**
 	 * Function returns one dialog between two users
 	 */
-	public function getDialog($userId1, $userId2) {
-		$sql = "SELECT * FROM `message` WHERE 
+	public function getDialog($userId1, $userId2, $limit = null) {
+		$sql = "SELECT * FROM `message` WHERE isDeleted = FALSE AND (
 			(`fromId` = '$userId1' AND `toId` = '$userId2') OR
-			(`fromId` = '$userId2' AND `toId` = '$userId1') ORDER BY `created` DESC;";
+			(`fromId` = '$userId2' AND `toId` = '$userId1')) ORDER BY `created` DESC ".($limit ? "LIMIT $limit" : "");
 		$result = $this->mod->query($sql);
 		if ($result)
 			return $this->orm($result, true);

@@ -46,12 +46,12 @@
 	
 	<script>
 		$(documentdd).ready(function(){
-	        $.post("api/?lost_password", {'email' : 'himor.cre@gmail.com'},
+	        $.post("api/?getDialogById", {'userId':'2'},
 	                function(data){
 	                        if(!data.success){
 	                                alert('error: ' + data.error);                                                        
 	                                }else{
-	                                        alert('success');
+	                                        alert(data.dialog[0].created);
 	                                        }    
 	        });                                                                    
 	                        

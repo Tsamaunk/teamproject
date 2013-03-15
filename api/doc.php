@@ -9,7 +9,12 @@
 <h3 style="margin:0px;">Content</h3>
 <a href="#login">login</a>
 <a href="#signup">signup</a>
-<a href="#lost_password">lost_password</a></div>
+<a href="#lost_password">lost_password</a>
+<a href="#getUser">getUser</a>
+<a href="#sendMail">sendMail</a>
+<a href="#getDialogs">getDialogs</a>
+<a href="#getDialogById">getDialogById</a>
+<a href="#deleteDialog">deleteDialog</a></div>
 <div style="background-color:#fd7;padding:10px;"><h3>How do we check the session? (PHP CODE)</h3>Have this code in the beggining of your file: 
 &lt;?php 
 include_once 'base.php';	// THIS THE THE BACKEND CONNECTOR
@@ -68,9 +73,69 @@ POST Parameters:
 RESPONSE:
 	{"success": true / false,
 	"error": error message}
+<h3>The following functions will work only for logged users</h3>
+<a name="getUser"></a>	
+<span style="background-color:#000;color:#fff;"><b>/api/?getUser</b></span>
+function returns the information about user
+POST Parameters:
+	none
+RESPONSE:
+	{"success": true / false,
+	"error": error message,
+	"user": user object}
+NOTE: user has:
+	firstName, lastName, email, role, approvedBy
 	
-
+<a name="sendMail"></a>	
+<span style="background-color:#000;color:#fff;"><b>/api/?sendMail</b></span>
+this function creates the new message
+POST Parameters:
+	to - integer - the id of the recepient
+	text - string - the content of the message
+	subject - string [optional] - subject of the message
+RESPONSE:
+	{"success": true / false,
+	"error": error message}
 	
+<a name="getDialogs"></a>	
+<span style="background-color:#000;color:#fff;"><b>/api/?getDialogs</b></span>
+this function returns list of all the existing dialogs (similar to left column of the facebook messenger)
+POST Parameters:
+	none
+RESPONSE:
+	{"success": true / false,
+	"error": error message,
+	"dialogs": array of dialogs (one *last* message in each)}
+Note: Each dialog is and array of parameters:
+	fromId - int - id of user
+	toId - int - id of user
+	subject - string
+	text - string
+	read - boolean - have user read this message yet?
+	created - string in format HH:MM M/D/Y
+	additional parameter: "name" - name of the user (not me, the other user)
+	
+<a name="getDialogById"></a>	
+<span style="background-color:#000;color:#fff;"><b>/api/?getDialogById</b></span>
+returns the array of messages between two people
+WARNING! this function marks messages as 'read' automatically
+POST Parameters:
+	userId - id of the user (who am I talking to)
+	limit - int [optional] if not specified - returns all messages in the dialog!
+RESPONSE:
+	{"success": true / false,
+	"error": error message,
+	"dialog": array of messages (see previous example),
+	"name": the name of the user}
+	
+<a name="deleteDialog"></a>	
+<span style="background-color:#000;color:#fff;"><b>/api/?deleteDialog</b></span>
+function kills the dialog between two people
+POST Parameters:
+	userId - id of the user (who am I talking to)
+RESPONSE:
+	{"success": true / false,
+	"error": error message}	
 	
 </pre>
 </body>
