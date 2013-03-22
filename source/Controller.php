@@ -6,31 +6,15 @@ class Controller {
 
 	private $mod;
 
-	/**
-	 * This constructor created an instance of Model
-	 * We can use this instance only inside this controller 
-	 */
 	function __construct() {
 		$this->mod = new Model();
 	}
-
-	/**
-	 * Function opens database connection
-	 */
 	public function connect() {
 		return $this->mod->connect();
 	}
-
-	/**
-	 * Function closes the database connection
-	 */
 	public function close() {
 		$this->mod->close();
 	}
-
-	/**
-	 * Convert Array to Object
-	 */
 	private function atoo($array) {
 		$obj = new stdClass();
 		foreach ($array as $key => $value)
@@ -38,10 +22,6 @@ class Controller {
 				$obj->$key = $value;
 		return $obj;
 	}
-
-	/**
-	 * Function converts MYSQL resource into array of comments
-	 */
 	private function convert($resource) {
 		$array = array();
 		while ($r = mysql_fetch_array($resource)) {
@@ -49,10 +29,6 @@ class Controller {
 		}
 		return $array;
 	}
-
-	/**
-	 * ORM 
-	 */
 	public function orm($resource, $forceMulti = false) {
 		$array = $this->convert($resource);
 		if (count($array) == 1 && !$forceMulti) {

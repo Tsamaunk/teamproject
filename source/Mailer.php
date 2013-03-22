@@ -33,7 +33,7 @@
 			switch ($type) {
 				case 1:
 					$ra1 = $con->getUserById($token1->raId1);
-					$this->address = $ra1->email;
+					$this->address = $ra1->firstName . ' ' . $ra1->lastName . ' <' . $ra1->email . '>'; // FIRST LAST <EMAIL@DOMAIN>
 					$this->subject = "Confirmation Notification";
 					$this->content = "Dear " . $ra1->firstName . ",<br><br>";
 					$this->content .= "Please confirm your email by clicking <a href='" . SITE_URL . "token.php?token=" . $token1->token . "'> here</a>.<br><br>";
@@ -41,14 +41,14 @@
 				case 2:
 					$rd = $con->getUserById($token1->rdId);
 					$ra1 = $con->getUserById($token1->raId1);
-					$this->address = $rd->email;
+					$this->address = $rd->firstName . ' ' . $rd->lastName . ' <' . $rd->email . '>'; // FIRST LAST <EMAIL@DOMAIN>
 					$this->subject = "User Confirmation Notification";
 					$this->content = "Dear " . $rd->firstName . ",<br><br>";
 					$this->content .= "User " . $ra1->firstName . " " . $ra1->lastName . " needs confirmation: <a href='" . SITE_URL . "token.php?token=" . $token1->token . "'>CONFIRM</a>  <a href='" . SITE_URL . "token.php?token=" . $token2->token . ">DENY</a><br><br>";
 					break;
 				case 3:
 					$ra1 = $con->getUserById($token1->raId1);
-					$this->address = $ra1->email;
+					$this->address = $ra1->firstName . ' ' . $ra1->lastName . ' <' . $ra1->email . '>';
 					$this->subject = "Confirmation Approved";
 					$this->content = "Dear " . $ra1->firstName . ",<br><br>";
 					$this->content .= "Congratulations, your email has been approved! Please login <a href='" . SITE_URL . "login.php" . "'>here</a>.<br><br>";
@@ -56,7 +56,7 @@
 				case 4:
 					$ra1 = $con->getUserById($token1->raId1);
 					$ra2 = $con->getUserById($token1->raId2);
-					$this->address = $ra2->email;
+					$this->address = $ra2->firstName . ' ' . $ra2->lastName . ' <' . $ra2->email . '>';
 					$this->subject = "Switch Request Notification";
 					$this->content = "Dear " . $ra2->firstName . ",<br><br>";
 					$this->content .= $ra1->firstName . " wants to switch a duty day with you: <a href='" . SITE_URL . "token.php?token=" . $token1->token . "'>ACCEPT</a>  <a href='" . SITE_URL . "token.php?token=" . $token2->token . ">DECLINE</a><br><br>";
@@ -65,7 +65,7 @@
 				case 5:
 					$ra1 = $con->getUserById($token1->raId1);
 					$ra2 = $con->getUserById($token1->raId2);
-					$this->address = $ra1->email;
+					$this->address = $ra1->firstName . ' ' . $ra1->lastName . ' <' . $ra1->email . '>';
 					$this->subject = "Switch Request Declined";
 					$this->content = "Dear " . $ra1->firstName . ",<br><br>";
 					$this->content .= $ra2->firstName . " has declined your requested duty switch. <a href='" . SITE_URL . "login.php" . "'>Login</a> to view any accompanying messages.<br><br>";
@@ -74,7 +74,7 @@
 					$rd = $con->getUserById($token->rdId);
 					$ra1 = $con->getUserById($token1->raId1);
 					$ra2 = $con->getUserById($token1->raId2);
-					$this->address = $rdId->email;
+					$this->address = $rd->firstName . ' ' . $rd->lastName . ' <' . $rd->email . '>';
 					$this->subject = "Switch Request Notification";
 					$this->content = "Dear " . $rd->firstName . ",<br><br>";
 					$this->content .= $ra1->firstName . " and " . $ra2->firstName . " have confirmed a duty switch request: <a href='" . SITE_URL . "token.php?token=" . $token1->token . "'>APPROVE</a>  <a href='" . SITE_URL . "token.php?token=" . $token2->token . ">DENY</a><br><br>";
@@ -83,7 +83,7 @@
 				case 7:
 					$rd = $con->getUserById($token->rdId);
 					$ra1 = $con->getUserById($token->raId1);
-					$this->address = $raId1->email;
+					$this->address = $ra1->firstName . ' ' . $ra1->lastName . ' <' . $ra1->email . '>';
 					$this->subject = "Switch Request Approved";
 					$this->content = "Dear " . $ra1->firstName . ",<br><br>";
 					$this->content .= $rd->firstName . " has approved your requested switch.<br><br>";
@@ -91,14 +91,14 @@
 				case 8:
 					$rd = $con->getUserById($token->rdId);
 					$ra1 = $con->getUserById($token->raId1);
-					$this->address = $raId1->email;
+					$this->address = $ra1->firstName . ' ' . $ra1->lastName . ' <' . $ra1->email . '>';
 					$this->subject = "Switch Request Denied";
 					$this->content = "Dear " . $ra1->firstName . ",<br><br>";
 					$this->content .= $rd->firstName . " has denied your requested switch. <a href='" . SITE_URL . "login.php" . "'>Login</a> to view specifics.<br><br>";
 					break;
 				case 9:
 					$ra1 = $con->getUserById($token->raId1);
-					$this->address = $ra1->email;
+					$this->address = $ra1->firstName . ' ' . $ra1->lastName . ' <' . $ra1->email . '>';
 					$this->subject = "Project Switch Password Recovery";
 					$this->content = "Dear " . $ra1->firstName . ",<br><br>";
 					$this->content .= "A password recovery request has been intitiated for you.  Please click <a href='" . SITE_URL . "toekn.php?token=" . $ra1->token1 . "'>here</a> to complete the recovery process.<br><br>";
@@ -119,16 +119,6 @@
 			// send mail
 			// return error code
 
-//			$mailer = new Mailer();			
-//			$this->email = $token->email;
-//			$this->content = token->content;
-//			send $mailer
-//			return $error
-
-
-
-
-
 			// for testing purposes - just print the content on the screen
 			if ($test) {
 				echo "<pre>";
@@ -137,6 +127,13 @@
 				echo "Subject: " . $this->subject;
 				echo "Content: " . $this->content;
 				die();
+			} else {
+				$headers  = 'MIME-Version: 1.0' . "\r\n";
+				$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+				$headers .= 'From: ' . $this->from . "\r\n" .
+				'Reply-To: ' . $this->from . "\r\n" .
+				'X-Mailer: PHP/' . phpversion();
+				mail($this->address, $this->subject, $this->content, $headers);
 			}
 			
 		}

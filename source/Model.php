@@ -4,6 +4,7 @@
  */
 
 define ("SITE_URL", "http://76.78.63.97/");
+define ("SALT", "32745726357428736482734");
 
 class Model {
 

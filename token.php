@@ -65,13 +65,13 @@
 		$con = new Controller();
 		$con->connect();
 		$user = $con->getUserById($token->raId1);
-		if (!$user || $user->deleted) {
+		if (!$user || $user->isDeleted) {
 			$con->close();
 			die('This user does not exist.');
 		}
 		if ($user->approvedBy > 0) {
 			$con->close();
-			die('This user account has been approved previously. Cannot approve it again.');
+			die('This user account has been approved previously (Perhaps by other admin). Cannot approve it again.');
 		}
 		if (!$con->approveUser($token->raId1, $token->rdId)) die ('unknown error 76');
 		$con->close();
@@ -102,6 +102,22 @@
 		echo "No further action is required.\n";
 		echo "<a href='index.php'>main page</a>";
 		exit;
+	}
+
+	if ($token->type == 4) { // confirm switch
+
+	}
+	
+	if ($token->type == 5) { // decline switch
+
+	}
+
+	if ($token->type == 6) { // approve switch
+	
+	}
+	
+	if ($token->type == 7) { // disapprove switch
+
 	}
 	
 	if ($token->type == 8) { // lost password

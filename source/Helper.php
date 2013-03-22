@@ -2,12 +2,35 @@
 
 class Helper {
 	
-	public function validToken($uid, $utoken) {
-		return ($utoken == $this->hasher($uid));
+	private $mod;
+	
+	function __construct() {
+		$this->mod = new Model();
 	}
 	
-	public function createUserToken($uid) {
-		return $this->hasher($uid);
+	public function updateTokenTime($token, $timer = 5) {
+		$sql = "UPDATE `security` SET `timer` = '".time() + 60*$timer ."' WHERE `userToken` = '$token';";
+		$this->mod->query($sql);
+		$this->mod->close();		
+	}
+		
+	public function validToken($uid, $utoken) {
+		if ($utoken != $this->hasher($uid)) return false;
+		$sql = "SELECT `timer` FROM `security` WHERE `userToken` = '$utoken' AND `userId` = '$uid' ;";
+		$result = $this->mod->query($sql);
+		$this->mod->close();
+		$result = mysql_fetch_row($result);
+		$timer = $result[0] - time();
+		if ($timer > 0 && $timer < 60*2) $this->updateTokenTime($utoken);
+		if ($timer <= 0) return false;
+	}
+	
+	public function createUserToken($uid, $timer = 5) {
+		$userToken = $this->hasher($uid);
+		$sql = "INSERT INTO `security` VALUES (0, '$userToken', '$uid', '".time() + 60*$timer ."')";
+		$this->mod->query($sql);
+		$this->mod->close();
+		return $userToken;
 	}
 	
 	/**
@@ -59,17 +82,14 @@ class Helper {
 		return $result;
 	}
 	
-	/**
-	 * function creates a token string
-	 */
 	public function generator($userId = 0, $string = 'token') {
-		$str = md5($userId . microtime());
+		$str = md5($userId . microtime() . SALT);
 		$str .= md5($string . microtime());
 		return $str;
 	}
 	
 	private function hasher($id) {
-		return md5('hash' . $id . 'code');
+		return md5('hash' . $id . 'code' . SALT);
 	}
 	
 }

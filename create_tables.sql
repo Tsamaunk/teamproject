@@ -12,7 +12,7 @@ isDeleted BOOL DEFAULT 0,
 approvedBy INT DEFAULT 0 
 );
 
-INSERT INTO `users` (`firstName`, `lastName`, `password`, `email`, `role`, `created`, `approvedBy`) VALUES ('Default', 'Admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@albany.edu', 2, 1234567890, 1); #default admin with password admin
+INSERT INTO `users` (`firstName`, `lastName`, `password`, `email`, `role`, `created`, `approvedBy`) VALUES ('Default', 'Admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@admin.admin', 2, 1234567890, 1); #default admin with password admin
 
 CREATE TABLE IF NOT EXISTS `days` (
 id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -84,4 +84,11 @@ raId1 BIGINT,
 raId2 BIGINT,
 rdId BIGINT,
 switchId BIGINT
+);
+
+CREATE TABLE IF NOT EXISTS `security` (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+userToken VARCHAR(120) NOT NULL,
+userId BIGINT NOT NULL,
+timer BIGINT #expiration timestamp
 );

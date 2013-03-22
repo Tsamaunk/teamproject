@@ -23,12 +23,13 @@ $hlp = new Helper();		// CREATE THE HELPER
 if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validToken($_SESSION['userId'], $_SESSION['userToken'])) {
 		CONGRATS! WE HAVE A SESSION WITH USER ID = $_SESSION['userId'];
 	} else {
-		NO SESSION FOUND
+		NO SESSION FOUND - <font color="red">PROBABLY THE SESSION HAS EXPIRED!</font> OR NEVER EXISTED
 	}
 ?&gt;</div> 
 <a name="login"></a>	
 <span style="background-color:#000;color:#fff;"><b>/api/?login</b></span>
 this function sets up the Session variable
+Session expires after a few minutes of inactivity
 POST Parameters:
 	email - open text
 	password - open text
@@ -54,7 +55,7 @@ RESPONSE:
 	
 <a name="signup"></a>
 <span style="background-color:#000;color:#fff;"><b>/api/?signup</b></span>
-this function creates the user record and send the 'confirm email' email
+this function creates the user record and sends the 'confirm email' email
 POST Parameters:
 	email - open text
 	password - open text [minimum 6 symbols]

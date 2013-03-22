@@ -119,7 +119,7 @@
 	if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validToken($_SESSION['userId'], $_SESSION['userToken'])) {
 		$myId = $_SESSION['userId'];
 	} else {
-		echo json_encode(array('success' => false, 'error' => 'Access denied: Invalid token or no token.'));
+		echo json_encode(array('success' => false, 'error' => 'Access denied: Invalid token, no token, or expired token.'));
 		exit;
 	}
 	
