@@ -1,17 +1,20 @@
-<div id="topBar">
-	<span style="float:left;">&nbsp;<a href="index.php">Homepage</a></span>
+                    <!-- contaner start -->
+                    <div class="contaner">
+                        <div class="contaner-top">
+                            <div id="guest_menu" style="display: <?php
+if ($loggedin == 0)
+    echo "block"; else
+    echo "none";
+?>">
+                                <button onclick='$("#signup_form").hide();$("#login_form").toggle();'>Login</button>
+                                <button onclick='$("#login_form").hide();$("#signup_form").toggle();'>Register</button>
 
-	<?php 
-	if (!isset($_SESSION['userToken'])) {
-		
-			echo "<span style=\"float:right;\"><a href=\"login.php\">Login</a> &nbsp;";
-			echo " <a href=\"signup.php\">Sign Up?</a>&nbsp; </span>";
-		
-		} else {
-	
-			echo "<span style=\"float:right;\"><a href=\"logout.php\">Logout</a>&nbsp;</span>";
-		
-		}
-	
-		?>
-</div>
+                            </div>
+                            <div id="user_menu" style="display: <?php
+                                 if ($loggedin == 1)
+                                     echo "block"; else
+                                     echo "none";
+?>">
+                                <input type="button" name="submit" id="submit_logout" value="Log Out" />
+                            </div>
+

@@ -1,35 +1,15 @@
-<?php 
-
-	if (!isset($_SESSION['userId']) && !isset($_SESSION['userToken']) && !$hlp->validToken($_SESSION['userId'], $_SESSION['userToken'])) {
-		echo "<div id=\"sideBar\"></div>";
-		return;
-	}
-        else{
-
-
-?>
-<style type="text/css">
-<!--
-.style1 {color: #FFFFFF}
--->
-</style>
-
-
-<div id="sideBar">
-<br />
-<table height="177" border="0">
-  <tr>
-    <td width="104"><a href="#" class="style1">Notifications</a></td>
-  </tr>
-  <tr>
-    <td><a href="#" class="style1">Calender</a></td>
-  </tr>
-</table>
-
+<!-- column -->
+<div class="column" id="left_menu" style="display: <?php
+		if ($loggedin == 1)
+			echo "block"; else
+			echo "none";
+		?>">
+	<!-- column-links -->
+	<!-- column-links -->
+	<br /> <br />
+	<ul class="column-links-alt">
+		<li><a href="">My Calender</a></li>
+		<li><a href="">Notifications</a></li>                                    
+		<li><a href="">Messages</a></li>
+	</ul>                                   
 </div>
-
-<?php
-
-        }
-        
-        ?>
