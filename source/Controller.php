@@ -83,6 +83,17 @@ class Controller {
 		$sql = "UPDATE `users` SET `isDeleted` = TRUE WHERE `userId` = '$userId' ;";
 		return $this->mod->query($sql);
 	}
+	
+	/**
+	 * function returns all users
+	 */
+	public function getAllUsers() {
+		$sql = "SELECT users.* FROM `users` WHERE TRUE;";
+		$result = $this->mod->query($sql);
+        if ($result)
+			return $this->orm($result, true);
+        else return false;
+	}
 
 	/**
 	 * Create a new user

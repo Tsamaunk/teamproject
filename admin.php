@@ -12,17 +12,18 @@
 		}
 		
 	// SOME HEADER HERE
-	// include_once 'header.php';
+	 include_once 'header.php';
 	// MAKE SURE myId IS STILL SET
 	
 	$con -> connect();
 	$myUser = $con->getUserById($myId);
 	$con -> close();
 	
-	$page = isset($_POST['page']) ? $_POST['page'] : 'profile';
+	$page = isset($_GET['page']) ? $_GET['page'] : 'profile';
 	
 	if ($myUser->role == 2) { // admin
 		if ($page == 'profile') include_once 'admin/profile.php';
+		if ($page == 'users') include_once 'admin/users.php';
 
 	} elseif ($myUser->role == 1) { // user
 		if ($page == 'profile') include_once 'admin/profile.php';
@@ -30,6 +31,6 @@
 	}
 	
 	// SOME FOOTER HERE
-	// include_once 'footer.php';
+	 include_once 'footer.php';
 
 ?>

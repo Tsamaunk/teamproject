@@ -5,6 +5,8 @@
 
 define ("SITE_URL", "http://76.78.63.97/");
 define ("SALT", "32745726357428736482734");
+define ("TOKEN_EXP", "30"); // minutes until token is expired
+define ("TOKEN_HALFLIFE", "15"); // minutes until token is renewed
 
 class Model {
 
