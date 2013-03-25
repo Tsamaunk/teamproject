@@ -12,10 +12,11 @@
 		}
 		
 	// SOME HEADER HERE
+	// include_once 'header.php';
 	// MAKE SURE myId IS STILL SET
 	
 	$con -> connect();
-	$myUser = getUserById($myId);
+	$myUser = $con->getUserById($myId);
 	$con -> close();
 	
 	$page = isset($_POST['page']) ? $_POST['page'] : 'profile';
@@ -29,6 +30,6 @@
 	}
 	
 	// SOME FOOTER HERE
-
+	// include_once 'footer.php';
 
 ?>

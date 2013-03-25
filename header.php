@@ -4,6 +4,7 @@ $hlp = new Helper();  // CREATE THE HELPER
 
 if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validToken($_SESSION['userId'], $_SESSION['userToken'])) {
     $loggedin = 1;
+    $myId = $_SESSION['userId'];
 } else {
     $loggedin = 0;
 }

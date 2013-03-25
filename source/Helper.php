@@ -9,7 +9,7 @@ class Helper {
 	}
 	
 	public function updateTokenTime($token, $timer = 5) {
-		$sql = "UPDATE `security` SET `timer` = '".time() + 60*$timer ."' WHERE `userToken` = '$token';";
+		$sql = "UPDATE `security` SET `timer` = '" . (time() + 60*$timer )."' WHERE `userToken` = '$token';";
 		$this->mod->query($sql);
 		$this->mod->close();		
 	}
@@ -23,12 +23,15 @@ class Helper {
 		$timer = $result[0] - time();
 		if ($timer > 0 && $timer < 60*2) $this->updateTokenTime($utoken);
 		if ($timer <= 0) return false;
+		return true;
 	}
 	
 	public function createUserToken($uid, $timer = 5) {
 		$userToken = $this->hasher($uid);
-		$sql = "INSERT INTO `security` VALUES (0, '$userToken', '$uid', '".time() + 60*$timer ."')";
+		$sql = "INSERT INTO `security` VALUES (0, '$userToken', '$uid', '".(time() + 60*$timer) ."')";
+		$this->mod->connect();
 		$this->mod->query($sql);
+		echo mysql_error();
 		$this->mod->close();
 		return $userToken;
 	}
