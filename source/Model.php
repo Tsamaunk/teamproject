@@ -4,7 +4,7 @@
  */
 
 define ("SITE_URL", "http://76.78.63.97/");
-define ("SALT", "32745726357428736482734");
+define ("SALT", "h4h32jadsf2388hskjfdoi854324yeruw768435");
 define ("TOKEN_EXP", "30"); // minutes until token is expired
 define ("TOKEN_HALFLIFE", "15"); // minutes until token is renewed
 
@@ -88,6 +88,7 @@ class Model {
 	 * 12 - user info update
 	 * 13 - user password updated
 	 * 14 - user role updated
+	 * 15 - undelete user
 	 * 20 - approved user
 	 * 
 	 */

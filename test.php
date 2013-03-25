@@ -19,6 +19,7 @@
 	$message -> subject = "Hey";
 	$message -> text = "Great, how's yours???";
 	*/
+	
 	$cnt = new Controller();
 	$cnt->connect();
 	$res = $cnt->getMyDialogs(1);
@@ -40,6 +41,12 @@
 	}
 		
 	var_dump($dialogs);
+	
+	
+	$hlp = new Helper();
+	$_SESSION['userId'] = 1;
+	$_SESSION['userRole'] = 2;
+	$_SESSION['userToken'] = $hlp->createUserToken($_SESSION['userId']);
 	 	
 		
 	?>

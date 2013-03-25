@@ -36,7 +36,7 @@ if ($_POST['update']) {
 <form method="post" action="?page=profile">
 	<input type="hidden" name="update" value="1" />
 	<label>User type:</label>
-	<input type="text" readonly="readonly" value="<?php echo $myUser->type == 2 ? "Administrator" : "Regular";?>" /><br />
+	<input type="text" readonly="readonly" value="<?php echo $myUser->role == 2 ? "Administrator" : "Regular";?>" /><br />
 	<label>Approved by:</label>
 	<input type="text" readonly="readonly" value="<?php 
 		$admin = $con->getUserById($myUser->approvedBy);

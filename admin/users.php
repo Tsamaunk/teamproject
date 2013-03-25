@@ -14,6 +14,7 @@ if (isset($_POST['update']) && $_POST['update'] == 1) {
 	$con->connect();
 	$con->createUser($user);
 	$con->close();
+	unset($_POST);
 	header('Location: /admin.php?page=users');
 }
 
@@ -22,6 +23,43 @@ if (isset($_POST['update']) && $_POST['update'] == 2) {
 	$con->connect();
 	$con->approveUser($userId, $myUser->userId);
 	$con->close();
+	unset($_POST);
+	header('Location: /admin.php?page=users');
+}
+
+if (isset($_POST['update']) && $_POST['update'] == 3) {
+	$userId = $_POST['userId'];
+	$con->connect();
+	$con->approveUser($userId, $myUser->userId, false);
+	$con->close();
+	unset($_POST);
+	header('Location: /admin.php?page=users');
+}
+
+if (isset($_POST['update']) && $_POST['update'] == 4) {
+	$userId = $_POST['userId'];
+	$con->connect();
+	$con->undeleteUser($userId);
+	$con->close();
+	unset($_POST);
+	header('Location: /admin.php?page=users');
+}
+
+if (isset($_POST['update']) && $_POST['update'] == 5) {
+	$userId = $_POST['userId'];
+	$con->connect();
+	$con->updateUserRole($userId, 2);
+	$con->close();
+	unset($_POST);
+	header('Location: /admin.php?page=users');
+}
+
+if (isset($_POST['update']) && $_POST['update'] == 6) {
+	$userId = $_POST['userId'];
+	$con->connect();
+	$con->updateUserRole($userId, 1);
+	$con->close();
+	unset($_POST);
 	header('Location: /admin.php?page=users');
 }
 
@@ -80,14 +118,18 @@ $users = $con->getAllUsers();
 		echo "<td>";
 		if ($u->userId == 1)
 			echo "Superadmin: No options";
-		if ($u->approvedBy && $u->userId > 1)
-			echo "<a href='javascript:blockUser(".$u->userId.");'>Block</a>";
-		if (!$u->approvedBy)
-			echo "<a href='javascript:approveUser(".$u->userId.");'>Approve</a>";
-		if ($u->approvedBy && $u->role == 1)
-			echo "<a href='javascript:makeAdmin(".$u->userId.");'>Make Admin</a>";
-		if ($u->approvedBy && $u->role == 2 && $u->userId > 1)
-			echo "<a href='javascript:makeUser(".$u->userId.");'>Make NON-Admin</a>";		
+		if ($u->isDeleted)
+			echo " <a href='javascript:unblockUser(".$u->userId.");'>Undelete</a> ";
+		else {
+			if ($u->approvedBy && $u->userId > 1)
+				echo " <a href='javascript:blockUser(".$u->userId.");'>Delete</a> ";
+			if (!$u->approvedBy)
+				echo " <a href='javascript:approveUser(".$u->userId.");'>Approve</a> ";
+			if ($u->approvedBy && $u->role == 1)
+				echo " <a href='javascript:makeAdmin(".$u->userId.");'>Make Admin</a> ";
+			if ($u->approvedBy && $u->role == 2 && $u->userId > 1)
+				echo " <a href='javascript:makeUser(".$u->userId.");'>Make NON-Admin</a> ";
+		}		
 		echo "</td>";
 	}
 ?>
@@ -95,26 +137,83 @@ $users = $con->getAllUsers();
 
 <script>
 	function blockUser(id) {
-		
+		var frm = $("<form/>",
+				{ id: "snd", 
+				method: "post", 
+				action: "?page=users" });
+	    frm.append($("<input/>",
+	    	    { type : "hidden", 
+    	    	name: "update", 
+    	    	value: "3" }));
+    	frm.append($("<input/>",
+    			{ type : "hidden", 
+					name: "userId", 
+					value: id }));
+		frm.submit();  
+	}
+
+	function unblockUser(id) {
+		var frm = $("<form/>",
+				{ id: "snd", 
+				method: "post", 
+				action: "?page=users" });
+	    frm.append($("<input/>",
+	    	    { type : "hidden", 
+    	    	name: "update", 
+    	    	value: "4" }));
+    	frm.append($("<input/>",
+    			{ type : "hidden", 
+					name: "userId", 
+					value: id }));
+		frm.submit();  
 	}
 
 	function approveUser(id) {
-		var frm = $('<form></form>')
-		.attr({ id: "snd", method: "post", action: "?page=users" })
-	    .hide()
-	    .append($('<input></input>')
-	        .attr({ type : "hidden", name: "update", value: "2" }))
-	    .append($('<input></input>')
-	        .attr({ type : "hidden", name: "userId", value: id }));
-		$('#snd').submit();    
+		var frm = $("<form/>",
+				{ id: "snd", 
+				method: "post", 
+				action: "?page=users" });
+	    frm.append($("<input/>",
+	    	    { type : "hidden", 
+    	    	name: "update", 
+    	    	value: "2" }));
+    	frm.append($("<input/>",
+    			{ type : "hidden", 
+					name: "userId", 
+					value: id }));
+		frm.submit();    
 	}
 
 	function makeAdmin(id) {
-
+		var frm = $("<form/>",
+				{ id: "snd", 
+				method: "post", 
+				action: "?page=users" });
+	    frm.append($("<input/>",
+	    	    { type : "hidden", 
+    	    	name: "update", 
+    	    	value: "5" }));
+    	frm.append($("<input/>",
+    			{ type : "hidden", 
+					name: "userId", 
+					value: id }));
+		frm.submit();    
 	}
 
 	function makeUser(id) {
-
+		var frm = $("<form/>",
+				{ id: "snd", 
+				method: "post", 
+				action: "?page=users" });
+	    frm.append($("<input/>",
+	    	    { type : "hidden", 
+    	    	name: "update", 
+    	    	value: "6" }));
+    	frm.append($("<input/>",
+    			{ type : "hidden", 
+					name: "userId", 
+					value: id }));
+		frm.submit();
 	}
 	
 	function createUser() {

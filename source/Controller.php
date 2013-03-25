@@ -85,6 +85,15 @@ class Controller {
 	}
 	
 	/**
+	 * function undeletes user by id
+	 */
+	public function undeleteUser($userId) {
+		$this->mod->log(15, 'User undeleted', $userId);
+		$sql = "UPDATE `users` SET `isDeleted` = FALSE, `approvedBy` = NULL WHERE `userId` = '$userId' ;";
+		return $this->mod->query($sql);
+	}
+	
+	/**
 	 * function returns all users
 	 */
 	public function getAllUsers() {
