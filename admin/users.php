@@ -14,6 +14,15 @@ if (isset($_POST['update']) && $_POST['update'] == 1) {
 	$con->connect();
 	$con->createUser($user);
 	$con->close();
+	header('Location: /admin.php?page=users');
+}
+
+if (isset($_POST['update']) && $_POST['update'] == 2) {
+	$userId = $_POST['userId'];
+	$con->connect();
+	$con->approveUser($userId, $myUser->userId);
+	$con->close();
+	header('Location: /admin.php?page=users');
 }
 
 $users = $con->getAllUsers();
@@ -90,7 +99,14 @@ $users = $con->getAllUsers();
 	}
 
 	function approveUser(id) {
-
+		var frm = $('<form></form>')
+		.attr({ id: "snd", method: "post", action: "?page=users" })
+	    .hide()
+	    .append($('<input></input>')
+	        .attr({ type : "hidden", name: "update", value: "2" }))
+	    .append($('<input></input>')
+	        .attr({ type : "hidden", name: "userId", value: id }));
+		$('#snd').submit();    
 	}
 
 	function makeAdmin(id) {
