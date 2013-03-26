@@ -32,3 +32,34 @@
 	padding:4px;
 	width: 180px;
 }
+
+#adminConsole #calendar td {
+	font-family: arial;
+	height:90px;
+	vertical-align: top;
+}
+#adminConsole #calendar td {
+	border:1px solid #ddd;
+}
+#adminConsole #calendar span.date {
+	font-size:1.1em;
+	color:white;
+	background-color: black;
+	padding: 1px 3px;
+	font-weight: bold;
+}
+
+#adminConsole #calendar .rd {
+	color:white;
+	background-color: navy;
+	padding: 1px 3px;
+	font-weight: bold;
+	display:block;
+}
+
+#adminConsole #calendar .ra {
+	color:black;
+	background-color: yellow;
+	padding: 1px 3px;
+	display:block;
+} 

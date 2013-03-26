@@ -16,6 +16,7 @@ INSERT INTO `users` (`firstName`, `lastName`, `password`, `email`, `role`, `crea
 
 CREATE TABLE IF NOT EXISTS `days` (
 id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`type` INT, # 1 - regular, 2 - admin on duty 
 userId BIGINT,
 assignedDate DATE,
 month INT,

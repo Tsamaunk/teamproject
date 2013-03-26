@@ -270,7 +270,11 @@ class Controller {
 	 * Function returns the schedule for the month for all users
 	 */
 	public function getSchedule($month) {
-		$sql = "SELECT * FROM `days` WHERE `month` = '$month';";
+		$sql = "SELECT `days`.*, CONCAT(`users`.`firstName`,' ',`users`.`lastName`) AS userName
+				 FROM `days`, `users` WHERE 
+				`month` = '$month' AND
+				`users`.`userId` = `days`.`userId`
+				ORDER BY `assignedDate`;";
 		$result = $this->mod->query($sql);
 		if ($result)
 			return $this->orm($result, true);
@@ -281,7 +285,7 @@ class Controller {
 	 * Function returns the schedule for the month for the particular user
 	 */
 	public function getUserSchedule($userId, $month) {
-		$sql = "SELECT * FROM `days` WHERE `month` = '$month' AND `userId` = '$userId';";
+		$sql = "SELECT * FROM `days` WHERE `month` = '$month' AND `userId` = '$userId' ORDER BY `assignedDate`;";
 		$result = $this->mod->query($sql);
 		if ($result)
 			return $this->orm($result, true);
@@ -305,10 +309,11 @@ class Controller {
 	public function addDay($day) { // TODO NOT TESTED
 		if (!isset($day->fromTime)) $day->fromTime = 0;
 		if (!isset($day->toTime)) $day->toTime = 0;
-		if (!isset($day->month)) $day->month = $day->assignedDate->format('M');
-		$day->created = time();		
-		$sql = "INSERT INTO `days` (`userId`, `assignedDate`, `month`, `fromTime`, `toTime`, `created`) VALUES (
-			'".$day->userId."','".$day->assignedDate->format("Y-M-D")."','".$day->month."','".$day->fromTime."','".$day->toTime."',
+		if (!isset($day->month)) $day->month = $day->assignedDate->format('m');
+		if (!isset($day->type)) $day->type = 1; // regular
+		$day->created = time();
+		$sql = "INSERT INTO `days` (`userId`, `type`, `assignedDate`, `month`, `fromTime`, `toTime`, `created`) VALUES (
+			'".$day->userId."','".$day->type."','".$day->assignedDate->format("Y-M-D")."','".$day->month."','".$day->fromTime."','".$day->toTime."',
 			'".$day->created."');";
 		$result = $this->mod->query($sql);
 		return $result;
@@ -334,9 +339,8 @@ class Controller {
 			`log`.userId2 = `usr`.userId
 			 ORDER BY `log`.`created` DESC LIMIT $limit;";
 		$result = $this->mod->query($sql);
-		var_dump(mysql_error());
 		if ($result)
-			return $this->orm($result);
+			return $this->orm($result, true);
 		else return false;
 	}
 
