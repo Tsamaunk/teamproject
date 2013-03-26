@@ -89,6 +89,7 @@ $users = $con->getAllUsers();
 		<input type="password" required="required" id="pasw1" name="password" value="" /><br />
 		<label>Confirm password:</label>
 		<input type="password" id="pasw2" value="" /> <label id="dontmatch" style="display:none;">Passwords don't match!</label><br />	
+		<label></label>
 		<button type="button" onclick="javascript:submitForm();" >Create</button>
 	</form>
 </div>
@@ -99,8 +100,8 @@ $users = $con->getAllUsers();
 		<th style="text-align:left; width:17%;">Name</th>
 		<th style="text-align:left; width:18%;">Email</th>
 		<th style="text-align:left; width:17%;">Approved by</th>
-		<th style="text-align:left; width:14%;">Registered</th>
-		<th style="text-align:left; width:24%;">Options</th>
+		<th style="text-align:left; width:16%;">Registered</th>
+		<th style="text-align:left; width:22%;">Options</th>
 	</tr>
 	<?php
 
@@ -130,7 +131,7 @@ $users = $con->getAllUsers();
 			if ($u->approvedBy && $u->role == 2 && $u->userId > 1)
 				echo " <a href='javascript:makeUser(".$u->userId.");'>Make NON-Admin</a> ";
 		}		
-		echo "</td>";
+		echo "</td></tr>";
 	}
 ?>
 </table>
@@ -238,6 +239,7 @@ $users = $con->getAllUsers();
 		});	
 	});
 	function submitForm() {
+		if ($("input[required=required]").val() == "") return false;
 		if (!allowPost) return false;
 		else $("#createUserForm form").submit();
 	}

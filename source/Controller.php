@@ -327,9 +327,17 @@ class Controller {
 	 * function returns the last 500 lines of log as an ARRAY
 	 */
 	public function getLog($limit = 500) {
-		$sql = "SELECT * FROM `log` ORDER BY `created` DESC LIMIT $limit;";
+		$sql = "SELECT `log`.*, CONCAT(users.firstName,' ',users.lastName) AS userName,
+			CONCAT(usr.firstName,' ',usr.lastName) AS userName2
+			FROM `log`, `users`, `users` AS `usr`
+			WHERE `log`.userId1 = `users`.userId AND
+			`log`.userId2 = `usr`.userId
+			 ORDER BY `log`.`created` DESC LIMIT $limit;";
 		$result = $this->mod->query($sql);
-		return $this->convert($result);
+		var_dump(mysql_error());
+		if ($result)
+			return $this->orm($result);
+		else return false;
 	}
 
 	// =============================================================================================

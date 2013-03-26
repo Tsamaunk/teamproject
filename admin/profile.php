@@ -53,6 +53,7 @@ if ($_POST['update']) {
 	<input type="password" id="pasw1" name="password" value="" /><br />
 	<label>Confirm password:</label>
 	<input type="password" id="pasw2" value="" /> <label id="dontmatch" style="display:none;">Passwords don't match!</label><br />	
+	<label></label>
 	<button type="button" onclick="javascript:submitForm();" >Update</button>
 </form>
 
@@ -75,6 +76,7 @@ if ($_POST['update']) {
 		});	
 	});
 	function submitForm() {
+		if ($("input[required=required]").val() == "") return false;
 		if (!allowPost) return false;
 		else $("form").submit();
 	}

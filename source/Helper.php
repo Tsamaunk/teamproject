@@ -28,8 +28,10 @@ class Helper {
 	
 	public function createUserToken($uid, $timer = TOKEN_EXP) {
 		$userToken = $this->hasher($uid);
-		$sql = "INSERT INTO `security` VALUES (0, '$userToken', '$uid', '".(time() + 60*$timer) ."')";
+		$sql = "DELETE FROM `security` WHERE `userToken` = '$userToken' AND `userId` = '$uid'; ";
 		$this->mod->connect();
+		$this->mod->query($sql);		
+		$sql = "INSERT INTO `security` VALUES (0, '$userToken', '$uid', '".(time() + 60*$timer) ."')";
 		$this->mod->query($sql);
 		echo mysql_error();
 		$this->mod->close();

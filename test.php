@@ -48,6 +48,9 @@
 	$_SESSION['userRole'] = 2;
 	$_SESSION['userToken'] = $hlp->createUserToken($_SESSION['userId']);
 	 	
+	var_dump($_SESSION['userToken']);
+	
+	
 		
 	?>
 	

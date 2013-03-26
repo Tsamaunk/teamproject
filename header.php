@@ -20,6 +20,8 @@ if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validTo
         <link rel="stylesheet" type="text/css" href="html_all_2.css" />	
         <link rel="stylesheet" href="html_all_2_print.css" media="print" type="text/css" />
         <link rel="stylesheet" type="text/css" href="assessment_icon.css" />
+        
+        <link rel="stylesheet" type="text/css" href="css/adminConsole.css" />
 
     </head>
     <body>
