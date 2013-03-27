@@ -20,8 +20,8 @@ foreach ($cal as $date=>$key) {
 	else {
 		foreach($key['ra'] as $kra)
 			if ($kra->userId == $myUser->userId)
-				$ncal[$date] = $key;
-	} 
+			$ncal[$date] = $key;
+	}
 }
 ?>
 
@@ -45,3 +45,30 @@ foreach ($cal as $date=>$key) {
 	</select>
 </form>
 
+<br>
+
+<table id="myschedule">
+<?php 
+foreach ($ncal as $date=>$c) {
+	$dta = new DateTime($date);
+	$date = $dta->format('d M Y, D');
+	echo "<tr>";
+	echo "<td>" . $date . "</td>";
+	echo "<td>";
+	foreach ($c['ra'] as $cra) {
+		if ($cra->userId == $myUser->userId) echo "<strong>"; 
+		echo $cra->userName;
+		if ($cra->userId == $myUser->userId) echo "</strong>";		
+		echo "<br>";
+		}
+	if ($c['rd']->userId == $myUser->userId) echo "<strong>";
+	echo "Director on duty: " . $c['rd']->userName;
+	if ($c['rd']->userId == $myUser->userId) echo "</strong>";
+	echo "</td>";
+	echo "</tr>\n";
+	}
+
+
+
+	?>
+</table>
