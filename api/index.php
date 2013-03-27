@@ -27,11 +27,8 @@
 		
 		$user = $con->checkCredentials($email, $password);
 		$con->close();
-		if (!$user && $userExist) {
-			echo json_encode(array('success' => false, 'error' => 'User is not approved yet!'));
-			exit;
-		} elseif (!$user) {
-			echo json_encode(array('success' => false, 'error' => 'Incorrect email address / password!'));
+		if (!$user) {
+			echo json_encode(array('success' => false, 'error' => 'Incorrect email address / password or user is pending approval!'));
 			exit;
 		}
 		$_SESSION['userId'] = $user->userId;
