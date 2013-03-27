@@ -103,6 +103,17 @@ class Controller {
 			return $this->orm($result, true);
         else return false;
 	}
+	
+	/**
+	 * function returns all alive users
+	 */
+	public function getAllAliveUsers() {
+		$sql = "SELECT users.* FROM `users` WHERE `isDeleted` = FALSE AND `approvedBy` > 0 ;";
+		$result = $this->mod->query($sql);
+		if ($result)
+			return $this->orm($result, true);
+		else return false;
+	}
 
 	/**
 	 * Create a new user
@@ -313,7 +324,7 @@ class Controller {
 		if (!isset($day->type)) $day->type = 1; // regular
 		$day->created = time();
 		$sql = "INSERT INTO `days` (`userId`, `type`, `assignedDate`, `month`, `fromTime`, `toTime`, `created`) VALUES (
-			'".$day->userId."','".$day->type."','".$day->assignedDate->format("Y-M-D")."','".$day->month."','".$day->fromTime."','".$day->toTime."',
+			'".$day->userId."','".$day->type."','".$day->assignedDate->format("Y-m-d")."','".$day->month."','".$day->fromTime."','".$day->toTime."',
 			'".$day->created."');";
 		$result = $this->mod->query($sql);
 		return $result;

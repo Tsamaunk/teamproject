@@ -10,8 +10,15 @@ if (isset($_POST['update'])) {
 		$con->removeDay($id);		
 		$con->close();
 	}
-	
-	
+	if ($upd == 1) {
+		$day = new stdClass();
+		$day->type = $_POST['type'];
+		$day->assignedDate = new DateTime($_POST['date']);
+		$day->userId = $_POST['userId'];
+		$con->connect();
+		$con->addDay($day);
+		$con->close();
+	}
 	echo "ok";
 	exit;
 }
@@ -21,10 +28,11 @@ if (!isset($myUser) || $myUser->role != 2) {
 	die('unauthorized access');
 }
 
+$users = $con->getAllAliveUsers();
 
 $today = new DateTime();
-
-$month = isset($_POST['month']) ? (int)$_POST['month'] : (int)$today->format('m');
+$month = isset($_POST['month']) ? (int)$_POST['month'] : (isset($_SESSION['month']) ? $_SESSION['month'] : (int)$today->format('m'));
+$_SESSION['month'] = $month;
 
 $firstDay = new DateTime($today->format('Y') . '-' . $month . '-1');
 $maxDays = $firstDay->format('t');
@@ -106,9 +114,26 @@ foreach ($sch as $s) {
 ?>
 </table>
 
+<div id="mask">
+</div>
+<div id="field">
+	<h1 class="caption"></h1>
+	<p class="text"></p>
+	<select id="select">
+		<?php
+			foreach ($users as $user) {
+				echo "<option value='".$user->userId."'>" . $user->firstName . ' ' . $user->lastName . "</option>";
+			}
+		?>
+	</select>
+	<button type="button" onclick="javascript:execute();">Submit</button>
+</div>
+
+
 <script>
 var adminId = <?php echo $myUser->userId;?>;
-var tmp = "";
+var type = 0;
+var data = "";
 
 $(window).load(function(){
 	$('.ra, .rd').mouseenter(function() {
@@ -121,18 +146,46 @@ $(window).load(function(){
 		$(this).html($(this).attr('data-tmp'));
 		$(this).removeAttr('data-tmp');
 		});
+	$('#field').css('left', ($(window).width()/2 - $('#field').width()/2)+'px');
+	$('#field').css('top', ($(window).height()/2 - $('#field').height()/2)+'px');
 });
 
-function addRa(data) {
-	var type = 1;
+function addRa(data2) {
+	type = 1;
+	data = data2;
+	$('#field .caption').text('Add new RA on duty');
+	$('#field .text').text('Who is going to be on duty on '+data2+'?');
+	$('#mask').fadeIn(300);
+	$('#field').fadeIn(300);
 }
 
-function addDir(data) {
-	var type = 2;
+function addDir(data2) {
+	type = 2;
+	data = data2;
+	$('#field .caption').text('Add new director on duty');
+	$('#field .text').text('Who is going to be on duty on '+data2+'?');
+	$('#mask').fadeIn(300);
+	$('#field').fadeIn(300);
+}
+
+function execute() {
+	$.post('/admin/schedule.php', {update:1, updType:1, type: type, date: data, userId: $('#select').val()}, function(data){location.reload();});
 }
 
 function raDelete(id) {
 	$.post('/admin/schedule.php', {update:1, updType:3, id:id}, function(data){location.reload();});
 }
+
+function closeMask() {
+	$("#field").fadeOut(100);
+	$("#mask").fadeOut(100)
+}
+$(document).keyup(function(e) {
+  if (e.keyCode == 27) { 
+  		$("#field").fadeOut(100);
+		$("#mask").fadeOut(100);
+   }   // esc
+});
+
 
 </script>

@@ -62,4 +62,30 @@
 	background-color: yellow;
 	padding: 1px 3px;
 	display:block;
-} 
+}
+
+#field {
+ 	display: none;
+	position: fixed !important;
+	left: 0; 
+	top: 0; 
+	width: 400px !important;
+	height: 200px !important;
+	z-index: 1000 !important;
+	background: #fff;
+	border-radius: 10px;
+	padding:20px;
+	text-align: center;
+	border:1px #999 solid;
+}
+#mask {
+	display: none;
+	background: #fff !important; 
+	position: fixed !important;
+	left: 0 !important; 
+	top: 0 !important; 
+	width: 100% !important; 
+	height: 100% !important;
+	opacity: 0.6 !important;
+	z-index: 500 !important;
+}
