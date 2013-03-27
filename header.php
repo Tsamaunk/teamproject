@@ -22,3 +22,17 @@ if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validTo
         <link rel="stylesheet" href="css/assessment_icon.css" type="text/css"  />        
         <link rel="stylesheet" href="css/adminConsole.css" type="text/css"  />
     </head>
+    
+    <body>
+
+    <!--main container-->
+    <div id="main">
+        <!-- header start -->
+        <!--header-->
+        <div id="header">
+            <div class="header-holder">
+                <strong class="logo"><img src="" alt="" /></strong>
+            </div>
+            <!-- header end -->
+            <!-- content holder start-->
+            <div id="content">

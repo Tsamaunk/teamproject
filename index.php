@@ -1,22 +1,6 @@
 <?php
 include_once 'header.php';
-?>
-
-<body>
-
-    <!--main container-->
-    <div id="main">
-        <!-- header start -->
-        <!--header-->
-        <div id="header">
-            <div class="header-holder">
-                <strong class="logo"><img src="" alt="" /></strong>
-            </div>
-            <!-- header end -->
-            <!-- content holder start-->
-            <div id="content">
-
-                <?php include_once 'topbar.php'; ?>
+include_once 'topbar.php'; ?>
 
 
                 <div class="contaner-bottom">
@@ -212,6 +196,3 @@ include_once 'header.php';
 include_once 'footer.php';
 ?>
 
-
-</body>
-</html>

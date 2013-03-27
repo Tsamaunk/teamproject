@@ -20,3 +20,7 @@
 </div><!--close div footer-->
 
 </div><!--close div main-->
+
+
+</body>
+</html>
