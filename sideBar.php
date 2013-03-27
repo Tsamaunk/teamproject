@@ -6,10 +6,11 @@
 		?>">
 	<!-- column-links -->
 	<!-- column-links -->
-	<br /> <br />
-	<ul class="column-links-alt">
-		<li><a href="">My Calender</a></li>
-		<li><a href="">Notifications</a></li>                                    
-		<li><a href="">Messages</a></li>
-	</ul>                                   
+	<br /> <br /> <br /> <br /> <br />
+	<ul class="column-links-alt"><br>
+		<li><a href="?">Home</a></li>
+		<li><a href="#">My Calender</a></li>
+		<li><a href="#">Notifications</a></li>                                    
+		<li><a href="?task=message">Messages</a></li>
+	</ul>
 </div>

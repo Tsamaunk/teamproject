@@ -3,7 +3,7 @@ html{font-size: 62.5%;}
 body{
 	font: 1.3em/1.289em Arial, Helvetica, sans-serif;
 	margin:0;
-	background:url(images/body.gif) repeat-x;
+	background:url(../images/body.gif) repeat-x;
 	color:#636363;
 }
 img {border-style:none;}
@@ -1693,7 +1693,7 @@ strong.more a{color:#0060b7;}
   width: 165px;
   /*padding-top: 10px;
   padding-top: 4px;*/
-  background: url(images/borderTransparent-165-top.png) no-repeat;
+  background: url(../images/borderTransparent-165-top.png) no-repeat;
 }
 
 .borderTransparentInner {
@@ -1701,12 +1701,12 @@ strong.more a{color:#0060b7;}
   overflow: hidden;
   padding: 1px 5px;
   padding-top: 5px;
-  background: url(images/borderTransparent-165-vertical.png) 0 10px no-repeat;
+  background: url(../images/borderTransparent-165-vertical.png) 0 10px no-repeat;
 }
 
 .borderTransparentBottom {
   height: 10px;
-  background: url(images/borderTransparent-165-bottom.png) no-repeat;
+  background: url(../images/borderTransparent-165-bottom.png) no-repeat;
 }
 
 .newsLinks {
@@ -1740,7 +1740,7 @@ strong.more a{color:#0060b7;}
   font-weight: bold;
   text-transform: uppercase;
   padding-right: 12px;
-  background: url(images/arrowRight.gif) right 3px no-repeat;
+  background: url(../images/arrowRight.gif) right 3px no-repeat;
   color: #B3B0A1;
 }
 /* Right Column Content END */
@@ -1750,7 +1750,7 @@ strong.more a{color:#0060b7;}
   width: 165px;
   /*padding-top: 10px;
   padding-top: 4px;*/
-  background: url(images/PollTransparent-165-top.png) no-repeat;
+  background: url(../images/PollTransparent-165-top.png) no-repeat;
 }
 
 .PollTransparentInner {
@@ -1758,12 +1758,12 @@ strong.more a{color:#0060b7;}
   overflow: hidden;
   padding: 1px 5px;
   padding-top: 5px;
-  background: url(images/PollTransparent-165-vertical.png) 0 10px no-repeat;
+  background: url(../images/PollTransparent-165-vertical.png) 0 10px no-repeat;
 }
 
 .PollTransparentBottom {
   height: 10px;
-  background: url(images/PollTransparent-165-bottom.png) no-repeat;
+  background: url(../images/PollTransparent-165-bottom.png) no-repeat;
 }
 
 .HorizontalNav {
@@ -1903,17 +1903,17 @@ New styles for right hand column World Within Reach Boxes
 .borderShadow2 {
   width: 245px;
   padding-top: 6px;
-  background: url(images/borderShadow-245-top.png) no-repeat;
+  background: url(../images/borderShadow-245-top.png) no-repeat;
 }
 
 .borderShadow2Inner {
   padding: 1px 5px;
-  background: url(images/borderShadow-245-vertical.png) repeat-y;
+  background: url(../images/borderShadow-245-vertical.png) repeat-y;
 }
 
 .borderShadow2Bottom {
   height: 6px;
-  background: url(images/borderShadow-245-bottom.png) no-repeat;
+  background: url(../images/borderShadow-245-bottom.png) no-repeat;
 }
 
 .contentAreaTop .borderShadow2Inner {
