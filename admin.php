@@ -13,10 +13,13 @@ if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validTo
 }
 
 // SOME HEADER HERE
-include_once 'header.php';
-// MAKE SURE myId IS STILL SET
-?>
 
+include_once 'header.php';
+include_once 'topbar.php'; ?>
+
+<div class="contaner-bottom">
+<?php include_once 'sidebar.php'; ?>
+<div class="content">
 <style>
 td a {
 	margin-right: 10px;
@@ -39,6 +42,11 @@ if ($page == 'schedule') include_once 'admin/schedule.php';
 if ($page == 'myschedule') include_once 'admin/myschedule.php';
 
 echo "</div>\n";
+
+?>
+</div>
+</div>
+<?php 
 
 // SOME FOOTER HERE
 include_once 'footer.php';
