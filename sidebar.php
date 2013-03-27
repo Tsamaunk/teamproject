@@ -9,7 +9,16 @@
 	<br /> <br /> <br /> <br /> <br />
 	<ul class="column-links-alt"><br>
 		<li><a href="?">Home</a></li>
-		<li><a href="#">My Calender</a></li>
+		<li><a href="admin.php">Profile</a></li>
+		<li><a href="#">Calendar</a></li>
+		<li><a href="admin.php?page=myschedule">My Schedule</a></li>
+		<?php 
+			if (isset($_SESSION['userRole']) && $_SESSION['userRole']==2) {
+				echo "<li><a href=\"admin.php?page=schedule\">Edit Calendar</a></li>";
+				echo "<li><a href=\"admin.php?page=users\">Users</a></li>";
+				echo "<li><a href=\"admin.php?page=log\">Log</a></li>";
+			}
+		?>
 		<li><a href="#">Notifications</a></li>                                    
 		<li><a href="?task=message">Messages</a></li>
 	</ul>
