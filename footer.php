@@ -1,3 +1,35 @@
+<script>
+    $("#submit_logout").click(function() {
+
+        $.post("api/?logout", 
+        {'email' : 'test@test.com'},
+        function(data) {
+                    
+            if(data.success){
+                //window.location.replace("index.php");
+                //$("#menubar").text("HELLO");
+                
+                
+                $("#user_menu").hide();
+                $("#guest_menu").show();
+                $("#left_menu").hide();
+                
+                window.location.replace("index.php");
+
+            }else{
+                alert('Error: ' + data.error);                                                        
+            }
+                    
+        })
+        .done(function() {  })
+        .fail(function() {  })
+        .always(function() {  },
+        "json");
+
+    });                                              
+</script>
+<!--</div>close div main-->
+
 <div id="footer">
 
     <div class="footer-holder">
@@ -19,7 +51,6 @@
 
 </div><!--close div footer-->
 
-</div><!--close div main-->
 
 
 </body>
