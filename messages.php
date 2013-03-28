@@ -1,63 +1,44 @@
-<button id="compose">Compose</button>
+<?php
+if (!isset($myId)) {
+    die('unauthorized access');
+}
+//echo $myId;
+?>
+
+
+<button id="compose" onclick='javascript:$("#all_messages").hide();$("#send_message").show();'>Compose</button>
 <button id="inbox">Inbox</button>
-<button id="sent">Sent</button>
 <br>
 <br>
 <div id="all_messages" style="display:block">
-
-    <table style="border: #000 dotted">
-        <tr>
-            <td width="100">From</td>
-            <td width="200">Subject</td>
-            <td>Date</td>
-        </tr>
-        <?php
-        for ($i = 0; $i < 5; $i++) {
-            ?>
-            <tr>
-                <td>xxx <?php echo $i ?></td>
-                <td>yyyy</td>
-                <td>11-11-2013</td>
-            </tr>
-            <?php
-        }
-        ?>
-
-    </table>
 </div>
 
 <div id="send_message" style="display:none">
 
-    <form action="index.php" id="login" method="post">
+    <form method="post">
         To: <br />
-        <input name="email" type ="emil"> <br /> <br />
+        <input name="to" id="to" type ="text"> <br /> <br />
         Subject: <br />
-        <input name ="subject" type="text"> <br /> <br />
+        <input name ="subject" id="subject" type="text"> <br /> <br />
         Body: <br />
-        <textarea name="msg" cols="60" rows="20"></textarea> <br />
-        <input type="button" name="submit" value="Send"> &nbsp; <input type="button" name="cancel" value="Cancel">
+        <textarea name="text" id="text" cols="40" rows="5"></textarea> <br />
+        <input type="button" name="sendmail" id="sendmail" value="Send"> &nbsp; <input type="button" name="cancel" value="Cancel">
     </form>
 </div>
-
+<div id="dictionary"></div>
 
 <script>
-    $("#compose").click(function() {
-
+    $("#sendmail").click(function() {
         $("#all_messages").hide();
         $("#send_message").show();
-//        $("#left_menu").hide();
+        //        $("#left_menu").hide();
 
-        return;
-        $.post("api/?logout", 
-        {'email' : 'test@test.com'},
+        $.post("api/?sendMail", 
+        {'to' : $("#to").val(),'subject' : $("#subject").val(),'text' : $("#text").val()},
         function(data) {
                     
             if(data.success){
-                //window.location.replace("index.php");
-                //$("#menubar").text("HELLO");
-                $("#user_menu").hide();
-                $("#guest_menu").show();
-                $("#left_menu").hide();
+                alert('Message Sent!'+ data.error);
 
             }else{
                 alert('Error: ' + data.error);                                                        
@@ -76,19 +57,27 @@
 
         $("#all_messages").show();
         $("#send_message").hide();
-//        $("#left_menu").hide();
 
-        return;
-        $.post("api/?logout", 
-        {'email' : 'test@test.com'},
+        $.post("api/?getDialogs", 
+        {},
         function(data) {
                     
             if(data.success){
+                $('#all_messages').html('');
                 //window.location.replace("index.php");
                 //$("#menubar").text("HELLO");
-                $("#user_menu").hide();
-                $("#guest_menu").show();
-                $("#left_menu").hide();
+                var html = '<table style="border:1px solid #000; "><tr><td width="100">From</td><td width="200">Subject</td><td>Message</td><td>Date</td></tr>';
+
+                $.each(data.dialogs, function(entryIndex, entry) {
+                    //                    html += 'place ' + entryIndex + '<br/>';
+                    html += '<tr>';
+                    html += '<td>' + entry.fromId + '</td>';
+                    html += '<td>' + entry.subject + '</td>';
+                    html += '<td>' + entry.text + '</td>';
+                    html += '<td>' + entry.created + '</td>';
+                });
+                html += '</table>';
+                $('#all_messages').append($(html));
 
             }else{
                 alert('Error: ' + data.error);                                                        

@@ -543,7 +543,7 @@ div.more a {color:#0054a6;}
 	text-align:left !important;
 }
 .content {
-	width:655px;
+	width:735px;
 	float:right;
 	overflow:hidden;
 }
@@ -661,16 +661,13 @@ div.more a {color:#0054a6;}
 /*contaner*/
 .contaner {
 	float:left;
-	width:787px;
 	background:url(../images/container.gif) repeat-y;
 }
 .contaner-top {
 	background:url(../images/container-top.gif) no-repeat;
-	width:787px;
 }
 #page .contaner-top {background:url(../images/container-top-alt.gif) no-repeat;}
 .contaner-bottom {
-	width:787px;
 	background:url(../images/container-bottom.gif) no-repeat 0 100%;
 	padding:8px 0 10px;
 	overflow:hidden;
@@ -679,7 +676,6 @@ div.more a {color:#0054a6;}
 /*content*/
 .content {
 	float:right;
-	width:587px;
 	overflow:hidden;
 	position:relative;
 }
@@ -1119,7 +1115,7 @@ div.more a {color:#0054a6;}
 	white-space:nowrap;
 }
 .breadcrumbs li a {color:#8f8f8f;}
-.content-text {
+.column-text {
 	padding:0 16px 6px 0;
 }
 .title h1 {

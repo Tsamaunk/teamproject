@@ -1,14 +1,20 @@
 <!-- column -->
-<div class="column" id="left_menu" style="display: <?php
+
+
+<div class="column">
+<div class="column" id="left_menu" style="width:200px;display: <?php
 		if ($loggedin == 1)
 			echo "block"; else
 			echo "none";
 		?>">
+    
+    
+    
 	<!-- column-links -->
 	<!-- column-links -->
-	<br /> <br /> <br /> <br /> <br />
+	<!-- <br /> <br /> <br /> <br /> <br /> -->
 	<ul class="column-links-alt"><br>
-		<li><a href="?">Home</a></li>
+		<li><a href="index.php">Home</a></li>
 		<li><a href="admin.php">Profile</a></li>
 		<li><a href="#">Calendar</a></li>
 		<li><a href="admin.php?page=myschedule">My Schedule</a></li>
@@ -20,6 +26,7 @@
 			}
 		?>
 		<li><a href="#">Notifications</a></li>                                    
-		<li><a href="?task=message">Messages</a></li>
+		<li><a href="index.php?task=message">Messages</a></li>
 	</ul>
+</div>
 </div>

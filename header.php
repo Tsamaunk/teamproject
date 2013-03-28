@@ -17,22 +17,24 @@ if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validTo
         <script type="text/javascript" src="js/jquery.validate.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Department of Residential Life- University at Albany - SUNY </title>
-        <link rel="stylesheet" href="css/html_all_2.css" type="text/css"  />	
-        <link rel="stylesheet" href="css/html_all_2_print.css" media="print" type="text/css" />
+        <link rel="stylesheet" href="css/full.css" type="text/css"  />        
         <link rel="stylesheet" href="css/assessment_icon.css" type="text/css"  />        
         <link rel="stylesheet" href="css/adminConsole.css" type="text/css"  />
     </head>
-    
+
     <body>
 
-    <!--main container-->
-    <div id="main">
-        <!-- header start -->
-        <!--header-->
-        <div id="header">
-            <div class="header-holder">
-                <strong class="logo"><img src="" alt="" /></strong>
-            </div>
-            <!-- header end -->
-            <!-- content holder start-->
-            <div id="content">
+        <!--main container-->
+        <div id="main" style="height:600px">
+            <!-- header start -->
+            <!--header-->
+            <div id="header">
+                
+                
+                
+                <div class="header-holder">
+                    <strong class="logo"><a href="index.php"><img src="images/Header_UAlbany_Banner_Logo_Standard.gif" alt="University At Albany" /> </a> </strong>
+                </div>
+                <!-- header end -->
+                <!-- content holder start-->
+                <div id="content">

@@ -3,17 +3,17 @@ include_once 'header.php';
 include_once 'topbar.php'; ?>
 
 
-                <div class="contaner-bottom">
+                <div class="contaner-bottom" style="border:0px dotted #555;">
                     <!--<div class="column-links-alt">-->
                     <?php include_once 'sidebar.php'; ?>
 
                     <!--</div>-->
                     <!-- content -->
-                    <div class="content">
+                    <div class="content" style="border:0px dotted #ccc;">
 
                         <div class="content-box">
                             <h1>Project Switch</h1>
-                            <p class="intro">Welcome to the Department of Residential Life!   </p>
+                            <p class="intro">Department of Residential Life</p>
 
                             <?php
                             if ($_GET['task'] == "") {
@@ -21,9 +21,9 @@ include_once 'topbar.php'; ?>
 
 
                                 <!-- text-box -->
-                                <div class="text-box" style="align: left">
+                                <div class="text-box" >
                                     <div id="login_form" style="display: none">
-                                        <form action="index.php" id="login" method="post">
+                                        <form id="login" method="post">
                                             E-mail:<br />
                                             <input name="email" id="email" type="text" /><br />
                                             Password:<br />
@@ -35,22 +35,17 @@ include_once 'topbar.php'; ?>
 
                                     <div id="signup_form" style="display:none">
                                         <form id="signup" method="post" >
-                                            <span style="float: left">                                                    
                                                 First Name:<br />
                                                 <input type="text" name="SU_firstName" id="SU_firstName" /><br />
                                                 Password:<br />
                                                 <input type="password" name="SU_password" id="SU_password" /><br />                                                        
                                                 E-mail:<br />
                                                 <input type="text" name="SU_email" id="SU_email" /><br />                                                    
-                                            </span>
-               
-                                            <span style="float: right">
                                                 Last Name:<br />
                                                 <input type="text" name="SU_lastName" id="SU_lastName" /><br />                                                        
                                                 Confirm Password:<br />
                                                 <input type="password" name="SU_cpass" id="SU_cpass" /><br />
-                                                <input type="button" name="submit" id="submit_signup" value="Sign Up"" />
-                                            </span><br />                                                                                                        
+                                                <input type="button" name="submit" id="submit_signup" value="Sign Up" />
                                         </form>
                                     </div>
 
@@ -76,6 +71,8 @@ include_once 'topbar.php'; ?>
                                                     $("#login_form").hide();
                                                     $("#user_menu").show();
                                                     $("#left_menu").show();
+                                                    window.location.reload();
+                                                    
                                                 }else{
                                                     alert('Error: ' + data.error);                                                        
                                                 }
@@ -158,38 +155,9 @@ include_once 'topbar.php'; ?>
 <!--footer-->
 
 <div style="clear:both"></div>
-<br /> <br /><br /> <br /><br /> <br />
+<!--<br /> <br /><br /> <br /><br /> <br />-->
 
-<script>
-    $("#submit_logout").click(function() {
 
-        $.post("api/?logout", 
-        {'email' : 'test@test.com'},
-        function(data) {
-                    
-            if(data.success){
-                //window.location.replace("index.php");
-                //$("#menubar").text("HELLO");
-                
-                
-                $("#user_menu").hide();
-                $("#guest_menu").show();
-                $("#left_menu").hide();
-                
-                window.location.replace("index.php");
-
-            }else{
-                alert('Error: ' + data.error);                                                        
-            }
-                    
-        })
-        .done(function() {  })
-        .fail(function() {  })
-        .always(function() {  },
-        "json");
-
-    });                                              
-</script>
 
 
 <?php
