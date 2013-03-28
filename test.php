@@ -13,14 +13,26 @@
 	include 'base.php';
 	
 	
-	$message = new stdClass();
+	$con = new Controller();
+	
+	//$message = new stdClass();
 	/*$message -> fromId = 3;
 	$message -> toId = 1;
 	$message -> subject = "Hey";
 	$message -> text = "Great, how's yours???";
 	*/
 	
-	$cnt = new Controller();
+	$message = new stdClass();
+	$message->fromId = 1;
+	$message->toId = 2;
+	$message->subject = $_POST['subject'] ? $_POST['subject'] : 'No subject';
+	$message->text= "This is the end";
+	$con->connect();
+	$con->addMessage($message);
+	var_dump(mysql_error());
+	$con->close();
+	
+	/*$cnt = new Controller();
 	$cnt->connect();
 	$res = $cnt->getMyDialogs(1);
 	//$cnt->addMessage($message);
@@ -41,15 +53,15 @@
 	}
 		
 	var_dump($dialogs);
-	
+	*/
 	
 	$hlp = new Helper();
-	$_SESSION['userId'] = 1;
+	/*$_SESSION['userId'] = 1;
 	$_SESSION['userRole'] = 2;
 	$_SESSION['userToken'] = $hlp->createUserToken($_SESSION['userId']);
 	 	
 	var_dump($_SESSION['userToken']);
-	
+	*/
 	
 		
 	?>

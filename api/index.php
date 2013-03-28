@@ -139,7 +139,7 @@
 		}
 		$message = new stdClass();
 		$message->fromId = $myId;
-		$message->to = $_POST['to'];
+		$message->toId = $_POST['to'];
 		$message->subject = $_POST['subject'] ? $_POST['subject'] : 'No subject';
 		$message->text= $_POST['text'];
 		$con->connect();
