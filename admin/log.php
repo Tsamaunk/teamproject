@@ -10,7 +10,7 @@ $con->close();
 
 <h1>Log</h1>
 
-<table style="width: 95%;">
+<table style="width: 95%;" id="usersTable">
 	<tr>
 		<th style="text-align: left; width: 10%;">ID</th>
 		<th style="text-align: left; width: 40%;">Event</th>

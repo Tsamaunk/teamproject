@@ -25,7 +25,7 @@ if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validTo
     <body>
 
         <!--main container-->
-        <div id="main" style="height:600px">
+        <div id="main" style="min-height:600px">
             <!-- header start -->
             <!--header-->
             <div id="header">

@@ -1,4 +1,6 @@
-
+#adminConsole {
+	width: 100%;
+}
 #adminConsole label {
 	display: inline-block;
 	width: 180px;
@@ -6,18 +8,27 @@
 	margin-right: 10px;
 }
 
-form input[type=text],
-form input[type=email],
-form input[type=password] {
+input[type=text],
+input[type=email],
+input[type=password] {
 	padding:4px;
 	border-width: 1px;
 }
 
-form button {
+button {
 	margin-top:6px;
 	border-radius: 5px;
-	padding:4px 10px;
+	padding:6px 15px;
+	min-width:100px;
+	border-width: 1px;
+	font-weight: bold;
 }
+
+button:hover {
+	color:#fff;
+	background-color: #6d4391;
+	cursor: pointer;
+	}
 
 #adminConsole select {
 	border-radius: 5px;
@@ -36,22 +47,26 @@ form button {
 #adminConsole #calendar span.date {
 	font-size:1.1em;
 	color:white;
-	background-color: black;
+	background-color: #333;
 	padding: 1px 3px;
 	font-weight: bold;
 }
 
 #adminConsole #calendar .rd {
 	color:white;
-	background-color: navy;
+	background-color: #6d4391;
 	padding: 1px 3px;
 	font-weight: bold;
 	display:block;
 }
 
+#adminConsole #calendar .rd a {
+	color:#fff;
+}
+
 #adminConsole #calendar .ra {
 	color:black;
-	background-color: yellow;
+	background-color: #eeb111;
 	padding: 1px 3px;
 	display:block;
 }
@@ -93,3 +108,8 @@ form button {
 	font-size: 1.1em;
 	padding-bottom: 20px;
 }
+
+#adminConsole #usersTable th {
+	padding-top:10px;
+	border-bottom: 1px #333 solid;
+} 

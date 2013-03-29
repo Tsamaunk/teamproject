@@ -68,7 +68,7 @@ $users = $con->getAllUsers();
 
 <h1>Manage users</h1>
 
-<a href="javascript:createUser();">Create user</a>
+<button type="button" onclick="javascript:createUser();">Create user</button>
 
 <div id="createUserForm" style="display:none;">
 	<form method="post" action="?page=users">
@@ -91,10 +91,11 @@ $users = $con->getAllUsers();
 		<input type="password" id="pasw2" value="" /> <label id="dontmatch" style="display:none;">Passwords don't match!</label><br />	
 		<label></label>
 		<button type="button" onclick="javascript:submitForm();" >Create</button>
+		<button type="button" onclick="javascript:location.reload();" >Cancel</button>
 	</form>
 </div>
 
-<table style="width: 95%;">
+<table style="width: 95%;" id="usersTable">
 	<tr>
 		<th style="text-align:left; width:10%;">ID</th>
 		<th style="text-align:left; width:17%;">Name</th>
@@ -219,6 +220,7 @@ $users = $con->getAllUsers();
 	
 	function createUser() {
 		$("#createUserForm").fadeIn(200);
+		$("#usersTable").hide();
 	}
 
 	var allowPost = true;
