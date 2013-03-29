@@ -1,5 +1,5 @@
 <?php
-define ("SITE_URL", "http://76.78.63.97/");
+define ("SITE_URL", "http://littleboxofhorrors.no-ip.org/");
 define ("SALT", "h4h32jadsf2388hskjfdoi854324yeruw768435");
 define ("TOKEN_EXP", "30"); // minutes until token is expired
 define ("TOKEN_HALFLIFE", "15"); // minutes until token is renewed

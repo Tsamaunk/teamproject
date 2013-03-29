@@ -58,7 +58,7 @@
 	?>
 	
 	<script>
-		$(document).ready(function(){
+		$(documentsadf).ready(function(){
 	        $.post("api/?signup", {'email':'himor.cre@gmail.com', 'password':'password', 'firstName':'Mike', 'lastName':'Gordo'},
 	                function(data){
 	                        if(!data.success){

@@ -6,7 +6,7 @@
 		
 		private $subject;
 		private $address;
-		private $from = "Project Switch <noreply@albany.edu>";
+		private $from;
 		private $content;
 		
 		/**
@@ -29,6 +29,10 @@
 			// Open connection to database
 			$con = new Controller();
 			$con->connect();
+			
+			$rd = $con->getSetting('rd_1');
+			$rd = $con->getUserById($rd->intVal);
+			$this->from = $rd->firstName . ' ' . $rd->lastName . ' <' . $rd->email . '>';
 
 			switch ($type) {
 				case 1:
