@@ -2,14 +2,13 @@
 include_once 'header.php';
 include_once 'topbar.php'; ?>
 
-
-                <div class="contaner-bottom" style="border:0px dotted #555;">
+                <div class="contaner-bottom">
                     <!--<div class="column-links-alt">-->
                     <?php include_once 'sidebar.php'; ?>
 
                     <!--</div>-->
                     <!-- content -->
-                    <div class="content" style="border:0px dotted #ccc;">
+                    <div class="content">
 
                         <div class="content-box">
                             <h1>Project Switch</h1>
@@ -141,23 +140,15 @@ include_once 'topbar.php'; ?>
 
                             </div>
                             <!-- frame-box -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- container end -->
-    </div>
-</div>
-</div>
-<!-- content holder end-->
-<!--footer-->
-<!--footer-->
+                        </div> <!-- content-box -->
+                    </div> <!-- content -->
+                </div> <!-- container-bottom -->
+                
+            </div> <!-- content ----- was open in header -->
+        </div> <!-- header ----- was open in header -->
+        
 
-<div style="clear:both"></div>
-<!--<br /> <br /><br /> <br /><br /> <br />-->
-
-
+<div style="clear:both;"></div>
 
 
 <?php

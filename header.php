@@ -26,11 +26,8 @@ if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validTo
 
         <!--main container-->
         <div id="main" style="min-height:600px">
-            <!-- header start -->
-            <!--header-->
-            <div id="header">
-                
-                
+
+        	<div id="header">
                 
                 <div class="header-holder">
                     <strong class="logo"><a href="index.php"><img src="images/Header_UAlbany_Banner_Logo_Standard.gif" alt="University At Albany" /> </a> </strong>

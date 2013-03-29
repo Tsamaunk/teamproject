@@ -20,6 +20,6 @@
             <a href="#" id="submit_logout"><b>Log Out</b></a>
             <!--<input type="button" name="submit"  value="Log Out" />-->
         </div>
-        
+    </div>  
 </div>
 
