@@ -106,8 +106,8 @@
 		$token = $hlp -> makeToken($token, $result, 'confirmMailToken');
 		$mailer = new Mailer();
 		$mailer -> compose (1, $token);
-		$mailer -> mail();
-		echo json_encode(array('success' => true, 'error' => null, 'userId' => $result));
+		$crap = $mailer -> mail(false);
+		echo json_encode(array('success' => true, 'error' => null, 'userId' => $result, 'output' => $crap));
 		exit;		
 	}
 	

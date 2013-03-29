@@ -6,7 +6,7 @@
 		
 		private $subject;
 		private $address;
-		private $from = "Project Switch <noreply@none.com>";
+		private $from = "Project Switch <noreply@albany.edu>";
 		private $content;
 		
 		/**
@@ -121,12 +121,11 @@
 
 			// for testing purposes - just print the content on the screen
 			if ($test) {
-				echo "<pre>";
-				echo "Address: " . $this->address;
-				echo "From: " . $this->from;
-				echo "Subject: " . $this->subject;
-				echo "Content: " . $this->content;
-				die();
+				$str = "Address: " . $this->address;
+				$str .= "From: " . $this->from;
+				$str .= "Subject: " . $this->subject;
+				$str .= "Content: " . $this->content;
+				return $str;
 			} else {
 				$headers  = 'MIME-Version: 1.0' . "\r\n";
 				$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
@@ -134,6 +133,7 @@
 				'Reply-To: ' . $this->from . "\r\n" .
 				'X-Mailer: PHP/' . phpversion();
 				mail($this->address, $this->subject, $this->content, $headers);
+				return "";
 			}
 			
 		}

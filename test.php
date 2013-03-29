@@ -59,15 +59,12 @@
 	
 	<script>
 		$(document).ready(function(){
-	        $.post("api/?getUserList", {},
+	        $.post("api/?signup", {'email':'mgordo@live.com', 'password':'password', 'firstName':'Mike', 'lastName':'Gordo'},
 	                function(data){
 	                        if(!data.success){
 	                                alert('error: ' + data.error);                                                        
 	                                } else {
-		                                var str = "";
-		                                for(i = 0; i<data.size; i++)
-	                                    	str += data.users[i].id + " - " + data.users[i].name + "\n";
-	                                    alert(str);
+	                                    alert(data.output);
 	                                }    
 	        });                                                                    
 	                        
