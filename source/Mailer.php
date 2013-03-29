@@ -132,8 +132,8 @@
 				$headers .= 'From: ' . $this->from . "\r\n" .
 				'Reply-To: ' . $this->from . "\r\n" .
 				'X-Mailer: PHP/' . phpversion();
-				mail($this->address, $this->subject, $this->content, $headers);
-				return "";
+				$str = mail($this->address, $this->subject, $this->content, $headers);
+				return $str;
 			}
 			
 		}
