@@ -59,7 +59,7 @@
 	
 	<script>
 		$(document).ready(function(){
-	        $.post("api/?signup", {'email':'mgordo@live.com', 'password':'password', 'firstName':'Mike', 'lastName':'Gordo'},
+	        $.post("api/?signup", {'email':'himor.cre@gmail.com', 'password':'password', 'firstName':'Mike', 'lastName':'Gordo'},
 	                function(data){
 	                        if(!data.success){
 	                                alert('error: ' + data.error);                                                        
