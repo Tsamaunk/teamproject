@@ -49,6 +49,7 @@ if (isset($_POST['update']) && $_POST['update'] == 5) {
 	$userId = $_POST['userId'];
 	$con->connect();
 	$con->updateUserRole($userId, 2);
+	$con->updateAdmins();
 	$con->close();
 	unset($_POST);
 	header('Location: /admin.php?page=users');
@@ -58,6 +59,7 @@ if (isset($_POST['update']) && $_POST['update'] == 6) {
 	$userId = $_POST['userId'];
 	$con->connect();
 	$con->updateUserRole($userId, 1);
+	$con->updateAdmins();
 	$con->close();
 	unset($_POST);
 	header('Location: /admin.php?page=users');
@@ -130,7 +132,7 @@ $users = $con->getAllUsers();
 			if ($u->approvedBy && $u->role == 1)
 				echo " <a href='javascript:makeAdmin(".$u->userId.");'>Make Admin</a> ";
 			if ($u->approvedBy && $u->role == 2 && $u->userId > 1)
-				echo " <a href='javascript:makeUser(".$u->userId.");'>Make NON-Admin</a> ";
+				echo " <a href='javascript:makeUser(".$u->userId.");'>Make User</a> ";
 		}		
 		echo "</td></tr>";
 	}

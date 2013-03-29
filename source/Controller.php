@@ -259,7 +259,7 @@ class Controller {
 	 * type = 1 - INTEGER, 2 - STRING
 	 */
 	public function setSetting($name, $value, $type = 1) {
-		$sql = "SELECT COUNT(id) as c FROM `setting` WHERE `setting` = '$name';";
+		$sql = "SELECT id as c FROM `setting` WHERE `setting` = '$name';";
 		$result = $this->mod->query($sql);
 		$result = mysql_fetch_row($result);
 		$exists = $result[0] > 0;
@@ -272,6 +272,19 @@ class Controller {
 					('$name', '$value');";
 			return $this->mod->query($sql);
 		}
+	}
+	
+	/**
+	 * updates admin settings in the DB
+	 */
+	public function updateAdmins() {
+		$users = $this->getAllAliveUsers();
+		$total = 0;
+		foreach ($users as $user) {
+			if ($user->role == 2)
+				$this->setSetting('rd_' . ++$total, $user->userId);
+		}
+		$this->setSetting('numberOfRd', $total);
 	}
 
 	// =============================================================================================
