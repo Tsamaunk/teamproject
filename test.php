@@ -22,15 +22,6 @@
 	$message -> text = "Great, how's yours???";
 	*/
 	
-	$message = new stdClass();
-	$message->fromId = 1;
-	$message->toId = 2;
-	$message->subject = $_POST['subject'] ? $_POST['subject'] : 'No subject';
-	$message->text= "This is the end";
-	$con->connect();
-	$con->addMessage($message);
-	var_dump(mysql_error());
-	$con->close();
 	
 	/*$cnt = new Controller();
 	$cnt->connect();
@@ -67,14 +58,17 @@
 	?>
 	
 	<script>
-		$(documentdd).ready(function(){
-	        $.post("api/?getDialogById", {'userId':'2'},
+		$(document).ready(function(){
+	        $.post("api/?getUserList", {},
 	                function(data){
 	                        if(!data.success){
 	                                alert('error: ' + data.error);                                                        
-	                                }else{
-	                                        alert(data.dialog[0].created);
-	                                        }    
+	                                } else {
+		                                var str = "";
+		                                for(i = 0; i<data.size; i++)
+	                                    	str += data.users[i].id + " - " + data.users[i].name + "\n";
+	                                    alert(str);
+	                                }    
 	        });                                                                    
 	                        
 			});

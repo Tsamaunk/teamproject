@@ -3,8 +3,8 @@ html{font-size: 62.5%;}
 body{
 	font: 1.3em/1.289em Arial, Helvetica, sans-serif;
 	margin:0;
-	background:url(../images/body.gif) repeat-x;
-	color:#636363;
+	background:#f7f7f7 url(../images/body.gif) repeat-x;
+	color:#333;
 }
 img {border-style:none;}
 a {

@@ -11,6 +11,7 @@
 <a href="#signup">signup</a>
 <a href="#lost_password">lost_password</a>
 <a href="#getUser">getUser</a>
+<a href="#getUserList">getUserList</a>
 <a href="#sendMail">sendMail</a>
 <a href="#getDialogs">getDialogs</a>
 <a href="#getDialogById">getDialogById</a>
@@ -137,6 +138,18 @@ POST Parameters:
 RESPONSE:
 	{"success": true / false,
 	"error": error message}	
+
+<a name="getUserList"></a>	
+<span style="background-color:#000;color:#fff;"><b>/api/?getUserList</b></span>
+function returns list of all active users except for myself
+POST Parameters:
+	none
+RESPONSE:
+	{"success": true / false,
+	"error": error message,
+	"users": array of users(id, name),
+	"size": size of the users array}	
+	
 	
 </pre>
 </body>

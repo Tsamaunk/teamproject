@@ -205,6 +205,18 @@
 		exit;
 	}
 	
+	if (isset($_GET['getUserList'])) {
+		$con->connect();
+		$users = $con->getAllAliveUsers();
+		$con->close();
+		$output = array();
+		foreach ($users as $u)
+			if ($u->userId != $myId)
+				$output[] = array('id' => $u->userId, 'name' => $u->firstName . " " . $u->lastName);
+		echo json_encode(array('success' => true, 'users' => $output, 'size' => count($output)));
+		exit;
+	}
+	
 	// ==================================
 	//			SWITCHES
 	// ==================================
