@@ -79,7 +79,7 @@
 		$mailer->compose(3, $token);
 		$mailer->mail();
 		echo "<pre>Congrats, user account has been confirmed.\n";
-		echo "User will be notified about it by his email address.\n";
+		echo "User will be notified about it.\n";
 		echo "No further action is required.\n";
 		echo "<a href='index.php'>main page</a>";
 		exit;
@@ -98,7 +98,8 @@
 		if (!$con->approveUser($token->raId1, $token->rdId, false)) die ('unknown error 97');	
 		$con->close();
 		echo "<pre>User account has been deleted.\n";
-		echo "User will NOT be notified about it by his email address.\n";
+		echo "It can be undeleted using <a href='admin.php?page=users'>admin console</a>.\n";
+		echo "User will NOT be notified about it.\n";
 		echo "No further action is required.\n";
 		echo "<a href='index.php'>main page</a>";
 		exit;
@@ -131,7 +132,7 @@
 			echo "<a href='index.php'>main page</a>";
 			exit;
 		} else {
-			if (isset($_POST['password'])) {echo "Password must be 6 letters or more!<br>";}
+			if (isset($_POST['password'])) {echo "Password must be 6 symbols or more!<br>";}
 			echo "<form method='post' action='token.php?token=".$token->token."'>";
 			echo "New Password: <input type='password' name='password'/>";			
 			echo "<button type='submit'>Submit</button>";

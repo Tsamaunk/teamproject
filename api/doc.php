@@ -15,7 +15,8 @@
 <a href="#sendMail">sendMail</a>
 <a href="#getDialogs">getDialogs</a>
 <a href="#getDialogById">getDialogById</a>
-<a href="#deleteDialog">deleteDialog</a></div>
+<a href="#deleteDialog">deleteDialog</a>
+<a href="#getCalendar">getCalendar</a></div>
 <div style="background-color:#fd7;padding:10px;"><h3>How do we check the session? (PHP CODE)</h3>Have this code in the beggining of your file: 
 &lt;?php 
 include_once 'base.php';	// THIS THE THE BACKEND CONNECTOR
@@ -150,6 +151,25 @@ RESPONSE:
 	"users": array of users(id, name),
 	"size": size of the users array}	
 	
+<a name="getCalendar"></a>	
+<span style="background-color:#000;color:#fff;"><b>/api/?getCalendar</b></span>
+function returns calendar - <b>DRAGONS AHEAD!!!!</b> NOT TESTED, MAY NOT WORK AT ALL
+NOTE: each day is accessible via day = calendar.&lt;month&gt;_&lt;day&gt;
+	day is an object
+	day.rd - is an object representing Director on Duty
+	day.ra - is an array of objects representing RAs
+	both: ra and rd have fields: id, userId, userName.
+EXAMPLE: to display the name of the first RA on duty on april, 29th:
+<i>calendar.4_29.ra[0].userName</i>
+POST Parameters:
+	month - integer [optional] 1-12, current - if not specified
+RESPONSE:
+	{"success": true / false,
+	"error": error message,
+	"calendar": array of days}
+NOTE:
+	firstDay - left upper corned of the calendar. If month starts on Sunday, firstDay = 0; if month starts on Tuesday, firstDay = -2
+	maxDays - number of days in this month
 	
 </pre>
 </body>

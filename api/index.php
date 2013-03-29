@@ -226,7 +226,33 @@
 	//			CALENDARS AND SCHEDULES
 	// ==================================
 	
-	
+	if (isset($_GET['getCalendar'])) {
+		$today = new DateTime();
+		$month = isset($_POST['month']) ? (int)$_POST['month'] : (int)$today->format('m');
+		
+		$firstDay = new DateTime($today->format('Y') . '-' . $month . '-1');
+		$maxDays = $firstDay->format('t');
+		$firstDay = $firstDay -> format('N');
+		if ($firstDay ==7) $firstDay = 0;
+		$firstDay = 1 - $firstDay;
+		
+		$con->connect();
+		$sch = $con->getSchedule($month);
+		$con->close();
+		
+		$cal = array();
+		foreach ($sch as $s) {
+			$assDate = new DateTime($s->assignedDate);
+			$ass = $assDate->format('m_d'); // date is month_day, 4_29
+			if ($s->type == 1)
+				$cal[$ass]['ra'][] = $s;
+			elseif($s->type == 2)
+				$cal[$ass]['rd'] = $s;
+		}
+		
+		echo json_encode(array('success' => true, 'calendar' => $cal, 'firstDay' => $firstDay. 'maxDays' => $maxDays));
+		exit;
+	}
 	
 
 ?>
