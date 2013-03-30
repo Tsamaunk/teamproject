@@ -99,11 +99,11 @@ $users = $con->getAllUsers();
 
 <table style="width: 95%;" id="usersTable">
 	<tr>
-		<th style="text-align:left; width:10%;">ID</th>
+		<th style="text-align:left; width:8%;">ID</th>
 		<th style="text-align:left; width:17%;">Name</th>
 		<th style="text-align:left; width:18%;">Email</th>
 		<th style="text-align:left; width:17%;">Approved by</th>
-		<th style="text-align:left; width:16%;">Registered</th>
+		<th style="text-align:left; width:18%;">Registered</th>
 		<th style="text-align:left; width:22%;">Options</th>
 	</tr>
 	<?php
