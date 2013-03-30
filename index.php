@@ -1,157 +1,232 @@
-<?php
-include_once 'header.php';
-include_once 'topbar.php'; ?>
+<?php 
 
-                <div class="contaner-bottom">
-                    <!--<div class="column-links-alt">-->
-                    <?php include_once 'sidebar.php'; ?>
+	// API INTERFACE
+	
+	header('Cache-Control: no-cache, must-revalidate');
+	header('Content-type: application/json');
+	
+	include_once '../base.php';
+	
+	$hlp = new Helper();
+	$con = new Controller();	
+	
+	// =========================================
+	// 			LOGIN   AND   SIGN UP
+	// =========================================
+	
+	if (isset($_GET['login'])) {
+		if(!$_POST['email'] || !$_POST['password']) {
+			echo json_encode(array('success' => false, 'error' => 'Please provide the Email address and Password.'));
+			exit;
+		}
+		$email = $_POST['email'];
+		$password = $_POST['password'];
+		$con->connect();
+		
+		$userExist = $con->checkUser($email);
+		
+		$user = $con->checkCredentials($email, $password);
+		$con->close();
+		if (!$user) {
+			echo json_encode(array('success' => false, 'error' => 'Incorrect email address / password or user is pending approval!'));
+			exit;
+		}
+		$_SESSION['userId'] = $user->userId;
+		$_SESSION['userRole'] = $user->role;
+		$_SESSION['userToken'] = $hlp->createUserToken($_SESSION['userId']);
+		echo json_encode(array('success' => true, 'error' => null));
+		exit;		
+	}
+	
+	if (isset($_GET['logout'])) {
+		unset($_SESSION['userId']);
+		unset($_SESSION['userToken']);
+		unset($_SESSION['userRole']);
+		echo json_encode(array('success' => true, 'error' => null));
+		exit;
+	}
+	
+	if (isset($_GET['lost_password'])) {
+		if(!$_POST['email']) {
+			echo json_encode(array('success' => false, 'error' => 'Please provide the Email address.'));
+			exit;
+		}
+		$con->connect();
+		$user = $con->getUserByEmail($_POST['email']);
+		$con->close();
+		$token = new stdClass();
+		$token -> type = 8;
+		$token -> raId1 = $user->userId;
+		$token = $hlp -> makeToken($token, $user->userId, 'lostPasswordToken');
+		$mailer = new Mailer();
+		$mailer -> compose (9, $token);
+		$mailer -> mail();
+		echo json_encode(array('success' => true, 'error' => null, 'userId' => $result));
+		exit;
+	}
+	
+	if (isset($_GET['signup'])) {
+		if(!$_POST['email'] || !$_POST['password']) {
+			echo json_encode(array('success' => false, 'error' => 'Please provide the Email address and Password.'));
+			exit;
+		}
+		if(!$_POST['firstName'] || !$_POST['lastName']) {
+			echo json_encode(array('success' => false, 'error' => 'Please provide First and Last name.'));
+			exit;
+		}
+		$user = new stdClass();
+		$user->firstName = $_POST['firstName'];
+		$user->lastName = $_POST['lastName'];
+		$user->email = $_POST['email'];
+		$user->password= $_POST['password'];
+		if(strlen($user->password) < 6) {
+			echo json_encode(array('success' => false, 'error' => 'Password is too short! Minimum 6 symbols.'));
+			exit;
+		}
+		if(!$con->validate($user->email)) {
+			echo json_encode(array('success' => false, 'error' => 'Email address is not valid.'));
+			exit;
+		}
+		$con->connect();
+		$userExists = $con->checkUser($user->email);
+		if ($userExists) {
+			$con->close();
+			echo json_encode(array('success' => false, 'error' => 'This email address is already registered!'));
+			exit;
+		}
+		$result = $con->createUser($user);
+		$con->close();
+		if (!$result) {
+			echo json_encode(array('success' => false, 'error' => 'Cannot registed user at this time.'));
+			exit;
+		}
+		$token = new stdClass();
+		$token -> type = 1;
+		$token -> raId1 = $result;
+		$token = $hlp -> makeToken($token, $result, 'confirmMailToken');
+		$mailer = new Mailer();
+		$mailer -> compose (1, $token);
+		$crap = $mailer -> mail(false);
+		echo json_encode(array('success' => true, 'error' => null, 'userId' => $result, 'output' => $crap));
+		exit;		
+	}
+	
+	// CHECK THE ACCESS
+	
+	if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validToken($_SESSION['userId'], $_SESSION['userToken'])) {
+		$myId = $_SESSION['userId'];
+	} else {
+		echo json_encode(array('success' => false, 'error' => 'Access denied: Invalid token, no token, or expired token.'));
+		exit;
+	}
+	
+	if (isset($_GET['getUser'])) {
+		$con->connect();
+		$user = $con->getUserById($myId);
+		$con->close();
+		unset($user->password);
+		echo json_encode(array('success' => true, 'error' => null, 'user' => $user));
+		exit;
+	}
+	
+	// ==================================
+	//			INTERNAL MAILING
+	// ==================================
+	if (isset($_GET['sendMail'])) {
+		if(!$_POST['to'] || !$_POST['text']) {
+			echo json_encode(array('success' => false, 'error' => 'You must specify the content of the message.'));
+			exit;
+		}
+		$message = new stdClass();
+		$message->fromId = $myId;
+		$message->toId = $_POST['to'];
+		$message->subject = $_POST['subject'] ? $_POST['subject'] : 'No subject';
+		$message->text= $_POST['text'];
+		$con->connect();
+		$con->addMessage($message);
+		$con->close();
+		echo json_encode(array('success' => true, 'error' => null));
+		exit;
+	}
+	
+	if (isset($_GET['getDialogs'])) {
+		$con->connect();
+		$res = $con->getMyDialogs($myId);
+		$ids = array();
+		$dialogs = array();
+		foreach ($res as $r) {
+			if($r->fromId == $myId && !in_array($r->toId, $ids)) {
+				$rt = $r;
+				$tempUser = $con->getUserById($r->toId);
+				$rt->name = $tempUser->firstName . ' ' . $tempUser->lastName;
+				$rt->created = $rt->created? date("h:i a m/d/y",$rt->created) : '';
+				$dialogs[] = $rt;
+				$ids[] = $r->toId;
+			}
+			if($r->toId == $myId && !in_array($r->fromId, $ids)) {
+				$rt = $r;
+				$tempUser = $con->getUserById($r->fromId);
+				$rt->name = $tempUser->firstName . ' ' . $tempUser->lastName;
+				$rt->created = $rt->created? date("h:i a m/d/y",$rt->created) : '';
+				$dialogs[] = $rt;
+				$ids[] = $r->fromId;
+			}
+		}
+		$con->close();
+		echo json_encode(array('success' => true, 'error' => null, 'dialogs' => $dialogs));
+		exit;
+	}
+	
+	if (isset($_GET['getDialogById'])) {
+		if(!$_POST['userId']) {
+			echo json_encode(array('success' => false, 'error' => 'You must specify the id  of the user.'));
+			exit;
+		}
+		$con->connect();
+		$res = $con->getDialog($myId, $_POST['userId'], $_POST['limit']);
+		$user = $con->getUserById($_POST['userId']);
+		$con->markDialogRead($_POST['userId'], $myId);
+		$con->close();
+		foreach ($res as $rt)
+			$rt->created = $rt->created? date("h:i a m/d/y",$rt->created) : '';
+		echo json_encode(array('success' => true, 'error' => null, 'dialog' => $res, 'name' => $user->firstName . ' ' . $user->lastName));
+		exit;
+	}
+	
+	if (isset($_GET['deleteDialog'])) {
+		if(!$_POST['userId']) {
+			echo json_encode(array('success' => false, 'error' => 'You must specify the id  of the user.'));
+			exit;
+		}
+		$con->connect();
+		$con->deleteDialog($myId, $_POST['userId']);
+		$con->close();
+		echo json_encode(array('success' => true, 'error' => null));
+		exit;
+	}
+	
+	if (isset($_GET['getUserList'])) {
+		$con->connect();
+		$users = $con->getAllAliveUsers();
+		$con->close();
+		$output = array();
+		foreach ($users as $u)
+			if ($u->userId != $myId)
+				$output[] = array('id' => $u->userId, 'name' => $u->firstName . " " . $u->lastName);
+		echo json_encode(array('success' => true, 'users' => $output, 'size' => count($output)));
+		exit;
+	}
+	
+	// ==================================
+	//			SWITCHES
+	// ==================================
+	
+	
+	// ==================================
+	//			CALENDARS AND SCHEDULES
+	// ==================================
+	
+	
+	
 
-                    <!--</div>-->
-                    <!-- content -->
-                    <div class="content">
-
-                        <div class="content-box">
-                            <h1>Project Switch</h1>
-                            <p class="intro">Department of Residential Life</p>
-
-                            <?php
-                            if ($_GET['task'] == "") {
-                                ?>
-
-
-                                <!-- text-box -->
-                                <div class="text-box" >
-                                    <div id="login_form" style="display: none">
-                                        <form id="login" method="post">
-                                            E-mail:<br />
-                                            <input name="email" id="email" type="text" /><br />
-                                            Password:<br />
-                                            <input name="password" id="password" type="password" /><br />
-                                            <input type="button" name="submit" id="submit_login" value="Login" />                                                      
-                                        </form>
-                                    </div>
-
-
-                                    <div id="signup_form" style="display:none">
-                                        <form id="signup" method="post" >
-                                                First Name:<br />
-                                                <input type="text" name="SU_firstName" id="SU_firstName" /><br />
-                                                Password:<br />
-                                                <input type="password" name="SU_password" id="SU_password" /><br />                                                        
-                                                E-mail:<br />
-                                                <input type="text" name="SU_email" id="SU_email" /><br />                                                    
-                                                Last Name:<br />
-                                                <input type="text" name="SU_lastName" id="SU_lastName" /><br />                                                        
-                                                Confirm Password:<br />
-                                                <input type="password" name="SU_cpass" id="SU_cpass" /><br />
-                                                <input type="button" name="submit" id="submit_signup" value="Sign Up" />
-                                        </form>
-                                    </div>
-
-
-
-
-                                    <p class="intro"><?php //echo $loggedin                      ?></p>
-                                    <div id="result"></div>
-
-                                    <? ?>
-
-                                    <script>
-                                        $("#submit_login").click(function() {
-
-                                            $.post("api/?login", 
-                                            {'email' : $("#email").val(), 'password' : $("#password").val()},
-                                            function(data) {
-                            
-                                                if(data.success){
-                                                    //window.location.replace("index.php");
-                                                    //$("#menubar").text("HELLO");
-                                                    $("#guest_menu").hide();
-                                                    $("#login_form").hide();
-                                                    $("#user_menu").show();
-                                                    $("#left_menu").show();
-                                                    window.location.reload();
-                                                    
-                                                }else{
-                                                    alert('Error: ' + data.error);                                                        
-                                                }
-                            
-                                            })
-                                            .done(function() {  })
-                                            .fail(function() {  })
-                                            .always(function() {  },
-                                            "json");
-
-                                        });                                              
-                                    </script>
-                                    <script>
-                                        $("#submit_signup").click(function() {
-                                            $("#signup").validate({
-                                                rules: {
-                                                    SU_password: {
-                                                        required: true, minlength: 6
-                                                    },
-                                                    SU_cpass: {
-                                                        required: true, 
-                                                        equalTo: password, 
-                                                        minlength: 6
-                                                    },
-                                                    SU_email: {
-                                                        required: true, 
-                                                        email: true
-                                                    },
-                                                    SU_firstName: {
-                                                        required: true
-                                                    },
-                                                    SU_lastName: {
-                                                        required: true
-                                                    }
-
-                                                }
-                                            });
-
-                                            $.post("api/?signup", 
-                                            {'email' : $("#SU_email").val(), 'password' : $("#SU_password").val(), 'firstName' : $("#SU_firstName").val(), 'lastName' : $("#SU_lastName").val()},
-                                            function(data) {
-                            
-                                                if(data.success){
-                                                    $("#result").html("You Are succesfully Registered and waiting for approval.");
-                                                    document.getElementById('signup').reset();
-                                                    $("#signup_form").hide();
-
-                                                }else{
-                                                    alert('Error: ' + data.error);                                                        
-                                                }
-                            
-                                            })
-                                            .done(function() {  })
-                                            .fail(function() {  })
-                                            .always(function() {  },
-                                            "json");
-
-                                        });                                              
-                                    </script>
-
-                                    <?php
-                                } else if ($_GET['task'] == "message" && $loggedin) {
-                                    include 'messages.php';
-                                }
-                                ?>
-
-                            </div>
-                            <!-- frame-box -->
-                        </div> <!-- content-box -->
-                    </div> <!-- content -->
-                </div> <!-- container-bottom -->
-                
-            </div> <!-- content ----- was open in header -->
-        </div> <!-- header ----- was open in header -->
-        
-
-<div style="clear:both;"></div>
-
-
-<?php
-include_once 'footer.php';
 ?>
-
