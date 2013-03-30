@@ -20,15 +20,10 @@ include_once 'topbar.php'; ?>
 <div class="contaner-bottom">
 <?php include_once 'sidebar.php'; ?>
 	<div class="content">
-	<style>
-	td a {
-		margin-right: 10px;
-	}
-	</style>
 	
 	<?php
 	
-
+// AUTHOR: MIKE GORDO mgordo@live.com 03/26/2013 changed by KaI.
 if (isset($_POST['update'])) {
 	$id = $_POST['id'];
 	$upd = $_POST['updType'];
@@ -77,7 +72,7 @@ foreach ($sch as $s) {
 }
 
 ?>
-<h1>Schedule</h1>
+<h1>Calendar</h1>
 
 <form id="selectMonth" method="post" action="?page=schedule">
 	<label style="width: 80px;">Month</label> <select name="month"
