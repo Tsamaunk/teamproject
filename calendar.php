@@ -115,7 +115,12 @@ foreach ($sch as $s) {
 			if ($cur['rd']) {
 				echo "<span id='spn_".$cur['rd']->id."' class='rd'>".($cur['rd']->userName)."</span>";
 			} else {
-				echo "<strong>DOD1: </strong></a><br>";
+				echo "<strong>DOD1: </strong></a><br><br>";
+				echo "<a href='#'>Duty Ra1</a><br>";
+		         	echo "<a href='#'>Duty Ra2</a><br>";
+			        echo "<a href='#'>Duty Ra3</a><br>";
+			        echo "<a href='#'>Duty Ra4</a><br>";
+			        echo "<a href='#'>Duty Ra5</a><br>";
 				
 			}
 
