@@ -42,6 +42,12 @@ $firstDay = 1-$firstDay;
 
 $sch = $con->getSchedule($month);
 
+// update names -> make them only First Name + one letter of Last Name
+foreach ($sch as $s) {
+	$name = $s->userName;
+	$s->userName = substr($name, 0, strpos($name, ' ')+2) . ".";
+}
+
 $cal = array();
 foreach ($sch as $s) {
 	if ($s->type == 1)
