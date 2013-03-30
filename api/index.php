@@ -250,7 +250,7 @@
 				$cal[$ass]['rd'] = $s;
 		}
 		
-		echo json_encode(array('success' => true, 'calendar' => $cal, 'firstDay' => $firstDay. 'maxDays' => $maxDays));
+		echo json_encode(array('success' => true, 'calendar' => $cal, 'firstDay' => $firstDay, 'maxDays' => $maxDays));
 		exit;
 	}
 	
