@@ -1,7 +1,7 @@
 <?php
-// AUTHOR: MIKE GORDO mgordo@live.com 03/26/20 changed by kai. 
+// AUTHOR: MIKE GORDO mgordo@live.com 03/26/2013 and changed by kai.
 if (isset($_POST['update'])) {
-  $id = $_POST['id'];
+	$id = $_POST['id'];
 	$upd = $_POST['updType'];
 	include_once '../base.php';
 	$con = new Controller();
@@ -31,9 +31,7 @@ if (!isset($myUser) || $myUser->role != 2) {
 $users = $con->getAllAliveUsers();
 
 $today = new DateTime();
-$month = isset($_POST['month']) ? (int)$_POST['month'] : (isset($_SESSION['month']) ? $_SESSION['month'] : (int)$today-
-
->format('m'));
+$month = isset($_POST['month']) ? (int)$_POST['month'] : (isset($_SESSION['month']) ? $_SESSION['month'] : (int)$today->format('m'));
 $_SESSION['month'] = $month;
 
 $firstDay = new DateTime($today->format('Y') . '-' . $month . '-1');
@@ -53,7 +51,7 @@ foreach ($sch as $s) {
 }
 
 ?>
-<h1>Calendar</h1>
+<h1>Schedule</h1>
 
 <form id="selectMonth" method="post" action="?page=schedule">
 	<label style="width: 80px;">Month</label> <select name="month"
@@ -91,14 +89,23 @@ foreach ($sch as $s) {
 		if ($i>0) echo "<span class='date'>$i</span><br>";
 		$index = $today->format('Y') . '-' . ($month>9?$month:'0'.$month) . '-' . ($i > 9 ? $i : '0'.$i);
 		$cur = $cal[$index];
-			show DOD<br>";
 
+		if ($cur) {
+			if ($cur['rd']) {
+				echo "<span id='spn_".$cur['rd']->id."' class='rd'>".($cur['rd']->userName)."</span>";
+			} else {
+				echo "<a href='javascript:addDir(\"$index\");'><strong>Add Director</strong></a><br>";
+			}
 
+			if (count($cur['ra'])) {
+				foreach ($cur['ra'] as $cu)
+				echo "<span id='spn_".$cu->id."' class='ra'>".($cu->userName)."</span>";
+			}
 
-                        show Ra</a><br>";
+			echo "<a href='javascript:addRa(\"$index\");'>Add RA on duty</a><br>";
 		} elseif ($i>0) {
-			echo show DOD<br>";
-			show ra</a><br>";
+			echo "<a href='javascript:addDir(\"$index\");'><strong>Add Director</strong></a><br>";
+			echo "<a href='javascript:addRa(\"$index\");'>Add RA on duty</a><br>";
 		}
 		echo "</td>";
 		if (($k+1) % 7 == 0) echo "</tr>";
@@ -115,9 +122,7 @@ foreach ($sch as $s) {
 	<select id="select">
 		<?php
 			foreach ($users as $user) {
-				echo "<option value='".$user->userId."'>" . $user->firstName . ' ' . $user->lastName . 
-
-"</option>";
+				echo "<option value='".$user->userId."'>" . $user->firstName . ' ' . $user->lastName . "</option>";
 			}
 		?>
 	</select>
@@ -145,7 +150,42 @@ $(window).load(function(){
 	$('#field').css('top', ($(window).height()/2 - $('#field').height()/2)+'px');
 });
 
+function addRa(data2) {
+	type = 1;
+	data = data2;
+	$('#field .caption').text('Add new RA on duty');
+	$('#field .text').text('Who is going to be on duty on '+data2+'?');
+	$('#mask').fadeIn(300);
+	$('#field').fadeIn(300);
+}
 
+function addDir(data2) {
+	type = 2;
+	data = data2;
+	$('#field .caption').text('Add new director on duty');
+	$('#field .text').text('Who is going to be on duty on '+data2+'?');
+	$('#mask').fadeIn(300);
+	$('#field').fadeIn(300);
+}
+
+function execute() {
+	$.post('/admin/schedule.php', {update:1, updType:1, type: type, date: data, userId: $('#select').val()}, function(data){location.reload();});
+}
+
+function raDelete(id) {
+	$.post('/admin/schedule.php', {update:1, updType:3, id:id}, function(data){location.reload();});
+}
+
+function closeMask() {
+	$("#field").fadeOut(100);
+	$("#mask").fadeOut(100)
+}
+$(document).keyup(function(e) {
+  if (e.keyCode == 27) { 
+  		$("#field").fadeOut(100);
+		$("#mask").fadeOut(100);
+   }   // esc
+});
 
 
 </script>
