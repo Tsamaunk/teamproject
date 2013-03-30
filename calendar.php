@@ -127,7 +127,11 @@ foreach ($sch as $s) {
 			echo "<a href='#'>duty ra</a><br>";
 		} elseif ($i>0) {
 			echo "<strong>DoD: </strong></a><br>";
-			echo "<a href='#'>Duty Ra</a><br>";
+			echo "<a href='#'>Duty Ra1</a><br>";
+			echo "<a href='#'>Duty Ra2</a><br>";
+			echo "<a href='#'>Duty Ra3</a><br>";
+			echo "<a href='#'>Duty Ra4</a><br>";
+			echo "<a href='#'>Duty Ra5</a><br>";
 		}
 		echo "</td>";
 		if (($k+1) % 7 == 0) echo "</tr>";
