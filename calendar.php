@@ -53,9 +53,6 @@ if (isset($_POST['update'])) {
 }
 
 
-if (!isset($myUser) || $myUser->role != 2) {
-	die('unauthorized access');
-}
 
 $users = $con->getAllAliveUsers();
 
