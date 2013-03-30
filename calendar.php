@@ -51,7 +51,7 @@ foreach ($sch as $s) {
 }
 
 ?>
-<h1>Schedule</h1>
+<h1>Calendar</h1>
 
 <form id="selectMonth" method="post" action="?page=schedule">
 	<label style="width: 80px;">Month</label> <select name="month"
@@ -150,42 +150,7 @@ $(window).load(function(){
 	$('#field').css('top', ($(window).height()/2 - $('#field').height()/2)+'px');
 });
 
-function addRa(data2) {
-	type = 1;
-	data = data2;
-	$('#field .caption').text('Add new RA on duty');
-	$('#field .text').text('Who is going to be on duty on '+data2+'?');
-	$('#mask').fadeIn(300);
-	$('#field').fadeIn(300);
-}
 
-function addDir(data2) {
-	type = 2;
-	data = data2;
-	$('#field .caption').text('Add new director on duty');
-	$('#field .text').text('Who is going to be on duty on '+data2+'?');
-	$('#mask').fadeIn(300);
-	$('#field').fadeIn(300);
-}
-
-function execute() {
-	$.post('/admin/schedule.php', {update:1, updType:1, type: type, date: data, userId: $('#select').val()}, function(data){location.reload();});
-}
-
-function raDelete(id) {
-	$.post('/admin/schedule.php', {update:1, updType:3, id:id}, function(data){location.reload();});
-}
-
-function closeMask() {
-	$("#field").fadeOut(100);
-	$("#mask").fadeOut(100)
-}
-$(document).keyup(function(e) {
-  if (e.keyCode == 27) { 
-  		$("#field").fadeOut(100);
-		$("#mask").fadeOut(100);
-   }   // esc
-});
 
 
 </script>
