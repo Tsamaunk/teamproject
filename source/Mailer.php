@@ -49,8 +49,8 @@
 					$ra1 = $con->getUserById($token1->raId1);
 					$this->address = $rd->firstName . ' ' . $rd->lastName . ' <' . $rd->email . '>'; // FIRST LAST <EMAIL@DOMAIN>
 					$this->subject .= "User Confirmation Notification";
-					$this->content = "Dear " . $rd->firstName . ",<br><br>";
-					$this->content .= "User " . $ra1->firstName . " " . $ra1->lastName . " needs confirmation: <a href='" . SITE_URL . "token.php?token=" . $token1->token . "'>CONFIRM</a>  <a href='" . SITE_URL . "token.php?token=" . $token2->token . ">DENY</a><br><br>";
+					$this->content = "Dear " . $rd->firstName . ",\r\n";
+					$this->content .= "User " . $ra1->firstName . " " . $ra1->lastName . " needs confirmation: \r\n to confirm click " . SITE_URL . "token.php?token=" . $token1->token . "\r\n to deny click " . SITE_URL . "token.php?token=" . $token2->token . " \r\n";
 					break;
 				case 3:
 					$ra1 = $con->getUserById($token1->raId1);
