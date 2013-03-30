@@ -120,7 +120,7 @@ foreach ($sch as $s) {
 			if ($cur['rd']) {
 				echo "<span id='spn_".$cur['rd']->id."' class='rd'>".($cur['rd']->userName)."</span>";
 			} else {
-				echo "<a href='javascript:addDir(\"$index\");'><strong>Add Director</strong></a><br>";
+				echo "<a href='#'><strong>DOD: </strong></a><br>";
 			}
 
 			if (count($cur['ra'])) {
@@ -128,10 +128,10 @@ foreach ($sch as $s) {
 				echo "<span id='spn_".$cu->id."' class='ra'>".($cu->userName)."</span>";
 			}
 
-			echo "<a href='javascript:addRa(\"$index\");'>Add RA on duty</a><br>";
+			echo "<a href='#'>duty ra</a><br>";
 		} elseif ($i>0) {
-			echo "<a href='javascript:addDir(\"$index\");'><strong>Add Director</strong></a><br>";
-			echo "<a href='javascript:addRa(\"$index\");'>Add RA on duty</a><br>";
+			echo "<a href='#'><strong>DoD: </strong></a><br>";
+			echo "<a href='#'Duty Ra</a><br>";
 		}
 		echo "</td>";
 		if (($k+1) % 7 == 0) echo "</tr>";
