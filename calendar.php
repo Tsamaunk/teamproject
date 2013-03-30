@@ -115,7 +115,8 @@ foreach ($sch as $s) {
 			if ($cur['rd']) {
 				echo "<span id='spn_".$cur['rd']->id."' class='rd'>".($cur['rd']->userName)."</span>";
 			} else {
-				echo "<a href='#'><strong>DOD: </strong></a><br>";
+				echo "<strong>DOD1: </strong></a><br>";
+				
 			}
 
 			if (count($cur['ra'])) {
@@ -125,8 +126,8 @@ foreach ($sch as $s) {
 
 			echo "<a href='#'>duty ra</a><br>";
 		} elseif ($i>0) {
-			echo "<a href='#'><strong>DoD: </strong></a><br>";
-			echo "<a href='#'Duty Ra</a><br>";
+			echo "<strong>DoD: </strong></a><br>";
+			echo "<a href='#'>Duty Ra</a><br>";
 		}
 		echo "</td>";
 		if (($k+1) % 7 == 0) echo "</tr>";
