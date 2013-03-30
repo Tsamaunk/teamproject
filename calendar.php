@@ -27,21 +27,7 @@ include_once 'topbar.php'; ?>
 	</style>
 	
 	<?php
-	$con -> connect();
-	$myUser = $con->getUserById($myId);
-	$con -> close();
-
-	$page = isset($_GET['page']) ? $_GET['page'] : 'profile';
-
-	echo "<div id=\"adminConsole\" class=\"content-box\">\n";
-
-	if ($page == 'profile') include_once 'admin/profile.php';
-	if ($page == 'users') include_once 'admin/users.php';
-	if ($page == 'log') include_once 'admin/log.php';
-	if ($page == 'schedule') include_once 'admin/schedule.php';
-	if ($page == 'myschedule') include_once 'admin/myschedule.php';
-
-	echo "</div>\n";
+	
 
 	?>
 	</div>
