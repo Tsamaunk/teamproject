@@ -8,7 +8,9 @@ if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validTo
 } else {
     $loggedin = 0;
 }
-?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
     <head>
         <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -28,7 +30,7 @@ if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validTo
         	<div id="header">
                 
                 <div class="header-holder">
-                    <strong class="logo"><a href="index.php"><img src="images/Header_UAlbany_Banner_Logo_Standard.gif" alt="Project Switch" /> </a> </strong>
+                    <strong class="logo"><a href="index.php"><img src="images/Header_UAlbany_Banner_Logo_Standard.gif" alt="University At Albany" /> </a> </strong>
                 </div>
                 <!-- header end -->
                 <!-- content holder start-->
