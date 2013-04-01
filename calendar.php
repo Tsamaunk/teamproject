@@ -132,7 +132,7 @@ foreach ($sch as $s) {
 			echo "<br>";
 		} elseif ($i>0) {
 			echo "<br>";
-			<br>";
+			
 			echo "<br>";
 		}
 		echo "</td>";
