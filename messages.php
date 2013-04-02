@@ -6,10 +6,52 @@ if (!isset($myId)) {
 ?>
 
 
-<button id="compose" onclick='javascript:$("#active_users").show();$("#all_messages").hide();$("#send_message").show();'>Compose</button>
+<button id="compose" onclick='javascript:$("#active_users").show();$("#all_messages").hide();$("#send_message").show();$("#new_message").hide();'>Compose</button>
 <button id="inbox">Conversation</button>
 <br>
 <br>
+
+<script>
+    $(document).ready(function() {
+        $("#all_messages").show();
+        $("#send_message").hide();
+
+        $.post("api/?getDialogs", 
+        {},
+        function(data) {
+                    
+            if(data.success){
+                $('#all_messages').html('');
+                //window.location.replace("index.php");
+                //$("#menubar").text("HELLO");
+                var html = '<table style="border:0px ; "><tr><td width="100"><b>With</b></td><td width="150"><b>Subject</b></td><td width="50%"><b>Message</b></td><td width="110"><b>Date</b></td></tr>';
+
+                $.each(data.dialogs, function(entryIndex, entry) {
+                    //                    html += 'place ' + entryIndex + '<br/>';
+                    html += '<tr style="hover: color:#345;" onclick="getConversation('+entry.fromId+','+entry.toId+',20);">';
+                    //                    html += '<td>' + entry.fromId + '</td>';
+                    //                    html += '<td>' + entry.toId + '</td>';
+                    html += '<td>' + entry.name + '</td>';
+                    html += '<td>' + entry.subject + '</td>';
+                    html += '<td>' + entry.text + '</td>';
+                    html += '<td>' + entry.created + '</td>';
+                    html += '</tr>';
+                });
+                html += '</table>';
+                $('#all_messages').append($(html));
+
+            }else{
+                alert('Error: ' + data.error);                                                        
+            }
+                    
+        })
+        .done(function() {  })
+        .fail(function() {  })
+        .always(function() {  },
+        "json");
+
+    });
+</script>
 
 <div id="all_messages" style="display:block">
 </div>
@@ -63,7 +105,7 @@ if (!isset($myId)) {
 
                 html +='<button id="archive" onclick=\'javascript:getConversation('+uid+','+uid+');\'>Archive</button><br><br>';
 
-                html +='<table style="border:1px solid #000; "><tr><td width="150"><b>#</b></td><td width="150"><b>Subject</b></td><td width="40%"><b>Message</b></td><td width="110" nowrap><b>Date</b></td></tr>';
+                html +='<table style="border:0px ; "><tr><td width="150"><b>#</b></td><td width="150"><b>Subject</b></td><td width="40%"><b>Message</b></td><td width="110" nowrap><b>Date</b></td></tr>';
 
                 $.each(data.dialog, function(entryIndex, entry) {
                     //                    alert(entry.subject+' '+entry.text+' '+entry.created);
@@ -203,7 +245,7 @@ if (!isset($myId)) {
                 $('#all_messages').html('');
                 //window.location.replace("index.php");
                 //$("#menubar").text("HELLO");
-                var html = '<table style="border:1px solid #000; "><tr><td width="100"><b>With</b></td><td width="150"><b>Subject</b></td><td width="50%"><b>Message</b></td><td width="110"><b>Date</b></td></tr>';
+                var html = '<table style="border:0px ; "><tr><td width="100"><b>With</b></td><td width="150"><b>Subject</b></td><td width="50%"><b>Message</b></td><td width="110"><b>Date</b></td></tr>';
 
                 $.each(data.dialogs, function(entryIndex, entry) {
                     //                    html += 'place ' + entryIndex + '<br/>';
