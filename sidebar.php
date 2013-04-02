@@ -14,9 +14,8 @@
 	<!-- column-links -->
 	<!-- <br /> <br /> <br /> <br /> <br /> -->
 	<ul class="column-links-alt"><br>
-		<li><a href="index.php">Home</a></li>
-		<li><a href="admin.php">Profile</a></li>
 		<li><a href="calendar.php">Calendar</a></li>
+		<li><a href="admin.php">Profile</a></li>
 		<li><a href="admin.php?page=myschedule">My Schedule</a></li>
 		<?php 
 			if (isset($_SESSION['userRole']) && $_SESSION['userRole']==2) {

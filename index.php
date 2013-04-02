@@ -1,6 +1,10 @@
 <?php
 include_once 'header.php';
 include_once 'topbar.php';
+if ($loggedin) {
+	header('location: calendar.php');
+	exit;
+}
 ?>
 
 <div class="contaner-bottom">
@@ -28,7 +32,7 @@ include_once 'topbar.php';
                             <input name="email" id="email" type="text" /><br />
                             Password:<br />
                             <input name="password" id="password" type="password" /><br />
-                            <input type="button" name="submit" id="submit_login" value="Login" />                                                      
+                            <button type="button" name="submit" id="submit_login">Login</button>                                                      
                         </form>
                     </div>
 
@@ -45,7 +49,7 @@ include_once 'topbar.php';
                             <input type="password" name="SU_password" id="SU_password" /><br />                                                                                                        
                             Confirm Password:<br />
                             <input type="password" name="SU_cpass" id="SU_cpass" /><br />
-                            <input type="button" name="submit" id="submit_signup" value="Sign Up" />
+                            <button type="button" name="submit" id="submit_signup">Sign up</button>
                         </form>
                     </div>
 
@@ -65,14 +69,7 @@ include_once 'topbar.php';
                             function(data) {
                                 
                                 if(data.success){
-                                    //window.location.replace("index.php");
-                                    //$("#menubar").text("HELLO");
-                                    $("#guest_menu").hide();
-                                    $("#login_form").hide();
-                                    $("#user_menu").show();
-                                    $("#left_menu").show();
                                     window.location.reload();
-                                                        
                                 }else{
                                     alert('Error: ' + data.error);                                                        
                                 }
@@ -130,7 +127,14 @@ include_once 'topbar.php';
                             .always(function() {  },
                             "json");
 
-                        });                                              
+                        });
+
+						$(document).ready(function(){
+								$('#password').keyup(function(event) {
+								if (event.which == 13)
+									$("#submit_login").trigger('click');
+								})});
+                        
                     </script>
 
                     <?php
