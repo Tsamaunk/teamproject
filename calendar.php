@@ -22,7 +22,7 @@ include_once 'topbar.php'; ?>
 	
 	<?php
 	
-// AUTHOR: MIKE GORDO mgordo@live.com 03/26/2013 changed by KaI.
+// AUTHOR: MIKE GORDO mgordo@live.com 03/26/2013 changed by kisuk(kai) Yoo.
 
 $users = $con->getAllAliveUsers();
 
