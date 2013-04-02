@@ -254,5 +254,48 @@
 		exit;
 	}
 	
+	if (isset($_GET['addDay'])) {
+		$con->connect();
+		$user = $con->getUserById($myId);
+		$con->close();
+		if ($user->role != 2) {
+			echo json_encode(array('success' => false, 'error' => 'Access denied.'));
+			exit;
+		}
+		if(!$_POST['type'] || !$_POST['date'] || !$_POST['userId'] ) {
+			echo json_encode(array('success' => false, 'error' => 'You must specify userId, date and type.'));
+			exit;
+		}
+		$day = new stdClass();
+		$day->type = $_POST['type'];
+		$day->assignedDate = new DateTime($_POST['date']);
+		$day->userId = $_POST['userId'];
+		$con->connect();
+		$con->addDay($day);
+		$con->close();
+		echo json_encode(array('success' => true, $error => null));
+		exit;
+	}
+	
+	if (isset($_GET['removeDay'])) {
+		$con->connect();
+		$user = $con->getUserById($myId);
+		$con->close();
+		if ($user->role != 2) {
+			echo json_encode(array('success' => false, 'error' => 'Access denied.'));
+			exit;
+		}
+		$id = $_POST['id'];
+		if (!$id) {
+			echo json_encode(array('success' => false, 'error' => 'Incorrect number of parameters.'));
+			exit;
+		}
+		$con->connect();
+		$con->removeDay($id);
+		$con->close();
+		echo json_encode(array('success' => true, $error => null));
+		exit;
+	}
+	
 
 ?>

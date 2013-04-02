@@ -1,29 +1,5 @@
 <?php
 // AUTHOR: MIKE GORDO mgordo@live.com 03/26/2013
-if (isset($_POST['update'])) {
-	$id = $_POST['id'];
-	$upd = $_POST['updType'];
-	include_once '../base.php';
-	$con = new Controller();
-	if ($upd == 3) {
-		$con->connect();
-		$con->removeDay($id);		
-		$con->close();
-	}
-	if ($upd == 1) {
-		$day = new stdClass();
-		$day->type = $_POST['type'];
-		$day->assignedDate = new DateTime($_POST['date']);
-		$day->userId = $_POST['userId'];
-		$con->connect();
-		$con->addDay($day);
-		$con->close();
-	}
-	echo "ok";
-	exit;
-}
-
-
 if (!isset($myUser) || $myUser->role != 2) {
 	die('unauthorized access');
 }
@@ -133,6 +109,8 @@ foreach ($sch as $s) {
 		?>
 	</select>
 	<button type="button" onclick="javascript:execute();">Submit</button>
+	<br><br><br><br><br>
+	<p style="text-align:right;"><a href="javascript:closeMask();">Close</a></p>
 </div>
 
 
@@ -175,11 +153,18 @@ function addDir(data2) {
 }
 
 function execute() {
-	$.post('/admin/schedule.php', {update:1, updType:1, type: type, date: data, userId: $('#select').val()}, function(data){location.reload();});
+	$.post('/api/?addDay', 
+			{type: type, date: data, userId: $('#select').val()}, 
+			function(data){
+				if (data.success)
+				location.reload();
+				else alert(data.error)});
 }
 
 function raDelete(id) {
-	$.post('/admin/schedule.php', {update:1, updType:3, id:id}, function(data){location.reload();});
+	$.post('/api/?removeDay', {id:id}, function(data){if (data.success)
+		location.reload();
+	else alert(data.error)});
 }
 
 function closeMask() {
