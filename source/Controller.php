@@ -3,9 +3,7 @@
 include_once 'Model.php';
 
 class Controller {
-
 	private $mod;
-
 	function __construct() {
 		$this->mod = new Model();
 	}
@@ -40,10 +38,6 @@ class Controller {
 			return $obj;
 		}
 	}
-
-	/**
-	 *  Handy function to validate email
-	 */
 	public function validate($email) {
 	  $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 	  if (filter_var($email, FILTER_VALIDATE_EMAIL))
@@ -51,10 +45,6 @@ class Controller {
 	  else
 	  	return FALSE;
 	}
-
-	/**
-	 * generate random string
-	 */
 	public function randomString($length = 10) {
 		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		$size = strlen( $chars );
@@ -62,10 +52,6 @@ class Controller {
 			$str .= $chars[ rand( 0, $size - 1 ) ];
 		return $str;
 	}
-
-	/**
-	 * function returns user Object by email, or FALSE if does not exists
-	 */
 	public function getUserByEmail($email) {
 		$email = $this->mod->clear($email);
 		$sql = "SELECT * FROM `users` WHERE `email` ='$email' AND `isDeleted` = FALSE;";
@@ -74,28 +60,16 @@ class Controller {
 			return $this->orm($result);
         else return false;
 	}
-
-	/**
-	 * function deletes user by id
-	 */
 	public function deleteUser($userId) {
 		$this->mod->log(11, 'User deleted', $userId);
 		$sql = "UPDATE `users` SET `isDeleted` = TRUE WHERE `userId` = '$userId' ;";
 		return $this->mod->query($sql);
 	}
-	
-	/**
-	 * function undeletes user by id
-	 */
 	public function undeleteUser($userId) {
 		$this->mod->log(15, 'User undeleted', $userId);
 		$sql = "UPDATE `users` SET `isDeleted` = FALSE, `approvedBy` = NULL WHERE `userId` = '$userId' ;";
 		return $this->mod->query($sql);
 	}
-	
-	/**
-	 * function returns all users
-	 */
 	public function getAllUsers() {
 		$sql = "SELECT users.* FROM `users` WHERE TRUE;";
 		$result = $this->mod->query($sql);
@@ -103,10 +77,6 @@ class Controller {
 			return $this->orm($result, true);
         else return false;
 	}
-	
-	/**
-	 * function returns all alive users
-	 */
 	public function getAllAliveUsers() {
 		$sql = "SELECT users.* FROM `users` WHERE `isDeleted` = FALSE AND `approvedBy` > 0 ;";
 		$result = $this->mod->query($sql);
@@ -114,10 +84,6 @@ class Controller {
 			return $this->orm($result, true);
 		else return false;
 	}
-
-	/**
-	 * Create a new user
-	 */
 	public function createUser($user) {
 		if (!isset($user->role)) $user->role = 1;
 		if (!isset($user->approvedBy)) $user->approvedBy = 0;
@@ -131,18 +97,13 @@ class Controller {
 			'".$user->firstName."','".$user->lastName."','".$user->password."','".$user->email."','".$user->role."',
 					'".$user->created."','".$user->approvedBy."');";
 		$result = $this->mod->query($sql);
-		if (!$result) return false; // something went wrong
-		// lets return user id
+		if (!$result) return false;
 		$sql = "SELECT `userId` FROM `users` WHERE `email` = '".$user->email."' AND `password` = '".$user->password."';";
 		$result = $this->mod->query($sql);
 		$result = mysql_fetch_row($result);
 		$this->mod->log(10, 'User created', $result[0]);
 		return $result[0];
 	}
-
-	/**
-	 * Function checks if user with this email is already registered
-	 */
 	public function checkUser($email) {
 		$email = $this->mod->clear($email);
 		$sql = "SELECT COUNT(email) as c FROM `users` WHERE `email` = '$email' AND `isDeleted` = FALSE;";

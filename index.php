@@ -1,10 +1,10 @@
 <?php
 include_once 'header.php';
 include_once 'topbar.php';
-if ($loggedin) {
-	header('location: calendar.php');
-	exit;
-}
+// if ($loggedin) {
+// 	header('location: calendar.php');
+// 	exit;
+// }
 ?>
 
 <div class="contaner-bottom">
