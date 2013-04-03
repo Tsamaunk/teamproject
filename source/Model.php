@@ -24,7 +24,7 @@ class Model {
 			$return = 'Could not connect: ' . mysql_error();
 		} else {
 			mysql_select_db($this->db, $this->con);
-			$this->logger->info('Connected');
+			$this->logger->warn('Connected');
 		}
 		return isset($return) ? $return : null;		
 	}
