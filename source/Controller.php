@@ -345,7 +345,7 @@ class Controller {
 		$result = $this->mod->query($sql);
 		// notif
 		if ($result) {
-			$this->quickNotify($switch->userId2, 20, $switch->userId1);
+			$this->quickNotify($switch->userId2, 20, $switch->userId1, $switch->date1->format("m/d/Y"));
 		}		
 		return $result;
 	}
@@ -372,9 +372,9 @@ class Controller {
 		// notif
 		if ($result) {
 			if ($confirm == 1)
-				$this->quickNotify($switch->userId1, 30, $switch->userId2); // accepted
+				$this->quickNotify($switch->userId1, 30, $switch->userId2, $switch->date2); // accepted
 			if ($confirm == 2)
-				$this->quickNotify($switch->userId1, 40, $switch->userId2); // declined
+				$this->quickNotify($switch->userId1, 40, $switch->userId2, $switch->date2); // declined
 			if ($confirm == 3) {
 				$this->quickNotify($switch->userId1, 50, null, $reason); // approved
 				$this->quickNotify($switch->userId2, 50, null, $reason); // approved

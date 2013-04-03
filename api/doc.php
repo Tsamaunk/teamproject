@@ -16,7 +16,9 @@
 <a href="#getDialogs">getDialogs</a>
 <a href="#getDialogById">getDialogById</a>
 <a href="#deleteDialog">deleteDialog</a>
-<a href="#getCalendar">getCalendar</a></div>
+<a href="#getCalendar">getCalendar</a>
+<a href="#getNot">getNot</a>
+<a href="#getNotCount">getNotCount</a></div>
 <div style="background-color:#fd7;padding:10px;"><h3>How do we check the session? (PHP CODE)</h3>Have this code in the beggining of your file: 
 &lt;?php 
 include_once 'base.php';	// THIS THE THE BACKEND CONNECTOR
@@ -154,6 +156,30 @@ RESPONSE:
 NOTE:
 	firstDay - left upper corned of the calendar. If month starts on Sunday, firstDay = 0; if month starts on Tuesday, firstDay = -2
 	maxDays - number of days in this month
+	
+<a name="getNot"></a>	
+<span style="background-color:#000;color:#fff;"><b>/api/?getUserList</b></span>
+function returns list of all notifications and marks notifications and not-new
+POST Parameters:
+	none
+RESPONSE:
+	{"success": true / false,
+	"error": error message,
+	"notifications": array of notifications}
+NOTE:
+	each notifications is an object:
+	text - STRING - content of notification,
+	created - STRING - date and time of notification
+	
+<a name="getNotCount"></a>	
+<span style="background-color:#000;color:#fff;"><b>/api/?getUserList</b></span>
+function returns number of users NEW notifications
+POST Parameters:
+	none
+RESPONSE:
+	{"success": true / false,
+	"error": error message,
+	"number": number of notifications}	
 	
 </pre>
 </body>

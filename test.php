@@ -53,12 +53,6 @@
 	 	
 	var_dump($_SESSION['userToken']);
 	*/
-	
-	$con->connect();
-	$not = $con->getNotifications($_SESSION['userId']);
-	$con->close();
-	
-	var_dump($not);
 		
 	?>
 	

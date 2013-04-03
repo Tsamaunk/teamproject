@@ -8,7 +8,8 @@
 	include_once '../base.php';
 	
 	$hlp = new Helper();
-	$con = new Controller();	
+	$con = new Controller();
+	$error = null;
 	
 	// =========================================
 	// 			LOGIN   AND   SIGN UP
@@ -22,11 +23,14 @@
 		$email = $_POST['email'];
 		$password = $_POST['password'];
 		$con->connect();
-		
 		$userExist = $con->checkUser($email);
-		
 		$user = $con->checkCredentials($email, $password);
+		$error = mysql_error();
 		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
 		if (!$user) {
 			echo json_encode(array('success' => false, 'error' => 'Incorrect email address / password or user is pending approval!'));
 			exit;
@@ -53,7 +57,12 @@
 		}
 		$con->connect();
 		$user = $con->getUserByEmail($_POST['email']);
+		$error = mysql_error();
 		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
 		$token = new stdClass();
 		$token -> type = 8;
 		$token -> raId1 = $user->userId;
@@ -95,7 +104,12 @@
 			exit;
 		}
 		$result = $con->createUser($user);
+		$error = mysql_error();
 		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
 		if (!$result) {
 			echo json_encode(array('success' => false, 'error' => 'Cannot registed user at this time.'));
 			exit;
@@ -123,7 +137,12 @@
 	if (isset($_GET['getUser'])) {
 		$con->connect();
 		$user = $con->getUserById($myId);
+		$error = mysql_error();
 		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
 		unset($user->password);
 		echo json_encode(array('success' => true, 'error' => null, 'user' => $user));
 		exit;
@@ -144,7 +163,12 @@
 		$message->text= $_POST['text'];
 		$con->connect();
 		$con->addMessage($message);
+		$error = mysql_error();
 		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
 		echo json_encode(array('success' => true, 'error' => null));
 		exit;
 	}
@@ -172,7 +196,12 @@
 				$ids[] = $r->fromId;
 			}
 		}
+		$error = mysql_error();
 		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
 		echo json_encode(array('success' => true, 'error' => null, 'dialogs' => $dialogs));
 		exit;
 	}
@@ -186,7 +215,12 @@
 		$res = $con->getDialog($myId, $_POST['userId'], $_POST['limit']);
 		$user = $con->getUserById($_POST['userId']);
 		$con->markDialogRead($_POST['userId'], $myId);
+		$error = mysql_error();
 		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
 		foreach ($res as $rt)
 			$rt->created = $rt->created? date("h:i a m/d/y",$rt->created) : '';
 		echo json_encode(array('success' => true, 'error' => null, 'dialog' => $res, 'name' => $user->firstName . ' ' . $user->lastName));
@@ -200,7 +234,12 @@
 		}
 		$con->connect();
 		$con->deleteDialog($myId, $_POST['userId']);
+		$error = mysql_error();
 		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
 		echo json_encode(array('success' => true, 'error' => null));
 		exit;
 	}
@@ -208,7 +247,12 @@
 	if (isset($_GET['getUserList'])) {
 		$con->connect();
 		$users = $con->getAllAliveUsers();
+		$error = mysql_error();
 		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
 		$output = array();
 		foreach ($users as $u)
 			if ($u->userId != $myId)
@@ -238,7 +282,12 @@
 		
 		$con->connect();
 		$sch = $con->getSchedule($month);
+		$error = mysql_error();
 		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
 		
 		$cal = array();
 		foreach ($sch as $s) {
@@ -257,7 +306,12 @@
 	if (isset($_GET['addDay'])) {
 		$con->connect();
 		$user = $con->getUserById($myId);
+		$error = mysql_error();
 		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
 		if ($user->role != 2) {
 			echo json_encode(array('success' => false, 'error' => 'Access denied.'));
 			exit;
@@ -292,10 +346,69 @@
 		}
 		$con->connect();
 		$con->removeDay($id);
+		$error = mysql_error();
 		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
 		echo json_encode(array('success' => true, $error => null));
 		exit;
 	}
 	
+	if (isset($_GET['getNot'])) {
+		$con->connect();
+		$not = $con->getNotifications($myId);
+		$con->markNotificationsRead($myId);
+		$error = mysql_error();
+		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
+		$res = array();
+		foreach ($not as $n) {
+			$pp = array('text' => '', 'created' => date("h:i a, m/d/Y",$n->created));
+			switch ($n->event) {
+				case 10:
+					$pp['text'] = $n->userName . " your request has been approved! Welcome to Project Switch!";
+					break;
+				case 20:
+					$pp['text'] = $n->userName2 . " wants to switch with you! Check the calendar on ".$n->description."!";
+					break;
+				case 30:
+					$pp['text'] = $n->userName2 . " confirmed the switch on ".$n->description."!";
+					break;
+				case 40:
+					$pp['text'] = $n->userName2 . " declined the switch on ".$n->description."!";
+					break;
+				case 50:
+					$pp['text'] = "You switch request has been approved by Admin".($n->description?': '.$n->description:'')."!";
+					break;
+				case 60:
+					$pp['text'] = "You switch request has been denied by Admin".($n->description?': '.$n->description:'')."!";
+					break;
+				case 70:
+					$pp['text'] = "You have a message from ".$n->userName2."!";
+					break;
+			}
+			$res[] = $pp;
+		}
+		echo json_encode(array('success' => true, 'error' => null, 'notifications' => $res));
+		exit;
+	}
+	
+	if (isset($_GET['getNotCount'])) {
+		$con->connect();
+		$number = $con->getNumberOfNotifications($myId);
+		$error = mysql_error();
+		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
+		echo json_encode(array('success' => true, 'error' => null, 'number' => $number));
+		exit;
+	}
 
 ?>
