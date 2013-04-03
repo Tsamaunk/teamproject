@@ -3,12 +3,7 @@
         <param name="file" value="myLog.log" />
     </appender>
     <root>
-        <level value="INFO" />
-        <appender_ref ref="myAppender" />
-    </root>
-    <appender name="consoler" class="LoggerAppenderConsole" />
-    <root>
         <level value="ERROR" />
-        <appender_ref ref="consoler" />
+        <appender_ref ref="myAppender" />
     </root>
 </configuration>
