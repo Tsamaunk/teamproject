@@ -6,4 +6,9 @@
         <level value="INFO" />
         <appender_ref ref="myAppender" />
     </root>
+    <appender name="consoler" class="LoggerAppenderConsole" />
+    <root>
+        <level value="ERROR" />
+        <appender_ref ref="consoler" />
+    </root>
 </configuration>
