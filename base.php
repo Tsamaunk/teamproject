@@ -8,6 +8,8 @@
 	}
 	error_reporting(0);
 
+	include_once('apache-log4php-2.3.0/src/main/php/Logger.php');
+	
 	include_once 'source/Model.php';
 	include_once 'source/Controller.php';
 	include_once 'source/Helper.php';

@@ -12,11 +12,20 @@ class Model {
 	private $pasw 	= 'root';
 	private $con 	= null;
     private $lastQuery = '';
+    private $logger = null;
+    function __construct() {
+    	Logger::configure('config.xml');
+    	$this->logger = Logger::getLogger("main");
+    }
 	public function connect() {
 		$this->con = mysql_connect($this->host, $this->user, $this->pasw); 
-		if (!$this->con)
+		if (!$this->con) {
+			$this->logger->fatal('Could not connect: ' . mysql_error());
 			$return = 'Could not connect: ' . mysql_error();
-		else mysql_select_db($this->db, $this->con);
+		} else {
+			$this->logger->info('Connected');
+			mysql_select_db($this->db, $this->con);
+		}
 		return isset($return) ? $return : null;		
 	}
 	public function isConnected() {
