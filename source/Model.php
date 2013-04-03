@@ -14,7 +14,7 @@ class Model {
     private $lastQuery = '';
     private $logger = null;
     function __construct() {
-    	Logger::configure('../../../../source/config.xml');
+    	Logger::configure('config.xml');
     	$this->logger = Logger::getLogger("main");
     }
 	public function connect() {
@@ -23,8 +23,8 @@ class Model {
 			$this->logger->fatal('Could not connect: ' . mysql_error());
 			$return = 'Could not connect: ' . mysql_error();
 		} else {
-			$this->logger->info('Connected');
 			mysql_select_db($this->db, $this->con);
+			$this->logger->info('Connected');
 		}
 		return isset($return) ? $return : null;		
 	}
