@@ -36,7 +36,7 @@ fromTime1 INT,
 fromTime2 INT,
 toTime1 INT,
 toTime2 INT,
-status INT, # 0 - initiated, 1 - confirmed, 2 - declined, 3 - approved by RD
+status INT, # 0 - initiated, 1 - confirmed, 2 - declined, 3 - approved by RD, 4 - denied by RD
 reason VARCHAR (255), # why it was declined or just a comment
 created BIGINT NOT NULL,
 FOREIGN KEY(userId1) REFERENCES users(userId),
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `token` (
 id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 created BIGINT,
 expired BIGINT,
-type INT,
+`type` INT,
 token VARCHAR(70),
 raId1 BIGINT,
 raId2 BIGINT,
@@ -92,4 +92,15 @@ id BIGINT AUTO_INCREMENT PRIMARY KEY,
 userToken VARCHAR(120) NOT NULL,
 userId BIGINT NOT NULL,
 timer BIGINT #expiration timestamp
+);
+
+CREATE TABLE IF NOT EXISTS `notif` (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+userId BIGINT NOT NULL,
+event INT NOT NULL,
+another BIGINT,		# can be another user for example
+description VARCHAR(70),
+created BIGINT,
+`read` BOOL DEFAULT 0,
+FOREIGN KEY(userId) REFERENCES users(userId)
 );

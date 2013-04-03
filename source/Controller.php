@@ -112,10 +112,6 @@ class Controller {
 		$result = $result[0] > 0;
 		return $result;
 	}
-
-	/**
-	 * Function checks if user with this id is registered
-	 */
 	public function checkUserById($id) {
 		$sql = "SELECT COUNT(userId) FROM `users` WHERE `userId` = '$id' AND `isDeleted` = FALSE AND `approvedBy` > 0;";
 		$result = $this->mod->query($sql);
@@ -123,11 +119,6 @@ class Controller {
 		$result = $result[0] > 0;
 		return $result;
 	}
-	
-	/**
-	 * function returns user Object by id, or false
-	 * can return deleted and unapproved user
-	 */
 	public function getUserById($id) {
 		$sql = "SELECT * FROM `users` WHERE `userId` = $id;";
 		$result = $this->mod->query($sql);
@@ -135,10 +126,6 @@ class Controller {
 			return $this->orm($result);
         else return false;
 	}
-
-	/**
-	 * function updates the user object by ID
-	 */
 	public function updateUserInfo($id, $user) {
 		$user->email = $this->mod->clear($user->email);
 		$user->firstName = $this->mod->clear($user->firstName);
@@ -150,10 +137,6 @@ class Controller {
 		$this->mod->log(12, 'User info updated', $id);
 		return $this->mod->query($sql);
 	}
-
-	/**
-	 * function updates user password
-	 */
 	public function updateUserPassword($id, $password) {
 		$password = $this->mod->clear($password);
 		$password = md5($password);
@@ -163,10 +146,6 @@ class Controller {
 		$this->mod->log(13, 'User password updated', $id);
 		return $this->mod->query($sql);
 	}
-
-	/**
-	 * function updates user role
-	 */
 	public function updateUserRole($id, $role = 1) {
 		$sql = "UPDATE `users` SET " .
 				"`role`='" . $role . "' ";
@@ -174,10 +153,6 @@ class Controller {
 		$this->mod->log(14, 'User role updated', $id);
 		return $this->mod->query($sql);
 	}
-
-	/**
-	 * function approves user 
-	 */
 	public function approveUser($id, $adminId, $approved = true) {
 		if (!$approved) {
 			$this->deleteUser($id);
@@ -187,13 +162,13 @@ class Controller {
 			$sql = "UPDATE `users` SET " .
 					"`approvedBy`='" . $adminId . "' ";
 			$sql .= " WHERE userId = $id;";
-			return $this->mod->query($sql);
+			$result = $this->mod->query($sql);
+			// notif
+			if ($result && $approved)
+				$this->quickNotify($id, 10, $adminId); // welcome to hell
+			return $result;
 		}
 	}
-
-	/**
-	 * function checks if email + password are correct and return the User Object or FALSE
-	 */
 	public function checkCredentials($email, $password) {
 		$password = $this->mod->clear($password);
 		$password = md5($password);
@@ -203,10 +178,6 @@ class Controller {
 			return $this->orm($result);
 		else return false;
 	}
-
-	/**
-	 * Function returns setting object by name
-	 */
 	public function getSetting($name) {
 		$sql = "SELECT * FROM `setting` WHERE `setting` = '$name';";
 		$result = $this->mod->query($sql);
@@ -234,10 +205,6 @@ class Controller {
 			return $this->mod->query($sql);
 		}
 	}
-	
-	/**
-	 * updates admin settings in the DB
-	 */
 	public function updateAdmins() {
 		$users = $this->getAllAliveUsers();
 		$total = 0;
@@ -376,6 +343,10 @@ class Controller {
 			'".$switch->userId1."','".$switch->userId2."','".$switch->date1->format("Y-M-D")."','".$switch->date2->format("Y-M-D")."','".$switch->fromTime1."',
 			'".$switch->fromTime2."','".$switch->created."','".$switch->toTime1."','".$switch->toTime2."','".$switch->status."','".$switch->reason."');";
 		$result = $this->mod->query($sql);
+		// notif
+		if ($result) {
+			$this->quickNotify($switch->userId2, 20, $switch->userId1);
+		}		
 		return $result;
 	}
 
@@ -394,9 +365,25 @@ class Controller {
 	 * Function confirms/declines/approves/disapproves the switch
 	 */
 	public function confirmSwitch($id, $confirm, $reason = '') {
+		$switch = $this->getSwitch($id);
 		$sql = "UPDATE `switch` SET `status` = '$confirm' ".($reason==''?'':" `reason` = '".$reason."' ")." 
 		WHERE `id` = '$id';";
 		$result = $this->mod->query($sql);
+		// notif
+		if ($result) {
+			if ($confirm == 1)
+				$this->quickNotify($switch->userId1, 30, $switch->userId2); // accepted
+			if ($confirm == 2)
+				$this->quickNotify($switch->userId1, 40, $switch->userId2); // declined
+			if ($confirm == 3) {
+				$this->quickNotify($switch->userId1, 50, null, $reason); // approved
+				$this->quickNotify($switch->userId2, 50, null, $reason); // approved
+			}
+			if ($confirm == 4) {
+				$this->quickNotify($switch->userId1, 60, null, $reason); // denied
+				$this->quickNotify($switch->userId2, 60, null, $reason); // denied
+			}
+		}		
 		return $result;
 	}
 
@@ -437,6 +424,9 @@ class Controller {
 		$sql = "INSERT INTO `message` (`fromId`, `toId`, `subject`, `text`, `created`) VALUES (
 			'".$message->fromId."','".$message->toId."','".$message->subject."','".$message->text."','".$message->created."');";
 		$result = $this->mod->query($sql);
+		// notif
+		if ($result)
+				$this->quickNotify($message->toId, 70, $message->fromId);
 		return $result;
 	}
 
@@ -484,7 +474,7 @@ class Controller {
 	}
 
 	/**
-	 * Function clears the messages
+	 * Function clears the messages and notifications
 	 */
 	public function clearMessages() {
 
@@ -497,7 +487,67 @@ class Controller {
 
 	}
 
-
+	// =============================================================================================
+	// Notifications
+	
+	/*
+	 * EVENT CODE:
+	 * 10 - welcome
+	 * 20 - switch initiated with user by another
+	 * 30 - user's switch accepted by another
+	 * 40 - user's switch declined by another
+	 * 50 - user's switch approved by RD (reason in description)
+	 * 60 - user's switch denied by RD (reason in description)
+	 * 70 - new email to user from another 
+	 */
+	public function notify($notify) {
+		if (!isset($notify->another)) $notify->another = 0;
+		if (!isset($notify->read)) $notify->read = 0;
+		$notify->description = $this->mod->clear($notify->description);
+		$notify->created = time();
+		$sql = "INSERT INTO `notif` (`userId`, `event`, `another`, `description`, `read`, `created`) VALUES (
+			'".$notify->userId."','".$notify->event."','".$notify->another."','".$notify->description."','".$notify->read."','".$notify->created."');";
+		$result = $this->mod->query($sql);
+		return $result;
+	}
+	
+	public function quickNotify($userId, $event, $another = null, $description = null) {
+		$not = new stdClass();
+		$not->userId = $userId;
+		$not->event = $event;
+		$not->another = $another;
+		$not->description = $description;
+		return $this->notify($not);
+	}
+	
+	public function getNotifications($userId) {
+		$sql = "SELECT `notif`.*, CONCAT(users.firstName,' ',users.lastName) AS userName,
+			(SELECT CONCAT(users.firstName,' ',users.lastName) FROM users WHERE notif.another = users.userId AND 
+			notif.another IS NOT NULL) AS userName2 
+			FROM `notif`, `users`
+			WHERE `notif`.userId = `users`.userId AND
+			`notif`.userId = '$userId'
+			 ORDER BY `notif`.`created` DESC;";
+		$result = $this->mod->query($sql);
+		if ($result)
+			return $this->orm($result, true);
+		else return false;
+	}
+	
+	public function getNumberOfNotifications($userId) {
+		$sql = "SELECT COUNT(id) FROM `notif` WHERE `read` = FALSE AND `userId` = '$userId';";
+		$result = $this->mod->query($sql);
+		$result = mysql_fetch_row($result);
+		$result = $result[0];
+		return $result;		
+	}
+	
+	public function markNotificationsRead($userId) {
+		$sql = "UPDATE `notify` SET `read` = TRUE WHERE `userId` = '$userId' AND `read` = FALSE;";
+		$result = $this->mod->query($sql);
+		return $result;
+	}
+	
 }
 
 ?>

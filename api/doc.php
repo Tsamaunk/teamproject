@@ -39,22 +39,6 @@ RESPONSE:
 	{"success": true / false,
 	"error": error message}
 
-<div style="background-color:#f9d;padding:10px;"><h3>Example: (JQuery CODE)</h3>&lt;script&gt;
-	function login() {	
-		var email1 = $('#email').val();
-		var pass1 = $('#pass').val();
-		$.post('/api/?login', {email:email1, password:pass1}, function(data){
-			if (!data.success) {
-				// some error - display it. ideally we have to display some beautiful message right on the screen, not crazy popup
-				alert(data.error);
-			} else {
-				// user logged in - redirect
-				window.location = "index.php";
-			}
-		}); 	
-	}
-&lt;/script&gt;</div>
-	
 <a name="signup"></a>
 <span style="background-color:#000;color:#fff;"><b>/api/?signup</b></span>
 this function creates the user record and sends the 'confirm email' email
