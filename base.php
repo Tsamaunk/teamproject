@@ -3,10 +3,12 @@
 	 * This file connects all the other files  
 	 */
 	
+	define ("ROOT", dirname(__FILE__) . '/'); //  /teamproject/
+	
 	if(session_id() == '') {
 		session_start();
 	}
-	error_reporting(0);
+	//error_reporting(0);
 
 	include_once('apache-log4php-2.3.0/src/main/php/Logger.php');
 	

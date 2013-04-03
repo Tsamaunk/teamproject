@@ -29,6 +29,9 @@
 			// Open connection to database
 			$con = new Controller();
 			$con->connect();
+			$model = new Model();
+			
+			$model->logger->info("MAILER:compose called for type = $type");
 			
 			//$rd = $con->getSetting('rd_1');
 			//$rd = $con->getUserById($rd->intVal);
@@ -139,6 +142,10 @@
 				'Return-Path: ' . $this->from . "\r\n" . 
 				'Reply-To: ' . $this->from;
 				$str = mail($this->address, $this->subject, $this->content, $headers);
+				$model = new Model();
+				if ($str)
+				$model->logger->info("MAILER:mail function sent the message");
+				else $model->logger->warn("MAILER:mail function failed");
 				return $str;
 			}
 			

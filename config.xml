@@ -1,9 +1,21 @@
 <configuration xmlns="http://logging.apache.org/log4php/">
     <appender name="myAppender" class="LoggerAppenderFile">
-        <param name="file" value="log/switch.log" />
+         <layout class="LoggerLayoutPattern">
+            <param name="conversionPattern" value="%date [%logger] %message%newline" />
+        </layout>
+        <param name="file" value="switch.log" />
     </appender>
-    <root>
-        <level value="info" />
+    
+    <appender name="consApp" class="LoggerAppenderConsole" />
+    
+    <logger name="filer">
+        <level value="all" />
         <appender_ref ref="myAppender" />
+    </logger>
+    
+    <root>
+        <level value="fault" />
+        <appender_ref ref="consApp" />
     </root>
 </configuration>
+

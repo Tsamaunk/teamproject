@@ -9,7 +9,10 @@
 	
 	$hlp = new Helper();
 	$con = new Controller();
+	$model = new Model();
 	$error = null;
+	
+	$model->logger->info("API call registered ");
 	
 	// =========================================
 	// 			LOGIN   AND   SIGN UP

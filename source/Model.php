@@ -12,10 +12,10 @@ class Model {
 	private $pasw 	= 'root';
 	private $con 	= null;
     private $lastQuery = '';
-    private $logger = null;
+    public $logger = null;
     function __construct() {
-    	Logger::configure('config.xml');
-    	$this->logger = Logger::getLogger("main");
+    	Logger::configure(ROOT . 'config.xml');
+    	$this->logger = Logger::getLogger("filer");
     }
 	public function connect() {
 		$this->con = mysql_connect($this->host, $this->user, $this->pasw); 

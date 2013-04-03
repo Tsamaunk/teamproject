@@ -11,10 +11,12 @@ class Helper {
 	public function updateTokenTime($token, $timer = TOKEN_EXP) {
 		$sql = "UPDATE `security` SET `timer` = '" . (time() + 60*$timer )."' WHERE `userToken` = '$token';";
 		$this->mod->query($sql);
-		$this->mod->close();		
+		$this->mod->close();
+		$this->mod->logger->info('updateTokenTime called');
 	}
 		
 	public function validToken($uid, $utoken) {
+		$this->mod->logger->info("validToken called for user $uid");
 		if ($utoken != $this->hasher($uid)) return false;
 		$sql = "SELECT `timer` FROM `security` WHERE `userToken` = '$utoken' AND `userId` = '$uid' ;";
 		$result = $this->mod->query($sql);
@@ -27,6 +29,7 @@ class Helper {
 	}
 	
 	public function createUserToken($uid, $timer = TOKEN_EXP) {
+		$this->mod->logger->info("createUserToken called for user $uid");
 		$userToken = $this->hasher($uid);
 		$sql = "DELETE FROM `security` WHERE `userToken` = '$userToken' AND `userId` = '$uid'; ";
 		$this->mod->connect();
@@ -42,6 +45,7 @@ class Helper {
 	 * Function returns token 
 	 */
 	public function execToken($token) {
+		$this->mod->logger->info('execToken called');
 		$sql = "SELECT * FROM `token` WHERE `token` = '$token';";
 		$con = new Model();
 		$result = $con->query($sql);
@@ -57,6 +61,7 @@ class Helper {
 	 * 6 - approve switch, 7 - disapprove switch  
 	 */
 	public function makeToken($token = null, $userId = 0, $string = 'token') {
+		$this->mod->logger->info("new token \"$string\" created");
 		if (!isset($token->token) || !$token->token)
 			$token->token = $this->generator($userId,$string);
 		if (!isset($token->created)) $token->created = time();
@@ -80,6 +85,7 @@ class Helper {
 	 * Function removes token
 	 */
 	public function destroy($token) {
+		$this->mod->logger->info("token ".$token->id." destroyed");
 		$sql = "DELETE FROM `token` WHERE `id` = '".$token->id."';";
 		$con = new Model();
 		$result = $con->query($sql);
@@ -88,6 +94,7 @@ class Helper {
 	}
 	
 	public function generator($userId = 0, $string = 'token') {
+		$this->mod->logger->info("generator made a hash for user $userId");
 		$str = md5($userId . microtime() . SALT);
 		$str .= md5($string . microtime());
 		return $str;
