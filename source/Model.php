@@ -14,7 +14,7 @@ class Model {
     private $lastQuery = '';
     private $logger = null;
     function __construct() {
-    	Logger::configure('/source/config.xml');
+    	Logger::configure('../source/config.xml');
     	$this->logger = Logger::getLogger("main");
     }
 	public function connect() {
