@@ -3,7 +3,7 @@
         <param name="file" value="log/switch.log" />
     </appender>
     <root>
-        <level value="INFO" />
+        <level value="info" />
         <appender_ref ref="myAppender" />
     </root>
 </configuration>
