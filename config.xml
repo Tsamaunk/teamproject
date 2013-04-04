@@ -14,7 +14,7 @@
     </logger>
     
     <root>
-        <level value="fault" />
+        <level value="error" />
         <appender_ref ref="consApp" />
     </root>
 </configuration>
