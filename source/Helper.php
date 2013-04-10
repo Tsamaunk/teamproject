@@ -71,8 +71,8 @@ class Helper {
 		if (!isset($token->rdId)) $token->rdId = null;
 		if (!isset($token->switchId)) $token->switchId = null;		
 		$sql = "INSERT INTO `token` (`created`,`expired`,`type`,`token`,`raId1`,`raId2`,`rdId`,`switchId`) VALUES (
-				'".$token->created."','".$token->expired."','".$token->type."','".$token->token."','".$token->raId1."','".$token->raId2.
-				"','".$token->rdId."','".$token->switchId."');";
+				'".$token->created."','".$token->expired."','".$token->type."','".$token->token."',".$token->raId1.",".$token->raId2.
+				",".$token->rdId.",".$token->switchId.");";
 		$con = new Model();
 		$result = $con->query($sql);
 		$con->close();

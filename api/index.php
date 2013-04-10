@@ -12,7 +12,7 @@
 	$model = new Model();
 	$error = null;
 	
-	$model->logger->info("API call registered ");
+	$model->logger->info("API call registered: " . $_GET);
 	
 	// =========================================
 	// 			LOGIN   AND   SIGN UP

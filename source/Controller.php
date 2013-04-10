@@ -470,21 +470,29 @@ class Controller {
 	 * Function clears the month
 	 */
 	public function clearMonth($month) {
-
+		$sql = "DELETE FROM `days` WHERE `month` = '$month';";
+		$result = $this->mod->query($sql);
+		return $result;
 	}
 
 	/**
 	 * Function clears the messages and notifications
 	 */
 	public function clearMessages() {
-
+		$sql = "DELETE FROM `message` WHERE TRUE;";
+		$result = $this->mod->query($sql);
+		$sql = "DELETE FROM `notif` WHERE TRUE;";
+		$result2 = $this->mod->query($sql);
+		return $result && $result2;
 	}
 
 	/**
 	 * Function clears switch history for month
 	 */
-	public function clearSwitches($month) {
-
+	public function clearSwitches() {
+		$sql = "DELETE FROM `switch` WHERE TRUE;";
+		$result = $this->mod->query($sql);
+		return $result;
 	}
 
 	// =============================================================================================

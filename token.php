@@ -31,9 +31,6 @@
 	 */
 	if ($token->type == 1) { // confirm email
 		$hlp -> destroy($token); // we dont want to notify RA several times
-		// TODO we must generate tokens for each RD - there can be more than one
-		// number of RDs - setting 'numberOfRd'
-		// each RD address starts with 'rd_' + number starting with 1;
 		$mailer = new Mailer();
 		$rdSet = readRd();
 		foreach ($rdSet as $rd) {		
@@ -86,7 +83,7 @@
 	}
 	
 	if ($token->type == 3) { // decline user
-		$hlp -> destroy($token);	
+		$hlp -> destroy($token);
 		// if user is already approved - we cannot decline him!!!
 		$con = new Controller();
 		$con->connect();
@@ -106,19 +103,89 @@
 	}
 
 	if ($token->type == 4) { // confirm switch
-
+		$hlp -> destroy($token);
+		$con = new Controller();
+		$con->connect();
+		$con->confirmSwitch($token->switchId, 1); // accept
+		$con->close();
+		$mailer = new Mailer();
+		$rdSet = readRd();
+		foreach ($rdSet as $rd) {
+			$approveToken = new stdClass();
+			$approveToken->type = 6;
+			$approveToken->raId1 = $token->raId1;
+			$approveToken->raId2 = $token->raId2;
+			$approveToken->rdId = $rd->intVal;
+			$approveToken = $hlp -> makeToken($approveToken, $token->raId1, 'approveSwitchToken');
+				
+			$declineToken = new stdClass();
+			$declineToken->type = 7;
+			$declineToken->raId1 = $token->raId1;
+			$declineToken->raId2 = $token->raId2;
+			$declineToken->rdId = $rd->intVal;
+			$declineToken = $hlp -> makeToken($declineToken, $token->raId1, 'disapproveSwitchToken');
+				
+			$mailer->compose(6, $approveToken, $declineToken);
+			$mailer->mail();
+		}
+		echo "<pre>Thanks for accepting the switch.\n";
+		echo "We will notify you when this switch is approved by the administrator.\n";
+		echo "No further action is required.\n";
+		echo "<a href='index.php'>main page</a>";
+		exit;
 	}
 	
 	if ($token->type == 5) { // decline switch
-
+		$hlp -> destroy($token);
+		$con = new Controller();
+		$con->connect();
+		$con->confirmSwitch($token->switchId, 2); // decline
+		$con->close();
+		$mailer = new Mailer();
+		$mailer->compose(5, $token);
+		$mailer->mail();
+		echo "<pre>The switch request has beed denied.\n";
+		echo "No further action is required.\n";
+		echo "<a href='index.php'>main page</a>";
+		exit;	
 	}
 
 	if ($token->type == 6) { // approve switch
-	
+		$hlp -> destroy($token);
+		$con = new Controller();
+		$con->connect();
+		$con->confirmSwitch($token->switchId, 3); // approve
+		$con->close();
+		$mailer = new Mailer();
+		$mailer->compose(7, $token);
+		$mailer->mail();
+		$token->raId1 = $token->raId2; // to make sure both RAs receive the email 
+		$mailer->compose(7, $token);
+		$mailer->mail();
+		echo "<pre>The switch request has beed approved.\n";
+		echo "Both RAs will be informed about it.\n";
+		echo "No further action is required.\n";
+		echo "<a href='index.php'>main page</a>";
+		exit;	
 	}
 	
 	if ($token->type == 7) { // disapprove switch
-
+		$hlp -> destroy($token);
+		$con = new Controller();
+		$con->connect();
+		$con->confirmSwitch($token->switchId, 4); // disapprove
+		$con->close();
+		$mailer = new Mailer();
+		$mailer->compose(8, $token);
+		$mailer->mail();
+		$token->raId1 = $token->raId2; // to make sure both RAs receive the email
+		$mailer->compose(8, $token);
+		$mailer->mail();
+		echo "<pre>The switch request has beed declined.\n";
+		echo "Both RAs will be informed about it.\n";
+		echo "No further action is required.\n";
+		echo "<a href='index.php'>main page</a>";
+		exit;
 	}
 	
 	if ($token->type == 8) { // lost password
