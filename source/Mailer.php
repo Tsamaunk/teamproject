@@ -80,7 +80,7 @@
 					$this->content .= $ra2->firstName . " has declined your requested duty switch. <a href='" . SITE_URL . "login.php" . "'>Login</a> to view any accompanying messages.<br><br>";
 					break;
 				case 6:
-					$rd = $con->getUserById($token->rdId);
+					$rd = $con->getUserById($token1->rdId);
 					$ra1 = $con->getUserById($token1->raId1);
 					$ra2 = $con->getUserById($token1->raId2);
 					$this->address = $rd->firstName . ' ' . $rd->lastName . ' <' . $rd->email . '>';
@@ -90,27 +90,28 @@
 					$thic->content .= "<a href='" . SITE_URL . "login.php" . "'>Login</a> to view specifics.<br><br>";
 					break;
 				case 7:
-					$rd = $con->getUserById($token->rdId);
-					$ra1 = $con->getUserById($token->raId1);
+					$rd = $con->getUserById($token1->rdId);
+					$ra1 = $con->getUserById($token1->raId1);
 					$this->address = $ra1->firstName . ' ' . $ra1->lastName . ' <' . $ra1->email . '>';
 					$this->subject .= "Switch Request Approved";
 					$this->content = "Dear " . $ra1->firstName . ",<br><br>";
 					$this->content .= $rd->firstName . " has approved your requested switch.<br><br>";
 					break;
 				case 8:
-					$rd = $con->getUserById($token->rdId);
-					$ra1 = $con->getUserById($token->raId1);
+					$rd = $con->getUserById($token1->rdId);
+					$ra1 = $con->getUserById($token1->raId1);
+					var_dump($token);
 					$this->address = $ra1->firstName . ' ' . $ra1->lastName . ' <' . $ra1->email . '>';
 					$this->subject .= "Switch Request Denied";
 					$this->content = "Dear " . $ra1->firstName . ",<br><br>";
 					$this->content .= $rd->firstName . " has denied your requested switch. <a href='" . SITE_URL . "login.php" . "'>Login</a> to view specifics.<br><br>";
 					break;
 				case 9:
-					$ra1 = $con->getUserById($token->raId1);
+					$ra1 = $con->getUserById($token1->raId1);
 					$this->address = $ra1->firstName . ' ' . $ra1->lastName . ' <' . $ra1->email . '>';
 					$this->subject .= "Password Recovery";
 					$this->content = "Dear " . $ra1->firstName . ",<br><br>";
-					$this->content .= "A password recovery request has been intitiated for you.  Please click <a href='" . SITE_URL . "toekn.php?token=" . $ra1->token1 . "'>here</a> to complete the recovery process.<br><br>";
+					$this->content .= "A password recovery request has been intitiated for you.  Please click <a href='" . SITE_URL . "toekn.php?token=" . $token1->token . "'>here</a> to complete the recovery process.<br><br>";
 					break;
 				default:
 					$this->address = "mgrunert0322@gmail.com";
@@ -131,9 +132,9 @@
 			// for testing purposes - just print the content on the screen
 			if ($test) {
 				$str = "Address: " . $this->address;
-				$str .= "From: " . $this->from;
-				$str .= "Subject: " . $this->subject;
-				$str .= "Content: " . $this->content;
+				$str .= "<br>From: " . $this->from;
+				$str .= "<br>Subject: " . $this->subject;
+				$str .= "<br>Content: " . $this->content;
 				return $str;
 			} else {
 				$headers  = 'MIME-Version: 1.0' . "\r\n";
