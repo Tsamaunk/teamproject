@@ -139,14 +139,13 @@ RESPONSE:
 	
 <a name="getCalendar"></a>	
 <span style="background-color:#000;color:#fff;"><b>/api/?getCalendar</b></span>
-function returns calendar - <b>DRAGONS AHEAD!!!!</b> NOT TESTED, MAY NOT WORK AT ALL
-NOTE: each day is accessible via day = calendar.&lt;month&gt;_&lt;day&gt;
+function returns calendar
+NOTE: each day is accessible via day = calendar.d_&lt;day&gt;
 	day is an object
 	day.rd - is an object representing Director on Duty
 	day.ra - is an array of objects representing RAs
-	both: ra and rd have fields: id, userId, userName.
-EXAMPLE: to display the name of the first RA on duty on april, 29th:
-<i>calendar.4_29.ra[0].userName</i>
+	both: ra and rd have fields: id, userId, userName, type. type = 'c' means from calendar, 's' means from switch
+	$.getJSON must be used to retrieve this content.
 POST Parameters:
 	month - integer [optional] 1-12, current - if not specified
 RESPONSE:
@@ -157,6 +156,35 @@ NOTE:
 	firstDay - left upper corned of the calendar. If month starts on Sunday, firstDay = 0; if month starts on Tuesday, firstDay = -2
 	maxDays - number of days in this month
 	
+<div style="background-color:#fd7;padding:10px;"><h4>Example of calendar retrieval</h4>var ht = "";
+$.getJSON('api/?getCalendar',{month: "5"}).done(function(data) {
+	  $.each(data.calendar, function(key, val) {
+		  ht += "day: "+key+"&lt;br&gt;";
+		  $.each(val, function(ky, vl) {
+			  if (ky == 'rd')
+				ht += "   "+ky+":"+vl.userName+"["+vl.id+"] - "+vl.type+"&lt;br&gt;";
+			  else {
+				  $.each(vl, function(kyx, vlx) {
+					  ht += "   "+kyx+":"+vlx.userName+"["+vlx.id+"] - "+vlx.type+" uid:"+vlx.userId+"&lt;br&gt;";
+				  });
+			  }
+		  });
+	  });
+	  $('#holder').html(ht);
+});<h4>output with switches</h4>day: d_06
+   rd:John Smith[86] - c
+   0:John Smith[1] - switch_0 uid:2
+day: d_09
+   rd:Mikhail Gordo[93] - c
+   0:Mike Gordo[1] - switch_0 uid:1
+day: d_23
+   rd:John Smith[92] - c
+day: d_24
+   rd:Mike Gordo[90] - c
+   0:John Smith[91] - c uid:2
+day: d_25
+   0:Mike Gordo[89] - c uid:1
+</div>
 <a name="getNot"></a>	
 <span style="background-color:#000;color:#fff;"><b>/api/?getUserList</b></span>
 function returns list of all notifications and marks notifications and not-new

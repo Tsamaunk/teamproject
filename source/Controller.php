@@ -309,8 +309,41 @@ class Controller {
 			$sql = "SELECT * FROM `switch` WHERE `userId1` = '$userId' OR `userId2` = '$userId' ORDER BY `date1` DESC;";
 		$result = $this->mod->query($sql);
 		if ($result)
-			return $this->orm($result);
+			return $this->orm($result, true);
 		else return false;
+	}
+	
+	/**
+	 * Function returns set of switches for month
+	 */
+	public function getListOfSwitchesForMonth($month) {
+		$today = new DateTime();
+		$from = $today->format('Y') . '-' . ($month<10?'0'.$month:$month) . '-01';
+		$month = ($month == 12 ? 1 : $month+1);  
+		$today = new DateTime($today->format('Y') . '-' . ($month<10?'0'.$month:$month) . '-01');
+		$to = $today->format('Y') . '-' . ($month<10?'0'.$month:$month) . '-01';
+		$sql = "SELECT switch.*,
+			CONCAT(`users`.`firstName`,' ',`users`.`lastName`) AS userName1,
+			CONCAT(`users2`.`firstName`,' ',`users2`.`lastName`) AS userName2
+			FROM `switch`, `users`, `users` AS `users2` 
+		WHERE 
+			(`date1` >= '$from' AND `date2` < '$to') AND
+			(`users`.`userId` = `switch`.`userId1` AND `users2`.`userId` = `switch`.`userId2`)
+			AND
+			(`status` IN (0,1,3))
+			ORDER BY `date1` DESC;";
+		$result = $this->mod->query($sql);
+		if ($result)
+			return $this->orm($result, true);
+		else return false;
+	}
+	
+	public function getSwitchForDay($date) {
+		$sql = "SELECT * FROM `switch` WHERE `date1` = '$date' OR `date2` = '$date';";
+		$result = $this->mod->query($sql);
+		if ($result)
+			return $this->orm($result, true);
+		else return false;		
 	}
 
 	/**

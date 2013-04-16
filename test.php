@@ -15,6 +15,11 @@
 	
 	$con = new Controller();
 	
+	
+	
+	
+	
+	
 	//$message = new stdClass();
 	/*$message -> fromId = 3;
 	$message -> toId = 1;
@@ -60,15 +65,37 @@
 	?>
 	
 	<script>
-		$(documentsadf).ready(function(){
-	        $.post("api/?signup", {'email':'himor.cre@gmail.com', 'password':'password', 'firstName':'Mike', 'lastName':'Gordo'},
+		$(document).ready(function(){
+			var ht = "";
+			$.getJSON('api/?getCalendar',{month: "5"}).done(function(data) {
+				  $.each(data.calendar, function(key, val) {
+					  ht += "day: "+key+"<br>";
+					  $.each(val, function(ky, vl) {
+						  if (ky == 'rd')
+							ht += "   "+ky+":"+vl.userName+"["+vl.id+"] - "+vl.type+"<br>";
+						  else {
+							  $.each(vl, function(kyx, vlx) {
+								  ht += "   "+kyx+":"+vlx.userName+"["+vlx.id+"] - "+vlx.type+" uid:"+vlx.userId+"<br>";
+							  });
+						  }
+					  });
+				  });
+				  $('#holder').html(ht);
+			});
+
+
+			/*/
+	        $.post("api/?getCalendar", {},
 	                function(data){
 	                        if(!data.success){
 	                                alert('error: ' + data.error);                                                        
 	                                } else {
-	                                    alert(data.output);
+	                                	$.each(data.calendar, function(key, val) {
+	                						ht += key+":"+val+"<br>";
+	                				 	 });
+	                                    $('#holder').html(ht);
 	                                }    
-	        });                                                                    
+	        });       /*/                                                             
 	                        
 			});
 	

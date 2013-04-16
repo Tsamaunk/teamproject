@@ -270,20 +270,28 @@
 	
 	
 	// ==================================
-	//			CALENDARS AND SCHEDULES
+	//		CALENDARS AND SCHEDULES
 	// ==================================
+	
+	function getSwByDay($sw, $day) {
+		$ret = array();
+		foreach ($sw as $s)
+			if ($s->date1 == $day || $s->date2 == $day) $ret[] = $s;
+		return $ret;
+	}
 	
 	if (isset($_GET['getCalendar'])) {
 		$today = new DateTime();
-		$month = isset($_POST['month']) ? (int)$_POST['month'] : (int)$today->format('m');
-		
+		$month = isset($_GET['month']) ? (int)$_GET['month'] : null;
+		if (!$month)
+			$month = isset($_POST['month']) ? (int)$_POST['month'] : (int)$today->format('m');
 		$firstDay = new DateTime($today->format('Y') . '-' . $month . '-1');
 		$maxDays = $firstDay->format('t');
 		$firstDay = $firstDay -> format('N');
 		if ($firstDay ==7) $firstDay = 0;
 		$firstDay = 1 - $firstDay;
-		
 		$con->connect();
+		$sw = $con->getListOfSwitchesForMonth($month);
 		$sch = $con->getSchedule($month);
 		$error = mysql_error();
 		$con->close();
@@ -291,17 +299,40 @@
 			echo json_encode(array('success' => false, 'error' => $error));
 			exit;
 		}
-		
 		$cal = array();
 		foreach ($sch as $s) {
 			$assDate = new DateTime($s->assignedDate);
-			$ass = $assDate->format('m_d'); // date is month_day, 4_29
-			if ($s->type == 1)
-				$cal[$ass]['ra'][] = $s;
-			elseif($s->type == 2)
-				$cal[$ass]['rd'] = $s;
+			$ass = 'd_' . $assDate->format('d'); // date is d_day, d_29
+			if ($s->type == 1) {
+				$nFlag = true;
+				$sd = getSwByDay($sw, $today->format('Y')."-".($month<10?'0'.$month:$month)."-".$assDate->format('d'));
+				if ($sd) {
+					$kFlag = true;
+					foreach ($sd as $ss) {
+						if ($kFlag && ($ss->userId1 == $s->userId || $ss->userId2 == $s->userId)) {
+							$z = new stdClass();
+							$z->id = $ss->id;
+							$z->userId = ($ss->userId1 == $s->userId ? $ss->userId2 : $ss->userId1);
+							$z->type = 'switch_' . $ss->status;
+							$z->userName = ($ss->userId1 == $s->userId ? $ss->userName2 : $ss->userName1);
+							$kFlag = false;
+						}
+					}					
+					if ($kFlag)
+						$z = $s;
+					else $nFlag = false;
+				}
+				if ($nFlag) {
+					$z = $s;
+					$z->type = 'c';
+				}
+				$cal[$ass]['ra'][] = $z;
+			} elseif($s->type == 2) {
+				$z = $s;
+				$z->type = 'c';
+				$cal[$ass]['rd'] = $z;
+			}
 		}
-		
 		echo json_encode(array('success' => true, 'calendar' => $cal, 'firstDay' => $firstDay, 'maxDays' => $maxDays));
 		exit;
 	}
