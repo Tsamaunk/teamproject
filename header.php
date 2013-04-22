@@ -5,6 +5,8 @@ $hlp = new Helper();  // CREATE THE HELPER
 if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validToken($_SESSION['userId'], $_SESSION['userToken'])) {
     $loggedin = 1;
     $myId = $_SESSION['userId'];
+    $con = new Controller();
+    $noti = $con->getNumberOfNotifications($myId);
 } else {
     $loggedin = 0;
 }
@@ -25,8 +27,8 @@ if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validTo
         <!--main container-->
         <div id="main" style="min-height:600px">
 
-        	<div id="header">
-                
+            <div id="header">
+
                 <div class="header-holder">
                     <strong class="logo"><a href="index.php"><img src="images/Header_UAlbany_Banner_Logo_Standard.gif" alt="Project Switch" /> </a> </strong>
                 </div>

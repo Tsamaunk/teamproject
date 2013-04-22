@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(0);
 include_once 'base.php';
 $hlp = new Helper();		// CREATE THE HELPER
 $con = new Controller(); 	// AND A CONTROLLER

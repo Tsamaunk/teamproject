@@ -153,7 +153,7 @@ function addDir(data2) {
 }
 
 function execute() {
-	$.post('/api/?addDay', 
+	$.post('api/?addDay', 
 			{type: type, date: data, userId: $('#select').val()}, 
 			function(data){
 				if (data.success)
@@ -162,7 +162,7 @@ function execute() {
 }
 
 function raDelete(id) {
-	$.post('/api/?removeDay', {id:id}, function(data){if (data.success)
+	$.post('api/?removeDay', {id:id}, function(data){if (data.success)
 		location.reload();
 	else alert(data.error)});
 }

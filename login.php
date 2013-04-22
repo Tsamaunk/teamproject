@@ -1,13 +1,15 @@
 <?php
 error_reporting(0);
 include_once 'header.php';
+if ($loggedin)
+    header('Location: index.php');
+
 //include_once 'topbar.php';
 // if ($loggedin) {
 // 	header('location: calendar.php');
 // 	exit;
 // }
 ?>
-
 <div class="contaner">
     <div class="contaner-top">
 
@@ -19,7 +21,8 @@ include_once 'header.php';
             else
                 echo "none";
             ?>">
-                <a href="login.php"><b>Login</b></a>
+                <a href="#" onclick='$("#signup_form").hide();
+                        $("#login_form").toggle();'><b>Login</b></a>
                 &nbsp;
                 <a href="#" onclick='$("#login_form").hide();
                         $("#signup_form").toggle();'><b>Register</b></a>
@@ -38,7 +41,6 @@ include_once 'header.php';
     </div>
 
 
-
     <div class="contaner-bottom">
         <!--<div class="column-links-alt">-->
         <?php include_once 'sidebar.php'; ?>
@@ -51,18 +53,13 @@ include_once 'header.php';
                 <h1>Project Switch</h1>
                 <p class="intro">Department of Residential Life</p>
 
-                <?php
-                if ($_GET['task'] == "message" && $loggedin) {
-                    include 'messages.php';
-                } else if ($_GET['task'] == "notifications" && $loggedin) {
-                    include 'notifications.php';
-                } else {
+                <?php {
                     ?>
                     <div id="wait" style="display: none">LOADING</div>
 
                     <!-- text-box -->
                     <div class="text-box" >
-                        <div id="login_form" style="display: none">
+                        <div id="login_form" style="display: block">
                             <form id="login" method="post">
                                 E-mail:<br />
                                 <input name="email" id="email" type="text" /><br />
@@ -92,7 +89,7 @@ include_once 'header.php';
 
 
 
-                        <p class="intro"><?php //echo $loggedin                           ?></p>
+                        <p class="intro"><?php //echo $loggedin                            ?></p>
                         <div id="result"></div>
 
                         <? ?>
@@ -105,7 +102,7 @@ include_once 'header.php';
                             function(data) {
 
                                 if (data.success) {
-                                    window.location.reload();
+                                    document.location.href = 'index.php';
                                 } else {
                                     alert('Error: ' + data.error);
                                 }
@@ -181,9 +178,9 @@ include_once 'header.php';
 
                         </script>
 
-    <?php
-}
-?>
+                        <?php
+                    }
+                    ?>
 
                 </div>
                 <!-- frame-box -->
@@ -201,4 +198,3 @@ include_once 'header.php';
 <?php
 include_once 'footer.php';
 ?>
-

@@ -24,7 +24,7 @@
 				echo "<li><a href=\"admin.php?page=log\">Log</a></li>";
 			}
 		?>
-		<li><a href="#">Notifications</a></li>                                    
+		<li><a href="index.php?task=notifications">Notifications</a>&nbsp;(<u><?php echo $noti?></u>)</li>                                    
 		<li><a href="index.php?task=message">Messages</a></li>
 	</ul>
 </div>

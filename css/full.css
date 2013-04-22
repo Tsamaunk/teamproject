@@ -1685,7 +1685,7 @@ strong.more a{color:#0060b7;}
 }
 
 .caption {
-    font-size:.2em;
+    <!-- font-size:.2em;-->
 }
 .caption_table {
     font-size: .87em;

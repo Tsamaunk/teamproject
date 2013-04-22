@@ -5,6 +5,8 @@
 	header('Cache-Control: no-cache, must-revalidate');
 	header('Content-type: application/json');
 	
+        error_reporting(0);
+        
 	include_once '../base.php';
 	
 	$hlp = new Helper();
