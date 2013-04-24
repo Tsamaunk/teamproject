@@ -270,6 +270,37 @@
 	//			SWITCHES
 	// ==================================
 	
+	if (isset($_GET['addSwitch'])) {
+		$con->connect();
+		$user = $con->getUserById($myId);
+		$error = mysql_error();
+		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
+		if(!$_POST['day1'] || !$_POST['day2'] || !$_POST['month'] || !$_POST['withUser'] ) {
+			echo json_encode(array('success' => false, 'error' => 'You must specify day1, day2, month and withUser.'));
+			exit;
+		}
+		$today = new DateTime();
+		$day = new stdClass();
+		$day->date1 = new DateTime($today->format('Y').'-'.$_POST['month'].'-'.$_POST['day1']);
+		$day->date2 = new DateTime($today->format('Y').'-'.$_POST['month'].'-'.$_POST['day2']);
+		$day->userId1 = $myId;
+		$day->userId2 = $_POST['withUser'];
+		$day->reason = '';
+		$con->connect();
+		$con->addSwitch($day);
+		$error = mysql_error();
+		$con->close();
+		if ($error) {
+			echo json_encode(array('success' => false, 'error' => $error));
+			exit;
+		}
+		echo json_encode(array('success' => true, $error => null));
+		exit;
+	}
 	
 	// ==================================
 	//		CALENDARS AND SCHEDULES
@@ -311,6 +342,7 @@
 				if ($sd) {
 					$kFlag = true;
 					foreach ($sd as $ss) {
+						if ($ss->status == 2 || $ss->status == 4) continue;
 						if ($kFlag && ($ss->userId1 == $s->userId || $ss->userId2 == $s->userId)) {
 							$z = new stdClass();
 							$z->id = $ss->id;

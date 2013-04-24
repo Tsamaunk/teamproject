@@ -373,7 +373,7 @@ class Controller {
 		$switch->created = time();
 		$sql = "INSERT INTO `switch` (`userId1`, `userId2`, `date1`, `date2`, `fromTime1`, `fromTime2`, `created`,
 			`toTime1`,`toTime2`,`status`,`reason` ) VALUES (
-			'".$switch->userId1."','".$switch->userId2."','".$switch->date1->format("Y-M-D")."','".$switch->date2->format("Y-M-D")."','".$switch->fromTime1."',
+			'".$switch->userId1."','".$switch->userId2."','".$switch->date1->format("Y-m-d")."','".$switch->date2->format("Y-m-d")."','".$switch->fromTime1."',
 			'".$switch->fromTime2."','".$switch->created."','".$switch->toTime1."','".$switch->toTime2."','".$switch->status."','".$switch->reason."');";
 		$result = $this->mod->query($sql);
 		// notif
@@ -584,7 +584,7 @@ class Controller {
 	}
 	
 	public function markNotificationsRead($userId) {
-		$sql = "UPDATE `notify` SET `read` = TRUE WHERE `userId` = '$userId' AND `read` = FALSE;";
+		$sql = "UPDATE `notif` SET `read` = TRUE WHERE `userId` = '$userId' AND `read` = FALSE;";
 		$result = $this->mod->query($sql);
 		return $result;
 	}

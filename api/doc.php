@@ -18,7 +18,8 @@
 <a href="#deleteDialog">deleteDialog</a>
 <a href="#getCalendar">getCalendar</a>
 <a href="#getNot">getNot</a>
-<a href="#getNotCount">getNotCount</a></div>
+<a href="#getNotCount">getNotCount</a>
+<a href="#addSwitch">addSwitch</a></div>
 <div style="background-color:#fd7;padding:10px;"><h3>How do we check the session? (PHP CODE)</h3>Have this code in the beggining of your file: 
 &lt;?php 
 include_once 'base.php';	// THIS THE THE BACKEND CONNECTOR
@@ -208,6 +209,18 @@ RESPONSE:
 	{"success": true / false,
 	"error": error message,
 	"number": number of notifications}	
+	
+<a name="addSwitch"></a>	
+<span style="background-color:#000;color:#fff;"><b>/api/?addSwitch</b></span>
+initiates the switch
+POST Parameters:
+	month: int - selected month
+	day1: int - [1..31] day when i'm on duty.
+	day2: int - [1..31] day when other guy is on duty.
+	withUser: int - other guy's user id	
+RESPONSE:
+	{"success": true / false,
+	"error": error message}	
 	
 </pre>
 </body>

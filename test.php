@@ -67,15 +67,15 @@
 	<script>
 		$(document).ready(function(){
 			var ht = "";
-			$.getJSON('api/?getCalendar',{month: "5"}).done(function(data) {
+			$.getJSON('api/?getCalendar',{month: "4"}).done(function(data) {
 				  $.each(data.calendar, function(key, val) {
 					  ht += "day: "+key+"<br>";
 					  $.each(val, function(ky, vl) {
 						  if (ky == 'rd')
-							ht += "   "+ky+":"+vl.userName+"["+vl.id+"] - "+vl.type+"<br>";
+							ht += "   "+ky+":"+vl.userName+"["+vl.id+"] \t\t type:"+vl.type+"<br>";
 						  else {
 							  $.each(vl, function(kyx, vlx) {
-								  ht += "   "+kyx+":"+vlx.userName+"["+vlx.id+"] - "+vlx.type+" uid:"+vlx.userId+"<br>";
+								  ht += "   "+kyx+":"+vlx.userName+"["+vlx.id+"] \t\t type:"+vlx.type+" uid:"+vlx.userId+"<br>";
 							  });
 						  }
 					  });
@@ -85,17 +85,15 @@
 
 
 			/*/
-	        $.post("api/?getCalendar", {},
+	        $.post("api/?addSwitch", {month:4, day1:10, day2:20, withUser:4},
 	                function(data){
 	                        if(!data.success){
 	                                alert('error: ' + data.error);                                                        
 	                                } else {
-	                                	$.each(data.calendar, function(key, val) {
-	                						ht += key+":"+val+"<br>";
-	                				 	 });
-	                                    $('#holder').html(ht);
+	                                	
+	                                    $('#holder').html('success');
 	                                }    
-	        });       /*/                                                             
+	        });       /**/                                                             
 	                        
 			});
 	

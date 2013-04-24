@@ -1,23 +1,20 @@
 <?php
-error_reporting(0);
-include_once 'base.php';
-$hlp = new Helper();
-$con = new Controller();
-$users = $con->getAllAliveUsers();
-
-
-if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validToken($_SESSION['userId'], $_SESSION['userToken'])) {
-    $myId = $_SESSION['userId'];
-} else {
-    header('Location: login.php');
-    exit;
-}
-
-$myUser = $con->getUserById($myId);
-
-
-include_once 'header.php';
-include_once 'topbar.php';
+	include_once 'base.php';
+	$hlp = new Helper();
+	$con = new Controller();
+	$users = $con->getAllAliveUsers();
+	
+	if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validToken($_SESSION['userId'], $_SESSION['userToken'])) {
+	    $myId = $_SESSION['userId'];
+	} else {
+	    header('Location: login.php');
+	    exit;
+	}
+	
+	$myUser = $con->getUserById($myId);
+	
+	include_once 'header.php';
+	include_once 'topbar.php';
 ?>
 
 <div class="contaner-bottom">
@@ -26,7 +23,6 @@ include_once 'topbar.php';
     <div class="content">
 
         <?php
-// AUTHOR: MIKE GORDO mgordo@live.com 03/26/2013 changed by kisuk(kai) Yoo.
 
         $users = $con->getAllAliveUsers();
 
@@ -38,8 +34,6 @@ include_once 'topbar.php';
         $month = isset($_POST['month']) ? (int) $_POST['month'] : (isset($_SESSION['month']) ? $_SESSION['month'] : (int) $today->format('m'));
         $_SESSION['month'] = $month;
 
-
-
         $firstDay = new DateTime($today->format('Y') . '-' . $month . '-1');
         $maxDays = $firstDay->format('t');
         $firstDay = $firstDay->format('N');
@@ -47,15 +41,6 @@ include_once 'topbar.php';
             $firstDay = 0;
         $firstDay = 1 - $firstDay;
 
-        $sch = $con->getSchedule($month);
-
-        $cal = array();
-        foreach ($sch as $s) {
-            if ($s->type == 1)
-                $cal[$s->assignedDate]['ra'][] = $s;
-            elseif ($s->type == 2)
-                $cal[$s->assignedDate]['rd'] = $s;
-        }
         ?>
 
         <div id="adminConsole" class="content-box">
@@ -95,15 +80,9 @@ include_once 'topbar.php';
                 for ($i = $firstDay; $i <= $maxDays; $i++) {
                     if ($k == 0 || $k % 7 == 0)
                         echo "<tr>";
-                    echo "<td id='td_$i' ";
-
-                    if ($month<$t_month)
-                        echo " bgcolor='081CFF' ";
-
-                    if ($i < $t_day + 2 && $month==$t_month)
-                        echo " bgcolor='081CFF' ";
-
-                    echo ">";
+                    if ($i>0)
+                    	echo "<td id='d_$i'>";
+                    else echo "<td>";
 
                     if ($i > 0)
                         echo "<span class='date'>$i</span><br>";
