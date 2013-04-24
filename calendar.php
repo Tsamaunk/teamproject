@@ -86,27 +86,7 @@
 
                     if ($i > 0)
                         echo "<span class='date'>$i</span><br>";
-                    $index = $today->format('Y') . '-' . ($month > 9 ? $month : '0' . $month) . '-' . ($i > 9 ? $i : '0' . $i);
-                    $cur = $cal[$index];
 
-                    if ($cur) {
-                        if ($cur['rd']) {
-                            echo "<span id='spn_" . $cur['rd']->id . "' class='rd'>" . ($cur['rd']->userName) . "</span>";
-                        } else {
-                            
-                        }
-
-                        if (count($cur['ra'])) {
-                            foreach ($cur['ra'] as $cu)
-                                echo "<span id='spn_" . $cu->id . "' class='ra'>" . ($cu->userName) . "</span>";
-                        }
-
-                        echo "<br>";
-                    } elseif ($i > 0) {
-                        echo "<br>";
-
-                        echo "<br>";
-                    }
                     echo "</td>";
                     if (($k + 1) % 7 == 0)
                         echo "</tr>";
