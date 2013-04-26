@@ -1,20 +1,20 @@
 <?php
-	include_once 'base.php';
-	$hlp = new Helper();
-	$con = new Controller();
-	$users = $con->getAllAliveUsers();
-	
-	if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validToken($_SESSION['userId'], $_SESSION['userToken'])) {
-	    $myId = $_SESSION['userId'];
-	} else {
-	    header('Location: login.php');
-	    exit;
-	}
-	
-	$myUser = $con->getUserById($myId);
-	
-	include_once 'header.php';
-	include_once 'topbar.php';
+include_once 'base.php';
+$hlp = new Helper();
+$con = new Controller();
+$users = $con->getAllAliveUsers();
+
+if (isset($_SESSION['userId']) && isset($_SESSION['userToken']) && $hlp->validToken($_SESSION['userId'], $_SESSION['userToken'])) {
+    $myId = $_SESSION['userId'];
+} else {
+    header('Location: login.php');
+    exit;
+}
+
+$myUser = $con->getUserById($myId);
+
+include_once 'header.php';
+include_once 'topbar.php';
 ?>
 
 <div class="contaner-bottom">
@@ -23,7 +23,6 @@
     <div class="content">
 
         <?php
-
         $users = $con->getAllAliveUsers();
 
         $today = new DateTime();
@@ -40,7 +39,6 @@
         if ($firstDay == 7)
             $firstDay = 0;
         $firstDay = 1 - $firstDay;
-
         ?>
 
         <div id="adminConsole" class="content-box">
@@ -80,9 +78,10 @@
                 for ($i = $firstDay; $i <= $maxDays; $i++) {
                     if ($k == 0 || $k % 7 == 0)
                         echo "<tr>";
-                    if ($i>0)
-                    	echo "<td id='d_$i'>";
-                    else echo "<td>";
+                    if ($i > 0)
+                        echo "<td id='d_$i'>";
+                    else
+                        echo "<td>";
 
                     if ($i > 0)
                         echo "<span class='date'>$i</span><br>";
@@ -112,76 +111,223 @@
     <br><br><br><br><br>
     <p style="text-align:right;"><a href="javascript:closeMask();">Close</a></p>
 </div>
+
+<input type="hidden" name="month" id="month" value="<?php echo $month?>">
+<input type="hidden" name="day1" id="day1">
+<input type="hidden" name="day2" id="day2">
+<input type="hidden" name="withUser" id="withUser">
+
+    
+    	<script>
+            var myId=<?php echo $myId?>;
+		$(document).ready(function(){
+loadSwitch();
+        
+ });
+	
+	</script>
+        <script>
+
+function loadSwitch(){
+           var ht = "";
+        var cell="";
+			$.getJSON('api/?getCalendar',{month: "<?php echo $month?>"}).done(function(data) {
+				  $.each(data.calendar, function(key, val) {
+                                        ht='';
+                                        cell='<span class="date">'+key.substring(2)+'</span><br>';
+					  //ht = "day: "+key+"<br>";
+					  $.each(val, function(ky, vl) {
+						  if (ky == 'rd')
+							ht += "   "+ky+":"+vl.userName+"["+vl.id+"] \t\t type:"+vl.type+"<br>";
+						  else {
+							  $.each(vl, function(kyx, vlx) {
+                                                              if (vlx.type=="c"){
+                                                                  if (vlx.userId==myId)
+                                                                        cell+='<b><a href="javascript:switchFrom(\''+key+'\');">'+vlx.userName+"</a></b>";
+                                                                    else
+                                                                        cell+='<a href="javascript:switchTo('+vlx.userId+',\''+key+'\');">'+vlx.userName+"</a>";
+
+								}
+                                                                else cell+=vlx.userName;
+//								  ht += "   "+kyx+":"+vlx.userName+"["+vlx.id+"] \t\t type:"+vlx.type+" uid:"+vlx.userId+"<br>";
+                                                  cell+="<br>";
+						
+    });
+						  }
+					  });
+                                          $('#'+key).html(cell);
+                                          
+				  });
+				//  $('#holder').append(ht);
+			});
+
+
+			/*/
+	        $.post("api/?addSwitch", {month:4, day1:10, day2:20, withUser:4},
+	                function(data){
+	                        if(!data.success){
+	                                alert('error: ' + data.error);                                                        
+	                                } else {
+	                                	
+	                                    $('#holder').html('success');
+	                                }    
+	        });       /**/                                                             
+	                        
+			
+}
+
+function switchFrom(d_day){
+for (i=1;i<=31;i++)
+    {
+        $('#d_'+i).css('background-color','');
+    }
+
+$('#day1').val(d_day.substring(2));
+$('#'+d_day).css('background-color','#ccc');
+
+}
+            
+function switchTo(userId,d_day){
+for (i=1;i<=31;i++)
+    {
+        if ($('#day1').val()!=i)
+        $('#d_'+i).css('background-color','');
+    }
+
+
+if ($('#day1').val()!=''){
+    $('#day2').val(d_day.substring(2));
+$('#withUser').val(userId);
+
+$('#'+d_day).css('background-color','#aaa');
+            if (confirm("R u sure about switching with user "+$('#withUser').val()+" From:"+$('#day1').val()+" To:"+$('#day2').val()+" ?"))
+                {
+                    doSwitch();
+                }
+            else
+                {
+                    return;
+                }
+}
+else
+    alert("Choose src first!");
+}
+            
+        </script>
+        
+        <script>
+     function doSwitch()
+    {
+        
+        if ($('#withUser').val() && $('#day1').val() && $('#day2').val())
+{a=1;}
+else
+   return;
+
+                $.post("api/?addSwitch",
+                {'month': $("#month").val(),'day1': $("#day1").val(), 'day2': $("#day2").val(), 'withUser': $("#withUser").val()},
+        function(data) {
+
+            if (data.success) {
+$("#day1").val();
+$("#day2").val();
+$("#withUser").val();
+for (i=1;i<=31;i++)
+    {
+        $('#d_'+i).css('background-color','');
+    }
+loadSwitch();
+        } else {
+                alert('Error: ' + data.error);
+            }
+
+        })
+                .done(function() {
+        })
+                .fail(function() {
+        })
+                .always(function() {
+        },
+                "json");
+
+
+
+
+
+    }
+       
+        </script>        
+    
 <script>
-                                                                      var userId = <?php echo $myUser->userId; ?>;
-                                                                      var username = "<?php echo $myUser->firstName . " " . $myUser->lastName; ?>";
-                                                                      var type = 0;
-                                                                      var data = "";
-                                                                      $(window).load(function() {
-                                                                          $('.ra').mouseenter(function() {
-                                                                              //            alert ();
-                                                                              if (!$(this).attr('data-tmp'))
-                                                                                  $(this).attr('data-tmp', $(this).html());
-                                                                              var thisId = $(this).attr('id').split('_');
-                                                                              if ($(this).attr('data-tmp') != username)
-                                                                                  $(this).html('<a href="javascript:raSwitch(' + thisId[1] + ');">Switch</a>');
-                                                                          });
-                                                                          $('.ra').mouseleave(function() {
-                                                                              $(this).html($(this).attr('data-tmp'));
-                                                                              $(this).removeAttr('data-tmp');
-                                                                          });
-                                                                          $('#field').css('left', ($(window).width() / 2 - $('#field').width() / 2) + 'px');
-                                                                          $('#field').css('top', ($(window).height() / 2 - $('#field').height() / 2) + 'px');
-                                                                      });
+    var userId = <?php echo $myUser->userId; ?>;
+    var username = "<?php echo $myUser->firstName . " " . $myUser->lastName; ?>";
+    var type = 0;
+    var data = "";
+    $(window).load(function() {
+      $('.ra').mouseenter(function() {
+          //            alert ();
+          if (!$(this).attr('data-tmp'))
+              $(this).attr('data-tmp', $(this).html());
+          var thisId = $(this).attr('id').split('_');
+          if ($(this).attr('data-tmp') != username)
+              $(this).html('<a href="javascript:raSwitch(' + thisId[1] + ');">Switch</a>');
+      });
+      $('.ra').mouseleave(function() {
+          $(this).html($(this).attr('data-tmp'));
+          $(this).removeAttr('data-tmp');
+      });
+      $('#field').css('left', ($(window).width() / 2 - $('#field').width() / 2) + 'px');
+      $('#field').css('top', ($(window).height() / 2 - $('#field').height() / 2) + 'px');
+    });
 
 
-                                                                      function raSwitch(data2) {
-                                                                          type = 1;
-                                                                          data = data2;
-                                                                          $('#field .caption').text('Switch RA on duty with this guy?');
-                                                                          $('#field .text').text('Are You Sure ' + data2 + ' ?');
-                                                                          $('#switchSlot').val(data2);
-                                                                          $('#mask').fadeIn(300);
-                                                                          $('#field').fadeIn(300);
-                                                                      }
-                                                                      function closeMask() {
-                                                                          $("#field").fadeOut(100);
-                                                                          $("#mask").fadeOut(100)
-                                                                      }
+    function raSwitch(data2) {
+      type = 1;
+      data = data2;
+      $('#field .caption').text('Switch RA on duty with this guy?');
+      $('#field .text').text('Are You Sure ' + data2 + ' ?');
+      $('#switchSlot').val(data2);
+      $('#mask').fadeIn(300);
+      $('#field').fadeIn(300);
+    }
+    function closeMask() {
+      $("#field").fadeOut(100);
+      $("#mask").fadeOut(100)
+    }
 
-                                                                      function confirmSwitch() {
+    function confirmSwitch() {
 
-                                                                          //        alert($('#switchSlot').val());
-                                                                          //        return;
-                                                                          var switchId = $('#switchSlot').val();
+      //        alert($('#switchSlot').val());
+      //        return;
+      var switchId = $('#switchSlot').val();
 
-                                                                          $.post("api/?sendMail",
-                                                                                  {'to': '1', 'subject': 'Switch RA', 'text': 'Switch me with:' + switchId},
-                                                                          function(data) {
+      $.post("api/?sendMail",
+              {'to': '1', 'subject': 'Switch RA', 'text': 'Switch me with:' + switchId},
+      function(data) {
 
-                                                                              if (data.success) {
-                                                                                  $("#alert").html("Message Sent!");
-                                                                                  $("#alert").show();
-                                                                                  //alert('Message Sent!');
-                                                                                  //                $('#msg')[0].reset();
-                                                                                  //                $('#sendmail').attr("disabled", true);
+          if (data.success) {
+              $("#alert").html("Message Sent!");
+              $("#alert").show();
+              //alert('Message Sent!');
+              //                $('#msg')[0].reset();
+              //                $('#sendmail').attr("disabled", true);
 
-                                                                              } else {
-                                                                                  alert('Error: ' + data.error);
-                                                                              }
+          } else {
+              alert('Error: ' + data.error);
+          }
 
-                                                                          })
-                                                                                  .done(function(   ) {
-                                                                          })
-                                                                                  .fail(function() {
-                                                                          })
-                                                                                  .always(function() {
-                                                                              $('#mask').fadeOut(300);
-                                                                              $('#field').fadeOut(300);
-                                                                          },
-                                                                                  "json");
+      })
+              .done(function(   ) {
+      })
+              .fail(function() {
+      })
+              .always(function() {
+          $('#mask').fadeOut(300);
+          $('#field').fadeOut(300);
+      },
+              "json");
 
-                                                                      }
+    }
 </script>
 
 <?php

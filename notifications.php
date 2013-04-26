@@ -28,34 +28,34 @@ if (!isset($myId)) {
                 function(data) {
 
                     if (data.success) {
-                        $('#all_messages').html('');
-                        //window.location.replace("index.php");
-                        //$("#menubar").text("HELLO");
-                        var html = '<table style="border:0px ; " cellspacing="5"><tr><td width="100"><b>With</b></td><td width="150"><b>Subject</b></td><td width="50%"><b>Message</b></td><td width="110"><b>Date</b></td></tr>';
+                $('#all_messages').html('');
+                //window.location.replace("index.php");
+                //$("#menubar").text("HELLO");
+                var cname = data.name;
 
-                        $.each(data.dialogs, function(entryIndex, entry) {
+                var html = '';
 
-                            if (entry.isDeleted == "0") {
-                                if (entry.read == "0")
-                                    flag = "color:#F308FF;";
-                                else
-                                    flag = "";
-                                //                    html += 'place ' + entryIndex + '<br/>';
-                                html += '<tr style="hover: color:#345;' + flag + ' " onclick="getConversation(' + entry.fromId + ',' + entry.toId + ',20);">';
-                                //                    html += '<td>' + entry.fromId + '</td>';
-                                //                    html += '<td>' + entry.toId + '</td>';
-                                html += '<td valign="top">' + entry.name + '</td>';
-                                html += '<td valign="top">' + entry.subject + '</td>';
-                                html += '<td valign="top">' + entry.text + '</td>';
-                                html += '<td valign="top">' + entry.created + '</td>';
-                                html += '</tr>';
-                            }
-                        }
-                        );
-                        html += '</table>';
-                        $('#all_messages').append($(html));
+                //html += '<button id="archive" onclick=\'javascript:getConversation(' + uid + ',' + uid + ');\'>Archive</button><br><br>';
 
-                    } else {
+                html += '<table style="border:0px ; cellspacing="5"><tr><td width="80%"><b>Message</b></td><td width="110" nowrap><b>Date</b></td></tr>';
+
+                $.each(data.notifications, function(entryIndex, entry) {
+                    //                    alert(entry.subject+' '+entry.text+' '+entry.created);
+                    //                    html += 'place ' + entryIndex + '<br/>';
+                    html += '<tr>';
+                    //                    html += '<td>' + entry.fromId + '</td>';
+                    //                    html += '<td>' + entry.toId + '</td>';
+                    html += '<td valign="top">' + entry.text + '</td>';
+                    html += '<td valign="top">' + entry.created + '</td>';
+                    //                    html += '<td>' + entry.created + '</td>';
+                    html += '</tr>';
+                });
+                html += '</table>';
+                //                alert (data.name);
+                $('#all_messages').append(html);
+//                $('#new_message').show();
+
+            } else {
                         alert('Error: ' + data.error);
                     }
 
