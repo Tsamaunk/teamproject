@@ -101,15 +101,16 @@ include_once 'topbar.php';
 
     </div>
 </div>
+
 <div id="mask">
 </div>
 <div id="field">
-    <h2 class="caption"></h2>
-    <p class="text"></p>
-    <input type="hidden" id="switchSlot" name="switchSlot">
-    <button type="button" onclick="javascript:confirmSwitch();">Submit</button>
-    <br><br><br><br><br>
-    <p style="text-align:right;"><a href="javascript:closeMask();">Close</a></p>
+	<h1 class="caption"></h1>
+	<p class="text" id="msg"></p>
+
+        
+	<br><br><br><br><br>
+	<p style="text-align:right;"><a href="javascript:closeMask();">Close</a></p>
 </div>
 
 <input type="hidden" name="month" id="month" value="<?php echo $month?>">
@@ -137,20 +138,22 @@ function loadSwitch(){
                                         cell='<span class="date">'+key.substring(2)+'</span><br>';
 					  //ht = "day: "+key+"<br>";
 					  $.each(val, function(ky, vl) {
-						  if (ky == 'rd')
+						  if (ky == 'rd'){
 							ht += "   "+ky+":"+vl.userName+"["+vl.id+"] \t\t type:"+vl.type+"<br>";
+                                                        cell+='<span class="rd">'+vl.userName+"</span>";;
+                                                  }
 						  else {
 							  $.each(vl, function(kyx, vlx) {
                                                               if (vlx.type=="c"){
                                                                   if (vlx.userId==myId)
-                                                                        cell+='<b><a href="javascript:switchFrom(\''+key+'\');">'+vlx.userName+"</a></b>";
+                                                                        cell+='<span class="ra"><b><a href="javascript:switchFrom(\''+key+'\');">'+vlx.userName+"</a></b></span>";
                                                                     else
-                                                                        cell+='<a href="javascript:switchTo('+vlx.userId+',\''+key+'\');">'+vlx.userName+"</a>";
+                                                                        cell+='<span class="ra"><a href="javascript:switchTo('+vlx.userId+',\''+key+'\');">'+vlx.userName+"</a></span>";
 
 								}
-                                                                else cell+=vlx.userName;
+                                                                else cell+='<span class="app">'+vlx.userName+'</span>';
 //								  ht += "   "+kyx+":"+vlx.userName+"["+vlx.id+"] \t\t type:"+vlx.type+" uid:"+vlx.userId+"<br>";
-                                                  cell+="<br>";
+//                                                  cell+="<br>";
 						
     });
 						  }
@@ -200,19 +203,30 @@ if ($('#day1').val()!=''){
 $('#withUser').val(userId);
 
 $('#'+d_day).css('background-color','#aaa');
-            if (confirm("R u sure about switching with user "+$('#withUser').val()+" From:"+$('#day1').val()+" To:"+$('#day2').val()+" ?"))
-                {
-                    doSwitch();
-                }
-            else
-                {
-                    return;
-                }
-}
-else
-    alert("Choose src first!");
-}
             
+           // 	$('#field .text').text("R u sure about switching with user "+$('#withUser').val()+" From:"+$('#day1').val()+" To:"+$('#day2').val()+" ?");
+ $('#msg').html("Are you sure about switching with user "+$('#withUser').val()+" From:"+$('#day1').val()+" To:"+$('#day2').val()+" ?"+'<button type="button" onclick="javascript:doSwitch();">Confirm</button>');
+
+            $('#mask').fadeIn(300);
+	$('#field').fadeIn(300);
+            
+            //if (confirm("R u sure about switching with user "+$('#withUser').val()+" From:"+$('#day1').val()+" To:"+$('#day2').val()+" ?"))
+                {
+            //        doSwitch();
+                }
+//            else
+                {
+//                    return;
+                }
+}
+else{
+// $('#field .text').text("Choose src!");
+ $('#msg').html("Please choose source first");
+            $('#mask').fadeIn(300);
+	$('#field').fadeIn(300);   
+//    alert("Choose src first!");
+}
+}       
         </script>
         
         <script>
@@ -236,6 +250,7 @@ for (i=1;i<=31;i++)
     {
         $('#d_'+i).css('background-color','');
     }
+    closeMask();
 loadSwitch();
         } else {
                 alert('Error: ' + data.error);
@@ -328,6 +343,28 @@ loadSwitch();
               "json");
 
     }
+    
+  
+function closeMask() {
+	$("#field").fadeOut(100);
+	$("#mask").fadeOut(100)
+        for (i=1;i<=31;i++)
+    {
+        $('#d_'+i).css('background-color','');
+    }
+}
+$(document).keyup(function(e) {
+  if (e.keyCode == 27) { 
+  		$("#field").fadeOut(100);
+		$("#mask").fadeOut(100);
+   }   // esc
+   for (i=1;i<=31;i++)
+    {
+        $('#d_'+i).css('background-color','');
+    }
+});  
+    
+    
 </script>
 
 <?php

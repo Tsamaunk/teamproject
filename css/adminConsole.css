@@ -71,6 +71,27 @@ button:hover {
 	display:block;
 }
 
+#adminConsole #calendar .init {
+	color:black;
+	background-color: #009999;
+	padding: 1px 3px;
+	display:block;
+}
+
+#adminConsole #calendar .conf {
+	color:black;
+	background-color: #009999;
+	padding: 1px 3px;
+	display:block;
+}
+
+#adminConsole #calendar .app {
+	color:black;
+	background-color: #009999;
+	padding: 1px 3px;
+	display:block;
+}
+
 #field {
  	display: none;
 	position: fixed !important;
