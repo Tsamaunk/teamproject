@@ -3,75 +3,29 @@
 if (!isset($myUser) || $myUser->role != 2) {
 	die('unauthorized access');
 }
-/*
-if (isset($_POST['update']) && $_POST['update'] == 1) {
-	$user = new stdClass();
-	$user->role = $_POST['type'];
-	$user->email = $_POST['email'];
-	$user->firstName = $_POST['firstName'];
-	$user->lastName = $_POST['lastName'];
-	$user->password = $_POST['password'];
+if (isset($_POST['update']) && $_POST['update'] == 1) { //confirm
+	$id = $_POST['switchId'];
+	$reason = $_POST['reason'];
+	$confirm = 3;
 	$con->connect();
-	$con->createUser($user);
+	$con->confirmSwitch($id, $confirm, $reason);
 	$con->close();
 	unset($_POST);
 	header('Location: /admin.php?page=switches');
 }
-
-if (isset($_POST['update']) && $_POST['update'] == 2) {
-	$userId = $_POST['userId'];
+if (isset($_POST['update']) && $_POST['update'] == 2) { //decline
+	$id = $_POST['switchId'];
+	$reason = $_POST['reason'];
+	$confirm = 4;
 	$con->connect();
-	$con->approveUser($userId, $myUser->userId);
+	$con->confirmSwitch($id, $confirm, $reason);
 	$con->close();
 	unset($_POST);
 	header('Location: /admin.php?page=switches');
 }
-
-if (isset($_POST['update']) && $_POST['update'] == 3) {
-	$userId = $_POST['userId'];
-	$con->connect();
-	$con->approveUser($userId, $myUser->userId, false);
-	$con->close();
-	unset($_POST);
-	header('Location: /admin.php?page=switches');
-}
-
-if (isset($_POST['update']) && $_POST['update'] == 4) {
-	$userId = $_POST['userId'];
-	$con->connect();
-	$con->undeleteUser($userId);
-	$con->close();
-	unset($_POST);
-	header('Location: /admin.php?page=switches');
-}
-
-if (isset($_POST['update']) && $_POST['update'] == 5) {
-	$userId = $_POST['userId'];
-	$con->connect();
-	$con->updateUserRole($userId, 2);
-	$con->updateAdmins();
-	$con->close();
-	unset($_POST);
-	header('Location: /admin.php?page=switches');
-}
-
-if (isset($_POST['update']) && $_POST['update'] == 6) {
-	$userId = $_POST['userId'];
-	$con->connect();
-	$con->updateUserRole($userId, 1);
-	$con->updateAdmins();
-	$con->close();
-	unset($_POST);
-	header('Location: /admin.php?page=switches');
-}
-*/
-?>
-
-<?php if ($myUser->role == 2) :
 	$sw = $con->getListOfSwitches();
 ?>
 <h1>All Switches</h1>
-<?php endif;?>
 
 <table style="width: 95%;" id="usersTable">
 	<tr>
@@ -115,7 +69,8 @@ if (isset($_POST['update']) && $_POST['update'] == 6) {
 </table>
 
 <script>
-	function blockUser(id) {
+	function approve(id) {
+		var reason = prompt("Comment? [optional]","");
 		var frm = $("<form/>",
 				{ id: "snd", 
 				method: "post", 
@@ -123,31 +78,20 @@ if (isset($_POST['update']) && $_POST['update'] == 6) {
 	    frm.append($("<input/>",
 	    	    { type : "hidden", 
     	    	name: "update", 
-    	    	value: "3" }));
+    	    	value: "1" }));
     	frm.append($("<input/>",
     			{ type : "hidden", 
-					name: "userId", 
+					name: "switchId", 
 					value: id }));
-		frm.submit();  
-	}
-
-	function unblockUser(id) {
-		var frm = $("<form/>",
-				{ id: "snd", 
-				method: "post", 
-				action: "?page=switches" });
-	    frm.append($("<input/>",
-	    	    { type : "hidden", 
-    	    	name: "update", 
-    	    	value: "4" }));
     	frm.append($("<input/>",
     			{ type : "hidden", 
-					name: "userId", 
-					value: id }));
-		frm.submit();  
+					name: "reason", 
+					value: ""+reason+" " }));
+		frm.submit();
 	}
 
-	function approveUser(id) {
+	function decline(id) {
+		var reason = prompt("Reason? [optional]","");
 		var frm = $("<form/>",
 				{ id: "snd", 
 				method: "post", 
@@ -158,46 +102,13 @@ if (isset($_POST['update']) && $_POST['update'] == 6) {
     	    	value: "2" }));
     	frm.append($("<input/>",
     			{ type : "hidden", 
-					name: "userId", 
+					name: "switchId", 
 					value: id }));
-		frm.submit();    
-	}
-
-	function makeAdmin(id) {
-		var frm = $("<form/>",
-				{ id: "snd", 
-				method: "post", 
-				action: "?page=switches" });
-	    frm.append($("<input/>",
-	    	    { type : "hidden", 
-    	    	name: "update", 
-    	    	value: "5" }));
     	frm.append($("<input/>",
     			{ type : "hidden", 
-					name: "userId", 
-					value: id }));
-		frm.submit();    
-	}
-
-	function makeUser(id) {
-		var frm = $("<form/>",
-				{ id: "snd", 
-				method: "post", 
-				action: "?page=switches" });
-	    frm.append($("<input/>",
-	    	    { type : "hidden", 
-    	    	name: "update", 
-    	    	value: "6" }));
-    	frm.append($("<input/>",
-    			{ type : "hidden", 
-					name: "userId", 
-					value: id }));
-		frm.submit();
-	}
-	
-	function createUser() {
-		$("#createUserForm").fadeIn(200);
-		$("#usersTable").hide();
+					name: "reason", 
+					value: ""+reason+" " }));
+		frm.submit();  
 	}
 
 </script>

@@ -405,7 +405,8 @@ class Controller {
 	 */
 	public function confirmSwitch($id, $confirm, $reason = '') {
 		$switch = $this->getSwitch($id);
-		$sql = "UPDATE `switch` SET `status` = '$confirm' ".($reason==''?'':" `reason` = '".$reason."' ")." 
+		$reason = $this->mod->clear($reason);
+		$sql = "UPDATE `switch` SET `status` = '$confirm' ".($reason==''?'':", `reason` = '$reason' ")." 
 		WHERE `id` = '$id';";
 		$result = $this->mod->query($sql);
 		// notif
