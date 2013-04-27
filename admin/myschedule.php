@@ -6,6 +6,7 @@ $today = new DateTime();
 $month = isset($_POST['month']) ? (int)$_POST['month'] : (isset($_SESSION['month']) ? $_SESSION['month'] : (int)$today->format('m'));
 $_SESSION['month'] = $month;
 $sch = $con->getSchedule($month);
+$sw = $con->getListOfSwitches($myUser->userId);
 $cal = array();
 $ncal = array();
 foreach ($sch as $s) {
@@ -14,12 +15,22 @@ foreach ($sch as $s) {
 	elseif($s->type == 2)
 	$cal[$s->assignedDate]['rd'] = $s;
 }
-foreach ($cal as $date=>$key) {
+
+foreach ($sw as $s) { // inject switches to calendar
+	if ($s->status == 2 || $s->status == 1 || $s->status == 3) {
+		$cal[$s->date1]['sw'] = $s;
+		$cal[$s->date2]['sw'] = $s;
+	}
+}
+
+foreach ($cal as $date => $key) {
 	if ($key['rd']->userId == $myUser->userId)
 		$ncal[$date] = $key;
 	else {
 		foreach($key['ra'] as $kra)
 			if ($kra->userId == $myUser->userId)
+				$ncal[$date] = $key;
+		if ($key['sw']->userId1 == $myUser->userId || $key['sw']->userId2 == $myUser->userId)
 			$ncal[$date] = $key;
 	}
 }
@@ -49,16 +60,22 @@ foreach ($cal as $date=>$key) {
 
 <table id="myschedule">
 <?php 
-foreach ($ncal as $date=>$c) {
+echo "<pre>";
+var_dump($ncal);
+
+foreach ($ncal as $date => $c) {
 	$dta = new DateTime($date);
 	$date = $dta->format('d M Y, D');
 	echo "<tr>";
 	echo "<td>" . $date . "</td>";
 	echo "<td>";
 	foreach ($c['ra'] as $cra) {
+		
+		if ($c['sw']) echo "<s>";
 		if ($cra->userId == $myUser->userId) echo "<strong>"; 
 		echo $cra->userName;
-		if ($cra->userId == $myUser->userId) echo "</strong>";		
+		if ($cra->userId == $myUser->userId) echo "</strong>";
+		if ($c['sw']) echo "</s>";		
 		echo "<br>";
 		}
 	if ($c['rd']->userId == $myUser->userId) echo "<strong>";
