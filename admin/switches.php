@@ -1,6 +1,6 @@
 <?php
 
-if (!isset($myUser)/* || $myUser->role != 2*/) {
+if (!isset($myUser) || $myUser->role != 2) {
 	die('unauthorized access');
 }
 /*
@@ -71,19 +71,15 @@ if (isset($_POST['update']) && $_POST['update'] == 6) {
 	$sw = $con->getListOfSwitches();
 ?>
 <h1>All Switches</h1>
-<?php else :
-	$sw = $con->getListOfSwitches($myUser->userId);
-?>
-<h1>My Switches</h1>
 <?php endif;?>
 
 <table style="width: 95%;" id="usersTable">
 	<tr>
-		<th style="text-align:left; width:8%;">ID</th>
-		<th style="text-align:left; width:15%;">User 1</th>
-		<th style="text-align:left; width:15%;">User 2</th>
-		<th style="text-align:left; width:18%;">Date 1</th>
-		<th style="text-align:left; width:18%;">Date 2</th>
+		<th style="text-align:left; width:6%;">ID</th>
+		<th style="text-align:left; width:21%;">User 1</th>
+		<th style="text-align:left; width:21%;">User 2</th>
+		<th style="text-align:left; width:13%;">Date 1</th>
+		<th style="text-align:left; width:13%;">Date 2</th>
 		<th style="text-align:left; width:10%;">Status</th>
 		<th style="text-align:left; width:16%;">Options</th>
 	</tr>
@@ -91,31 +87,29 @@ if (isset($_POST['update']) && $_POST['update'] == 6) {
 
 	foreach ($sw as $u) {
 		echo "<tr>";
-		echo "<td>" . $u->userId . "</td>";
-		echo "<td>" . $u->firstName . " " . $u->lastName . "</td>";
-		echo "<td>" . $u->email . "</td>";
-		if ($u->approvedBy) {
-			$admname = $con->getUserById($u->approvedBy);
-			$admname = $admname -> firstName . " " . $admname ->lastName;
-			echo "<td>" . $admname . "</td>";
-		} else {echo "<td></td>";}
-		echo "<td>" . date("h:i a, m/d/y",$u->created) . "</td>";
+		echo "<td>" . $u->id . "</td>";
+		echo "<td>" . $u->userName1 . " [" . $u->userId1 . "]</td>";
+		echo "<td>" . $u->userName2 . " [" . $u->userId2 . "]</td>";
+		echo "<td>" . $u->date1 . "</td>";
+		echo "<td>" . $u->date2 . "</td>";
 		echo "<td>";
-		if ($u->userId == 1)
-			echo "Superadmin: No options";
-		if ($u->isDeleted)
-			echo " <a href='javascript:unblockUser(".$u->userId.");'>Undelete</a> ";
-		else {
-			if ($u->approvedBy && $u->userId > 1)
-				echo " <a href='javascript:blockUser(".$u->userId.");'>Delete</a> ";
-			if (!$u->approvedBy)
-				echo " <a href='javascript:approveUser(".$u->userId.");'>Approve</a> ";
-			if ($u->approvedBy && $u->role == 1)
-				echo " <a href='javascript:makeAdmin(".$u->userId.");'>Make Admin</a> ";
-			if ($u->approvedBy && $u->role == 2 && $u->userId > 1)
-				echo " <a href='javascript:makeUser(".$u->userId.");'>Make User</a> ";
-		}		
+			if ($u->status == 0) echo "New";
+			if ($u->status == 1) echo "Confirmed";
+			if ($u->status == 2) echo "Declined";
+			if ($u->status == 3) echo "Approved";
+			if ($u->status == 4) echo "Denied";
+		echo "</td>";
+		echo "<td>";
+			if ($u->status == 1) echo "<a href='javascript:approve(".$u->id.");'>Approve</a> &middot; ".
+					"<a href='javascript:decline(".$u->id.");'>Decline</a>";
 		echo "</td></tr>";
+		if ($u->reason) {
+			echo "<tr>";
+			echo "<td colspan=\"7\" style=\"text-align:right\">";
+			echo $u->reason;			
+			echo "</td>";
+			echo "</tr>";
+		}
 	}
 ?>
 </table>
