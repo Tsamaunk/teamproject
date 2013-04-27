@@ -151,7 +151,13 @@ function loadSwitch(){
                                                                         cell+='<span class="ra"><a href="javascript:switchTo('+vlx.userId+',\''+key+'\');">'+vlx.userName+"</a></span>";
 
 								}
-                                                                else cell+='<span class="app">'+vlx.userName+'</span>';
+                                                                else 
+                                                                    {
+                                                                            cell+='<span class="'+vlx.type+'">'+vlx.userName+'</span>';
+                                                                        
+                                                                        //alert (state);
+                                                                    }
+                                                                    
 //								  ht += "   "+kyx+":"+vlx.userName+"["+vlx.id+"] \t\t type:"+vlx.type+" uid:"+vlx.userId+"<br>";
 //                                                  cell+="<br>";
 						
@@ -198,7 +204,7 @@ for (i=1;i<=31;i++)
     }
 
 
-if ($('#day1').val()!=''){
+if ($('#day1').val()!='') {
     $('#day2').val(d_day.substring(2));
 $('#withUser').val(userId);
 

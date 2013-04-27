@@ -70,24 +70,37 @@ button:hover {
 	padding: 1px 3px;
 	display:block;
 }
-
-#adminConsole #calendar .init {
+#adminConsole #calendar .switch_0 {
 	color:black;
-	background-color: #009999;
+	background-color: #F5FF30;
 	padding: 1px 3px;
 	display:block;
 }
 
-#adminConsole #calendar .conf {
+#adminConsole #calendar .switch_1 {
 	color:black;
-	background-color: #009999;
+	background-color: #0AD8F7;
 	padding: 1px 3px;
 	display:block;
 }
 
-#adminConsole #calendar .app {
+#adminConsole #calendar .switch_2 {
 	color:black;
-	background-color: #009999;
+	background-color: #FA0C0C;
+	padding: 1px 3px;
+	display:block;
+}
+
+#adminConsole #calendar .switch_3 {
+	color:black;
+	background-color: #00FF11;
+	padding: 1px 3px;
+	display:block;
+}
+
+#adminConsole #calendar .switch_4 {
+	color:black;
+	background-color: #FA0C0C;
 	padding: 1px 3px;
 	display:block;
 }
