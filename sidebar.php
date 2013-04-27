@@ -17,6 +17,7 @@
 		<li><a href="calendar.php">Calendar</a></li>
 		<li><a href="admin.php">Profile</a></li>
 		<li><a href="admin.php?page=myschedule">My Schedule</a></li>
+		<li><a href="admin.php?page=switches">Switches</a></li>
 		<?php 
 			if (isset($_SESSION['userRole']) && $_SESSION['userRole']==2) {
 				echo "<li><a href=\"admin.php?page=schedule\">Edit Calendar</a></li>";

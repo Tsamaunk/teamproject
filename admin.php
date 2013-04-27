@@ -40,6 +40,7 @@ include_once 'topbar.php'; ?>
 	if ($page == 'log') include_once 'admin/log.php';
 	if ($page == 'schedule') include_once 'admin/schedule.php';
 	if ($page == 'myschedule') include_once 'admin/myschedule.php';
+	if ($page == 'switches') include_once 'admin/switches.php';
 	
 	echo "</div>\n";
 	
