@@ -44,6 +44,9 @@ foreach ($sw as $s) { // inject switches to calendar
 	}
 }
 
+echo "<pre>";
+var_dump($cal);
+
 foreach ($cal as $date => $key) {
 	if ($key['rd']->userId == $myUser->userId)
 		$ncal[$date] = $key;
@@ -51,7 +54,7 @@ foreach ($cal as $date => $key) {
 		foreach($key['ra'] as $kra)
 			if ($kra->userId == $myUser->userId)
 				$ncal[$date] = $key;
-		//if ($key['sw']->userId1 == $myUser->userId || $key['sw']->userId2 == $myUser->userId)
+		if ($key['sw']->userId1 == $myUser->userId || $key['sw']->userId2 == $myUser->userId)
 			$ncal[$date] = $key;
 	}
 }
