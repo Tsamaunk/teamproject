@@ -293,9 +293,11 @@ include_once 'topbar.php';
             //            alert ();
             if (!$(this).attr('data-tmp'))
                 $(this).attr('data-tmp', $(this).html());
-            var thisId = $(this).attr('id').split('_');
-            if ($(this).attr('data-tmp') != username)
-                $(this).html('<a href="javascript:raSwitch(' + thisId[1] + ');">Switch</a>');
+			if ($(this).attr('id')){
+				var thisId = $(this).attr('id').split('_');
+				if ($(this).attr('data-tmp') != username)
+					$(this).html('<a href="javascript:raSwitch(' + thisId[1] + ');">Switch</a>');
+			}
         });
         $('.ra').mouseleave(function() {
             $(this).html($(this).attr('data-tmp'));

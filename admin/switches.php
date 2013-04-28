@@ -55,7 +55,7 @@ if (isset($_POST['update']) && $_POST['update'] == 2) { //decline
 		echo "</td>";
 		echo "<td>";
 			if ($u->status == 1) echo "<a href='javascript:approve(".$u->id.");'>Approve</a> &middot; ".
-					"<a href='javascript:decline(".$u->id.");'>Decline</a>";
+					"<a href='javascript:decline(".$u->id.");'>Deny</a>";
 		echo "</td></tr>";
 		if ($u->reason) {
 			echo "<tr>";

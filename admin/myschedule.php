@@ -17,7 +17,7 @@ foreach ($sch as $s) {
 }
 
 foreach ($sw as $s) { // inject switches to calendar
-	if ($s->status == 2 || $s->status == 1 || $s->status == 3) {
+	if ($s->status == 0 || $s->status == 1 || $s->status == 3) {
 		$cal[$s->date1]['sw'] = $s;
 		$cal[$s->date2]['sw'] = $s;
 	}
@@ -71,11 +71,20 @@ foreach ($ncal as $date => $c) {
 	echo "<td>";
 	foreach ($c['ra'] as $cra) {
 		
-		if ($c['sw']) echo "<s>";
+		if ($c['sw']->userId1 == $cra->userId || $c['sw']->userId2 == $cra->userId) echo "<s>";
 		if ($cra->userId == $myUser->userId) echo "<strong>"; 
 		echo $cra->userName;
 		if ($cra->userId == $myUser->userId) echo "</strong>";
-		if ($c['sw']) echo "</s>";		
+		if ($c['sw']) echo "</s>";
+		if ($c['sw']->userId1 == $cra->userId)
+			echo "&nbsp;&nbsp;&nbsp;&nbsp;Switching with ".$['sw']->userName2;
+		if ($c['sw']->userId2 == $cra->userId)
+			echo "&nbsp;&nbsp;&nbsp;&nbsp;Switching with ".$['sw']->userName1;
+		
+		if ($c['sw']->userId2 == $cra->userId && $c['sw']->status == 0) {
+			echo "<a>confirm</a> &middot; <a>decline</a>";
+		}
+		
 		echo "<br>";
 		}
 	if ($c['rd']->userId == $myUser->userId) echo "<strong>";
