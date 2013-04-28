@@ -51,7 +51,7 @@ foreach ($cal as $date => $key) {
 		foreach($key['ra'] as $kra)
 			if ($kra->userId == $myUser->userId)
 				$ncal[$date] = $key;
-		if ($key['sw']->userId1 == $myUser->userId || $key['sw']->userId2 == $myUser->userId)
+		//if ($key['sw']->userId1 == $myUser->userId || $key['sw']->userId2 == $myUser->userId)
 			$ncal[$date] = $key;
 	}
 }
@@ -81,6 +81,7 @@ foreach ($cal as $date => $key) {
 
 <table id="myschedule">
 <?php 
+
 foreach ($ncal as $date => $c) {
 	$dta = new DateTime($date);
 	$date = $dta->format('d M Y, D');
