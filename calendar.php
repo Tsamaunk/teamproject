@@ -120,11 +120,17 @@ include_once 'topbar.php';
 
 
 <script>
-                                                                      var myId =<?php echo $myId ?>;
-                                                                      $(document).ready(function() {
-                                                                          loadSwitch();
-
-                                                                      });
+	  var myId =<?php echo $myId ?>;
+	  $(document).ready(function() {
+		loadSwitch();
+		$('span.rd').each(function(){
+			$(this)
+				.siblings('span.date')
+				.next()
+				.after($(this));
+		 });
+	
+	});
 
 </script>
 <script>
@@ -182,10 +188,6 @@ include_once 'topbar.php';
          $('#holder').html('success');
          }    
          });*/
-		 
-		 $('span.rd').each(function(){
-			$(this).closest('td').prepend($(this));
-		 });
 
 
     }
@@ -322,7 +324,7 @@ include_once 'topbar.php';
         $("#mask").fadeOut(100)
     }
 
-    function confirmSwitch() {
+    /*function confirmSwitch() {
 
         //        alert($('#switchSlot').val());
         //        return;
@@ -353,7 +355,7 @@ include_once 'topbar.php';
             $('#field').fadeOut(300);
         },
                 "json");
-    }
+    }*/
 
 
     function closeMask() {
