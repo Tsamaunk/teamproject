@@ -172,7 +172,7 @@ include_once 'topbar.php';
         });
 
 
-        /*/
+        /*
          $.post("api/?addSwitch", {month:4, day1:10, day2:20, withUser:4},
          function(data){
          if(!data.success){
@@ -181,7 +181,11 @@ include_once 'topbar.php';
          
          $('#holder').html('success');
          }    
-         });       /**/
+         });*/
+		 
+		 $('span.rd').each(function(){
+			$(this).closest('td').prepend($(this));
+		 });
 
 
     }
@@ -255,10 +259,7 @@ include_once 'topbar.php';
                 $("#day1").val();
                 $("#day2").val();
                 $("#withUser").val();
-                for (i = 1; i <= 31; i++)
-                {
-                    $('#d_' + i).css('background-color', '');
-                }
+                $('.d_day').css('background-color', '');
                 closeMask();
                 loadSwitch();
             } else {
@@ -356,20 +357,13 @@ include_once 'topbar.php';
     function closeMask() {
         $("#field").fadeOut(100);
         $("#mask").fadeOut(100)
-        for (i = 1; i <= 31; i++)
-        {
-            $('#d_' + i).css('background-color', '');
-        }
+        $('.d_day').css('background-color', '');
     }
     $(document).keyup(function(e) {
         if (e.keyCode == 27) {
             $("#field").fadeOut(100);
             $("#mask").fadeOut(100);
         }   // esc
-        /*for (i = 1; i <= 31; i++)
-        {
-            $('#d_' + i).css('background-color', '');
-        }*/
 		$('.d_day').css('background-color', '');
     });
 
