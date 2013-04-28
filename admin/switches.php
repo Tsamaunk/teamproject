@@ -5,10 +5,9 @@ if (!isset($myUser) || $myUser->role != 2) {
 }
 if (isset($_POST['update']) && $_POST['update'] == 1) { //confirm
 	$id = $_POST['switchId'];
-	$reason = $_POST['reason'];
 	$confirm = 3;
 	$con->connect();
-	$con->confirmSwitch($id, $confirm, $reason);
+	$con->confirmSwitch($id, $confirm);
 	$con->close();
 	unset($_POST);
 	header('Location: /admin.php?page=switches');
@@ -70,7 +69,6 @@ if (isset($_POST['update']) && $_POST['update'] == 2) { //decline
 
 <script>
 	function approve(id) {
-		var reason = prompt("Comment? [optional]","");
 		var frm = $("<form/>",
 				{ id: "snd", 
 				method: "post", 
@@ -83,11 +81,7 @@ if (isset($_POST['update']) && $_POST['update'] == 2) { //decline
     			{ type : "hidden", 
 					name: "switchId", 
 					value: id }));
-    	frm.append($("<input/>",
-    			{ type : "hidden", 
-					name: "reason", 
-					value: ""+reason+" " }));
-		frm.submit();
+    	frm.submit();
 	}
 
 	function decline(id) {

@@ -5,10 +5,9 @@ if (!isset($myUser)) {
 
 if (isset($_POST['update']) && $_POST['update'] == 1) { //confirm
 	$id = $_POST['switchId'];
-	$reason = $_POST['reason'];
 	$confirm = 1;
 	$con->connect();
-	$con->confirmSwitch($id, $confirm, $reason);
+	$con->confirmSwitch($id, $confirm);
 	$con->close();
 	unset($_POST);
 	header('Location: /admin.php?page=myschedule');
@@ -102,14 +101,14 @@ foreach ($ncal as $date => $c) {
 			echo "&nbsp;&nbsp;&nbsp;&nbsp;<em>Switching with ".$c['sw']->userName1 . "</em>";
 		
 		if ($c['sw']->userId2 == $cra->userId && $c['sw']->status == 0) {
-			echo " <font size=\"-1\"><a href=\"javascript:confirm(".$c['sw']->id.");\">confirm</a> &middot; <a href=\"javascript:decline(".$c['sw']->id.");\">decline</a></font>";
+			echo " <span style=\"font-size:.9em;\"><a href=\"javascript:confirm(".$c['sw']->id.");\">confirm</a> &middot; <a href=\"javascript:decline(".$c['sw']->id.");\">decline</a></span>";
 		}
 		
 		if (($c['sw']->userId2 == $cra->userId || $c['sw']->userId1 == $cra->userId) && $c['sw']->status == 1) {
-			echo " <font size=\"-1\"><strong>confirmed</strong></font>";
+			echo " <span style=\"font-size:.9em;\"><strong>confirmed</strong></span>";
 		}
 		if (($c['sw']->userId2 == $cra->userId || $c['sw']->userId1 == $cra->userId) && $c['sw']->status == 3) {
-			echo " <font size=\"-1\"><strong>approved</strong></font>";
+			echo " <span style=\"font-size:.9em;\"><strong>approved</strong></span>";
 		}
 		
 		echo "<br>";
@@ -138,10 +137,6 @@ foreach ($ncal as $date => $c) {
     			{ type : "hidden", 
 					name: "switchId", 
 					value: id }));
-    	frm.append($("<input/>",
-    			{ type : "hidden", 
-					name: "reason", 
-					value: "" }));
 		frm.submit();
 	}
 
