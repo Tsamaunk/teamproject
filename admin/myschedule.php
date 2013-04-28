@@ -27,7 +27,7 @@ $today = new DateTime();
 $month = isset($_POST['month']) ? (int)$_POST['month'] : (isset($_SESSION['month']) ? $_SESSION['month'] : (int)$today->format('m'));
 $_SESSION['month'] = $month;
 $sch = $con->getSchedule($month);
-$sw = $con->getListOfSwitches($myUser->userId);
+$sw = $con->getListOfSwitches();//$myUser->userId);
 $cal = array();
 $ncal = array();
 foreach ($sch as $s) {
@@ -38,14 +38,11 @@ foreach ($sch as $s) {
 }
 
 foreach ($sw as $s) { // inject switches to calendar
-	if (!$s->status || $s->status == 0 || $s->status == 1 || $s->status == 3) {
+	if ($s->status == 0 || $s->status == 1 || $s->status == 3) {
 		$cal[$s->date1]['sw'] = $s;
 		$cal[$s->date2]['sw'] = $s;
 	}
 }
-
-echo "<pre>";
-var_dump($cal);
 
 foreach ($cal as $date => $key) {
 	if ($key['rd']->userId == $myUser->userId)
@@ -105,14 +102,14 @@ foreach ($ncal as $date => $c) {
 			echo "&nbsp;&nbsp;&nbsp;&nbsp;<em>Switching with ".$c['sw']->userName1 . "</em>";
 		
 		if ($c['sw']->userId2 == $cra->userId && $c['sw']->status == 0 && $cra->userId == $myUser->userId) {
-			echo " <span style=\"font-size:.9em;\"><a href=\"javascript:confirm(".$c['sw']->id.");\">confirm</a> &middot; <a href=\"javascript:decline(".$c['sw']->id.");\">decline</a></span>";
+			echo " <span style=\"font-size:.8em;\"><a href=\"javascript:confirm(".$c['sw']->id.");\">confirm</a> &middot; <a href=\"javascript:decline(".$c['sw']->id.");\">decline</a></span>";
 		}
 		
 		if (($c['sw']->userId2 == $cra->userId || $c['sw']->userId1 == $cra->userId) && $c['sw']->status == 1) {
-			echo " <span style=\"font-size:.9em;\"><strong>confirmed</strong></span>";
+			echo " <span style=\"font-size:.8em;\"><strong>confirmed</strong></span>";
 		}
 		if (($c['sw']->userId2 == $cra->userId || $c['sw']->userId1 == $cra->userId) && $c['sw']->status == 3) {
-			echo " <span style=\"font-size:.9em;\"><strong>approved</strong></span>";
+			echo " <span style=\"font-size:.8em;\"><strong>approved</strong></span>";
 		}
 		
 		echo "<br>";
