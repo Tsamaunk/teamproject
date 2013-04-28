@@ -2,6 +2,28 @@
 if (!isset($myUser)) {
 	die('unauthorized access');
 }
+
+if (isset($_POST['update']) && $_POST['update'] == 1) { //confirm
+	$id = $_POST['switchId'];
+	$reason = $_POST['reason'];
+	$confirm = 1;
+	$con->connect();
+	$con->confirmSwitch($id, $confirm, $reason);
+	$con->close();
+	unset($_POST);
+	header('Location: /admin.php?page=myschedule');
+}
+if (isset($_POST['update']) && $_POST['update'] == 2) { //decline
+	$id = $_POST['switchId'];
+	$reason = $_POST['reason'];
+	$confirm = 2;
+	$con->connect();
+	$con->confirmSwitch($id, $confirm, $reason);
+	$con->close();
+	unset($_POST);
+	header('Location: /admin.php?page=myschedule');
+}
+
 $today = new DateTime();
 $month = isset($_POST['month']) ? (int)$_POST['month'] : (isset($_SESSION['month']) ? $_SESSION['month'] : (int)$today->format('m'));
 $_SESSION['month'] = $month;
@@ -80,7 +102,7 @@ foreach ($ncal as $date => $c) {
 			echo "&nbsp;&nbsp;&nbsp;&nbsp;<em>Switching with ".$c['sw']->userName1 . "</em>";
 		
 		if ($c['sw']->userId2 == $cra->userId && $c['sw']->status == 0) {
-			echo "<a href=\"javascript:confirm(".$c['sw']->id.");\">confirm</a> &middot; <a href=\"javascript:decline(".$c['sw']->id.");\">decline</a>";
+			echo " <font size=\"-1\"><a href=\"javascript:confirm(".$c['sw']->id.");\">confirm</a> &middot; <a href=\"javascript:decline(".$c['sw']->id.");\">decline</a></font>";
 		}
 		
 		if (($c['sw']->userId2 == $cra->userId || $c['sw']->userId1 == $cra->userId) && $c['sw']->status == 1) {
@@ -103,13 +125,46 @@ foreach ($ncal as $date => $c) {
 </table>
 
 <script>
-function confirm(id) {
+	function confirm(id) {
+		var frm = $("<form/>",
+				{ id: "snd", 
+				method: "post", 
+				action: "?page=myschedule" });
+	    frm.append($("<input/>",
+	    	    { type : "hidden", 
+    	    	name: "update", 
+    	    	value: "1" }));
+    	frm.append($("<input/>",
+    			{ type : "hidden", 
+					name: "switchId", 
+					value: id }));
+    	frm.append($("<input/>",
+    			{ type : "hidden", 
+					name: "reason", 
+					value: "" }));
+		frm.submit();
+	}
 
-}
+	function decline(id) {
+		var reason = prompt("Reason? [optional]","");
+		var frm = $("<form/>",
+				{ id: "snd", 
+				method: "post", 
+				action: "?page=myschedule" });
+	    frm.append($("<input/>",
+	    	    { type : "hidden", 
+    	    	name: "update", 
+    	    	value: "2" }));
+    	frm.append($("<input/>",
+    			{ type : "hidden", 
+					name: "switchId", 
+					value: id }));
+    	frm.append($("<input/>",
+    			{ type : "hidden", 
+					name: "reason", 
+					value: ""+reason+" " }));
+		frm.submit();  
+	}
 
-function decline(id) {
-
-
-}
 
 </script>
