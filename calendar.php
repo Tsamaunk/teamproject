@@ -79,7 +79,7 @@ include_once 'topbar.php';
                     if ($k == 0 || $k % 7 == 0)
                         echo "<tr>";
                     if ($i > 0)
-                        echo "<td id='d_$i'>";
+                        echo "<td id='d_$i' class='d_day' >";
                     else
                         echo "<td>";
 
@@ -366,10 +366,11 @@ include_once 'topbar.php';
             $("#field").fadeOut(100);
             $("#mask").fadeOut(100);
         }   // esc
-        for (i = 1; i <= 31; i++)
+        /*for (i = 1; i <= 31; i++)
         {
             $('#d_' + i).css('background-color', '');
-        }
+        }*/
+		$('.d_day').css('background-color', '');
     });
 
 

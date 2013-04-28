@@ -65,12 +65,12 @@ button:hover {
 }
 
 #adminConsole #calendar .ra {
-	color:black;
-	background-color: #eeb111;
+	/*color:black;
+	background-color: #eeb111;*/
 	padding: 1px 3px;
 	display:block;
 }
-#adminConsole #calendar .switch_0 {
+#adminConsole #calendar .switch_0 { /*waiting confirmation*/
 	color:black;
 	background-color: #F5FF30;
 	padding: 1px 3px;
@@ -79,7 +79,8 @@ button:hover {
 
 #adminConsole #calendar .switch_1 {
 	color:black;
-	background-color: #0AD8F7;
+	/*background-color: #0AD8F7;*/
+	border: 1px solid #6d4391;
 	padding: 1px 3px;
 	display:block;
 }
@@ -93,7 +94,8 @@ button:hover {
 
 #adminConsole #calendar .switch_3 {
 	color:black;
-	background-color: #00FF11;
+	/*background-color: #00FF11;*/
+	border: 1px solid #f90;
 	padding: 1px 3px;
 	display:block;
 }
