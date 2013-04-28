@@ -151,7 +151,7 @@ include_once 'topbar.php';
                                 if (vlx.userId == myId)
                                     cell += '<span class="ra"><b><a href="javascript:switchFrom(\'' + key + '\');">' + vlx.userName + "</a></b></span>";
                                 else
-                                    cell += '<span class="ra"><a href="javascript:switchTo(' + vlx.userId + ',\'' + key + '\');">' + vlx.userName + "</a></span>";
+                                    cell += '<span class="ra"><a href="javascript:switchTo(\'' + vlx.userName + '\',' + vlx.userId + ',\'' + key + '\');">' + vlx.userName + "</a></span>";
 
                             }
                             else
@@ -207,7 +207,7 @@ include_once 'topbar.php';
 
     }
 
-    function switchTo(userId, d_day) {
+    function switchTo(username, userId, d_day) {
         for (i = 1; i <= 31; i++)
         {
             if ($('#day1').val() != i)
@@ -222,7 +222,7 @@ include_once 'topbar.php';
             $('#' + d_day).css('background-color', '#aaa');
 
             // 	$('#field .text').text("R u sure about switching with user "+$('#withUser').val()+" From:"+$('#day1').val()+" To:"+$('#day2').val()+" ?");
-            $('#msg').html("Are you sure about switching with user " + $('#withUser').val() + " From:" + $('#day1').val() + " To:" + $('#day2').val() + " ?" + '<button type="button" onclick="javascript:doSwitch();window.location.reload();">Confirm</button>');
+            $('#msg').html("Are you sure about switching with " + username + " From:" + $('#day1').val() + " To:" + $('#day2').val() + " ?" + '<button type="button" onclick="javascript:doSwitch();window.location.reload();">Confirm</button>');
 
             $('#mask').fadeIn(300);
             $('#field').fadeIn(300);
