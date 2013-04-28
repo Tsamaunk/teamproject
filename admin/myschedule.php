@@ -101,7 +101,7 @@ foreach ($ncal as $date => $c) {
 		if ($c['sw']->userId2 == $cra->userId)
 			echo "&nbsp;&nbsp;&nbsp;&nbsp;<em>Switching with ".$c['sw']->userName1 . "</em>";
 		
-		if ($c['sw']->userId2 == $cra->userId && $c['sw']->status == 0) {
+		if ($c['sw']->userId2 == $cra->userId && $c['sw']->status == 0 && $cra->userId == $myUser->userId) {
 			echo " <span style=\"font-size:.9em;\"><a href=\"javascript:confirm(".$c['sw']->id.");\">confirm</a> &middot; <a href=\"javascript:decline(".$c['sw']->id.");\">decline</a></span>";
 		}
 		
