@@ -123,12 +123,8 @@ include_once 'topbar.php';
 	  var myId =<?php echo $myId ?>;
 	  $(document).ready(function() {
 		loadSwitch();
-		$('span.rd').each(function(){
-			$(this)
-				.siblings('span.date')
-				.next()
-				.after($(this));
-		 });
+		
+		
 	
 	});
 
@@ -175,7 +171,15 @@ include_once 'topbar.php';
 
             });
             //  $('#holder').append(ht);
-        });
+        
+		$('span.rd').each(function(){
+			$(this)
+				.siblings('span.date')
+				.next()
+				.after($(this));
+		 });
+		 
+		});
 
 
         /*

@@ -75,11 +75,12 @@ foreach ($ncal as $date => $c) {
 		if ($cra->userId == $myUser->userId) echo "<strong>"; 
 		echo $cra->userName;
 		if ($cra->userId == $myUser->userId) echo "</strong>";
-		if ($c['sw']) echo "</s>";
+		if ($c['sw']->userId1 == $cra->userId || $c['sw']->userId2 == $cra->userId) echo "</s>";
+		
 		if ($c['sw']->userId1 == $cra->userId)
-			echo "&nbsp;&nbsp;&nbsp;&nbsp;Switching with ".$['sw']->userName2;
+			echo "&nbsp;&nbsp;&nbsp;&nbsp;Switching with ".$c['sw']->userName2;
 		if ($c['sw']->userId2 == $cra->userId)
-			echo "&nbsp;&nbsp;&nbsp;&nbsp;Switching with ".$['sw']->userName1;
+			echo "&nbsp;&nbsp;&nbsp;&nbsp;Switching with ".$c['sw']->userName1;
 		
 		if ($c['sw']->userId2 == $cra->userId && $c['sw']->status == 0) {
 			echo "<a>confirm</a> &middot; <a>decline</a>";
