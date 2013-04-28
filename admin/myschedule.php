@@ -60,9 +60,6 @@ foreach ($cal as $date => $key) {
 
 <table id="myschedule">
 <?php 
-echo "<pre>";
-var_dump($ncal);
-
 foreach ($ncal as $date => $c) {
 	$dta = new DateTime($date);
 	$date = $dta->format('d M Y, D');
@@ -78,12 +75,19 @@ foreach ($ncal as $date => $c) {
 		if ($c['sw']->userId1 == $cra->userId || $c['sw']->userId2 == $cra->userId) echo "</s>";
 		
 		if ($c['sw']->userId1 == $cra->userId)
-			echo "&nbsp;&nbsp;&nbsp;&nbsp;Switching with ".$c['sw']->userName2;
+			echo "&nbsp;&nbsp;&nbsp;&nbsp;<em>Switching with ".$c['sw']->userName2 . "</em>";
 		if ($c['sw']->userId2 == $cra->userId)
-			echo "&nbsp;&nbsp;&nbsp;&nbsp;Switching with ".$c['sw']->userName1;
+			echo "&nbsp;&nbsp;&nbsp;&nbsp;<em>Switching with ".$c['sw']->userName1 . "</em>";
 		
 		if ($c['sw']->userId2 == $cra->userId && $c['sw']->status == 0) {
 			echo "<a href=\"javascript:confirm(".$c['sw']->id.");\">confirm</a> &middot; <a href=\"javascript:decline(".$c['sw']->id.");\">decline</a>";
+		}
+		
+		if (($c['sw']->userId2 == $cra->userId || $c['sw']->userId1 == $cra->userId) && $c['sw']->status == 1) {
+			echo "<small><strong>confirmed</strong></small>";
+		}
+		if (($c['sw']->userId2 == $cra->userId || $c['sw']->userId1 == $cra->userId) && $c['sw']->status == 3) {
+			echo "<small><strong>approved</strong></small>";
 		}
 		
 		echo "<br>";
