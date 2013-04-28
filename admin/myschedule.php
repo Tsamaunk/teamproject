@@ -38,7 +38,7 @@ foreach ($sch as $s) {
 }
 
 foreach ($sw as $s) { // inject switches to calendar
-	if ($s->status == 0 || $s->status == 1 || $s->status == 3) {
+	if (!$s->status || $s->status == 0 || $s->status == 1 || $s->status == 3) {
 		$cal[$s->date1]['sw'] = $s;
 		$cal[$s->date2]['sw'] = $s;
 	}
