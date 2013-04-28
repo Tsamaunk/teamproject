@@ -102,7 +102,7 @@ else
                             function(data) {
 
                                 if (data.success) {
-                                    document.location.href = 'index.php';
+                                    document.location.href = 'calendar.php';
                                 } else {
                                     alert('Error: ' + data.error);
                                 }

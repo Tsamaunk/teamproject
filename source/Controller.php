@@ -309,10 +309,17 @@ class Controller {
 					CONCAT(`usr`.`firstName`,' ',`usr`.`lastName`) AS userName2 
 					FROM `switch`, `users`, `users` as `usr` 
 					WHERE switch.userId1 = users.userId
-					AND switch.userId2 = usr.userId					
+					AND switch.userId2 = usr.userId
 					ORDER BY `date1` DESC;";
 		else
-			$sql = "SELECT * FROM `switch` WHERE `userId1` = '$userId' OR `userId2` = '$userId' ORDER BY `date1` DESC;";
+			$sql = "SELECT switch.*, 
+					CONCAT(`users`.`firstName`,' ',`users`.`lastName`) AS userName1, 
+					CONCAT(`usr`.`firstName`,' ',`usr`.`lastName`) AS userName2 
+					FROM `switch`, `users`, `users` as `usr` 
+					WHERE (`userId1` = '$userId' OR `userId2` = '$userId')
+					AND switch.userId1 = users.userId
+					AND switch.userId2 = usr.userId
+					ORDER BY `date1` DESC;";
 		$result = $this->mod->query($sql);
 		if ($result)
 			return $this->orm($result, true);
