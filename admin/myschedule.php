@@ -83,7 +83,7 @@ foreach ($ncal as $date => $c) {
 			echo "&nbsp;&nbsp;&nbsp;&nbsp;Switching with ".$c['sw']->userName1;
 		
 		if ($c['sw']->userId2 == $cra->userId && $c['sw']->status == 0) {
-			echo "<a>confirm</a> &middot; <a>decline</a>";
+			echo "<a href=\"javascript:confirm(".$c['sw']->id.");\">confirm</a> &middot; <a href=\"javascript:decline(".$c['sw']->id.");\">decline</a>";
 		}
 		
 		echo "<br>";
@@ -95,7 +95,17 @@ foreach ($ncal as $date => $c) {
 	echo "</tr>\n";
 	}
 
-
-
 	?>
 </table>
+
+<script>
+function confirm(id) {
+
+}
+
+function decline(id) {
+
+
+}
+
+</script>
