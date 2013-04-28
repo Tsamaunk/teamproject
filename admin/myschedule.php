@@ -84,10 +84,10 @@ foreach ($ncal as $date => $c) {
 		}
 		
 		if (($c['sw']->userId2 == $cra->userId || $c['sw']->userId1 == $cra->userId) && $c['sw']->status == 1) {
-			echo " <font size="-1"><strong>confirmed</strong></font>";
+			echo " <font size=\"-1\"><strong>confirmed</strong></font>";
 		}
 		if (($c['sw']->userId2 == $cra->userId || $c['sw']->userId1 == $cra->userId) && $c['sw']->status == 3) {
-			echo " <font size="-1"><strong>approved</strong></font>";
+			echo " <font size=\"-1\"><strong>approved</strong></font>";
 		}
 		
 		echo "<br>";
